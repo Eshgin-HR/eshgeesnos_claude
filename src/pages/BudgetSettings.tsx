@@ -40,7 +40,7 @@ export default function BudgetSettings() {
     })
     setSaved(true)
     setTimeout(() => {
-      navigate('/budget')
+      navigate('/settings')
     }, 800)
   }
 
@@ -122,7 +122,7 @@ export default function BudgetSettings() {
         style={{ backgroundColor: saved ? '#0d2b1f' : '#1D9E75', color: saved ? '#1D9E75' : '#ffffff', fontSize: '14px', border: saved ? '1px solid #1D9E75' : 'none' }}
       >
         <Save size={16} />
-        {saved ? 'Saved!' : 'Save & go to Budget'}
+        {saved ? 'Saved! ✓' : 'Save Settings'}
       </button>
     </div>
   )

@@ -259,10 +259,10 @@ export default function DailyTasks() {
                   {/* Delete */}
                   <button
                     onClick={() => deleteTask(task.id)}
-                    className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="flex-shrink-0 opacity-30 hover:opacity-100 active:opacity-100 transition-opacity"
                     style={{ color: '#6B7280' }}
                   >
-                    <Trash2 size={12} />
+                    <Trash2 size={14} />
                   </button>
                 </div>
               ))}
