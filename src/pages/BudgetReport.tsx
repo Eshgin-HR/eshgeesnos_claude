@@ -1,7 +1,6 @@
 import { X } from 'lucide-react'
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
-  PieChart, Pie, Legend,
 } from 'recharts'
 import type { Expense, ExpenseCategory } from '../lib/supabase'
 
