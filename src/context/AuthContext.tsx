@@ -1,13 +1,20 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import { Session, User } from '@supabase/supabase-js'
-import { supabase } from '../lib/supabase'
+import { createContext, useContext, ReactNode } from 'react'
 
-const AUTO_EMAIL = 'eshgeen@eshgeenos.app'
-const AUTO_PASS  = 'Eshgeen2026!'
+// Fixed user — no login needed, single-user personal app
+export const FIXED_USER_ID = '776aafc6-d0fe-4eb7-a227-a5167ae43888'
+
+const MOCK_USER = {
+  id: FIXED_USER_ID,
+  email: 'eshgeen@eshgeenos.app',
+  app_metadata: {},
+  user_metadata: {},
+  aud: 'authenticated',
+  created_at: '',
+}
 
 interface AuthContextType {
-  session: Session | null
-  user: User | null
+  session: { user: typeof MOCK_USER } | null
+  user: typeof MOCK_USER | null
   loading: boolean
   signInWithPassword: (password: string) => Promise<string | null>
   signOut: () => Promise<void>
@@ -16,53 +23,14 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const init = async () => {
-      // Try to reuse existing session
-      const { data: { session: existing } } = await supabase.auth.getSession()
-      if (existing) {
-        setSession(existing)
-        setLoading(false)
-        return
-      }
-      // Auto sign-in silently
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: AUTO_EMAIL,
-        password: AUTO_PASS,
-      })
-      if (!error) {
-        setSession(data.session)
-      }
-      setLoading(false)
-    }
-
-    init()
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
-
-  const signInWithPassword = async (password: string): Promise<string | null> => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email: AUTO_EMAIL,
-      password,
-    })
-    if (error) return error.message
-    return null
-  }
-
-  const signOut = async () => {
-    await supabase.auth.signOut()
-  }
-
   return (
-    <AuthContext.Provider value={{ session, user: session?.user ?? null, loading, signInWithPassword, signOut }}>
+    <AuthContext.Provider value={{
+      session: { user: MOCK_USER },
+      user: MOCK_USER,
+      loading: false,
+      signInWithPassword: async () => null,
+      signOut: async () => { window.location.reload() },
+    }}>
       {children}
     </AuthContext.Provider>
   )
