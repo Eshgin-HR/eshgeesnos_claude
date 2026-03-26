@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import Layout from './components/Layout'
 import Login from './pages/Login'
+import Home from './pages/Home'
 import DailyCheckin from './pages/DailyCheckin'
 import StreakTracker from './pages/StreakTracker'
 import NightlyAudit from './pages/NightlyAudit'
@@ -28,6 +29,7 @@ function ProtectedRoutes() {
   return (
     <Layout>
       <Routes>
+        <Route path="/home" element={<Home />} />
         <Route path="/today" element={<DailyCheckin />} />
         <Route path="/streaks" element={<StreakTracker />} />
         <Route path="/nightly" element={<NightlyAudit />} />
@@ -37,7 +39,7 @@ function ProtectedRoutes() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/settings/habits" element={<HabitManager />} />
         <Route path="/settings/habits/:id" element={<EditHabit />} />
-        <Route path="/" element={<Navigate to="/today" replace />} />
+        <Route path="/" element={<Navigate to="/home" replace />} />
       </Routes>
     </Layout>
   )
@@ -59,6 +61,6 @@ export default function App() {
 function LoginWrapper() {
   const { session, loading } = useAuth()
   if (loading) return null
-  if (session) return <Navigate to="/today" replace />
+  if (session) return <Navigate to="/home" replace />
   return <Login />
 }

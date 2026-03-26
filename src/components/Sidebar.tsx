@@ -1,8 +1,9 @@
 import { NavLink } from 'react-router-dom'
-import { Sun, Flame, Moon, BarChart2, Wallet, FileText, Settings } from 'lucide-react'
+import { Home, Sun, Flame, Moon, BarChart2, Wallet, FileText, Settings } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 const NAV = [
+  { to: '/home', icon: Home, label: 'Home' },
   { to: '/today', icon: Sun, label: 'Today' },
   { to: '/streaks', icon: Flame, label: 'Streaks' },
   { to: '/nightly', icon: Moon, label: 'Nightly' },
