@@ -10,7 +10,7 @@ const TABS = [
   { to: '/streaks', icon: Flame,       label: 'Streaks' },
   { to: '/nightly', icon: Moon,        label: 'Nightly' },
   { to: '/weekly',  icon: BarChart2,   label: 'Weekly' },
-  { to: '/settings',icon: Settings,    label: 'Settings' },
+  { to: '/settings',icon: Settings,    label: 'More' },
 ]
 
 export default function BottomTabBar() {
@@ -18,8 +18,8 @@ export default function BottomTabBar() {
     <div
       className="fixed bottom-0 left-0 right-0 flex items-center justify-around z-50"
       style={{
-        backgroundColor: '#191919',
-        borderTop: '1px solid #2a2a2a',
+        backgroundColor: '#ffffff',
+        borderTop: '1px solid #e3e3e0',
         paddingBottom: 'env(safe-area-inset-bottom)',
         height: '56px',
       }}
@@ -35,16 +35,14 @@ export default function BottomTabBar() {
               <Icon
                 size={18}
                 strokeWidth={isActive ? 2.5 : 1.5}
-                style={{ color: isActive ? '#1D9E75' : '#555' }}
+                style={{ color: isActive ? '#1D9E75' : '#acacac' }}
               />
-              <span
-                style={{
-                  fontSize: '9px',
-                  color: isActive ? '#1D9E75' : '#555',
-                  fontWeight: isActive ? 600 : 400,
-                  lineHeight: 1,
-                }}
-              >
+              <span style={{
+                fontSize: '9px',
+                color: isActive ? '#1D9E75' : '#acacac',
+                fontWeight: isActive ? 600 : 400,
+                lineHeight: 1,
+              }}>
                 {label}
               </span>
             </>

@@ -131,8 +131,8 @@ export default function DailyTasks() {
   if (error) return (
     <div className="flex flex-col gap-3 py-10 text-center px-4">
       <p className="font-semibold" style={{ color: '#ef4444' }}>Could not load tasks</p>
-      <p className="text-xs" style={{ color: '#8a8a8a' }}>{error}</p>
-      <p className="text-xs" style={{ color: '#8a8a8a' }}>Make sure the <code>daily_tasks</code> table exists in Supabase.</p>
+      <p className="text-xs" style={{ color: '#787774' }}>{error}</p>
+      <p className="text-xs" style={{ color: '#787774' }}>Make sure the <code>daily_tasks</code> table exists in Supabase.</p>
     </div>
   )
 
@@ -141,22 +141,22 @@ export default function DailyTasks() {
       {/* Header */}
       <div className="flex items-end justify-between">
         <div>
-          <p className="text-xs mb-0.5" style={{ color: '#8a8a8a' }}>{dateLabel}</p>
+          <p className="text-xs mb-0.5" style={{ color: '#787774' }}>{dateLabel}</p>
           <h1 className="font-bold text-white" style={{ fontSize: '20px' }}>Daily Tasks</h1>
         </div>
         {totalTasks > 0 && (
           <div className="text-right">
             <p className="font-bold" style={{ fontSize: '22px', color: totalDone === totalTasks ? '#1D9E75' : '#ffffff' }}>
-              {totalDone}<span style={{ color: '#8a8a8a', fontWeight: 400, fontSize: '16px' }}>/{totalTasks}</span>
+              {totalDone}<span style={{ color: '#787774', fontWeight: 400, fontSize: '16px' }}>/{totalTasks}</span>
             </p>
-            <p style={{ fontSize: '10px', color: '#8a8a8a' }}>completed</p>
+            <p style={{ fontSize: '10px', color: '#787774' }}>completed</p>
           </div>
         )}
       </div>
 
       {/* Progress bar */}
       {totalTasks > 0 && (
-        <div className="rounded-full overflow-hidden" style={{ height: '3px', backgroundColor: '#333333' }}>
+        <div className="rounded-full overflow-hidden" style={{ height: '3px', backgroundColor: '#e3e3e0' }}>
           <div
             className="h-full rounded-full transition-all duration-500"
             style={{ width: `${(totalDone / totalTasks) * 100}%`, backgroundColor: '#1D9E75' }}
@@ -183,7 +183,7 @@ export default function DailyTasks() {
                   {cat}
                 </span>
                 {catTasks.length > 0 && (
-                  <span style={{ fontSize: '10px', color: '#8a8a8a' }}>
+                  <span style={{ fontSize: '10px', color: '#787774' }}>
                     {catDone}/{catTasks.length}
                   </span>
                 )}
@@ -191,7 +191,7 @@ export default function DailyTasks() {
               <button
                 onClick={() => isAdding ? cancelAdd() : openAdd(cat)}
                 className="flex items-center gap-1 rounded-lg px-2 py-1 transition-all"
-                style={{ backgroundColor: isAdding ? '#333333' : 'transparent', color: isAdding ? '#8a8a8a' : color, fontSize: '11px' }}
+                style={{ backgroundColor: isAdding ? '#e3e3e0' : 'transparent', color: isAdding ? '#8a8a8a' : color, fontSize: '11px' }}
               >
                 <Plus size={12} />
                 <span>{isAdding ? 'Cancel' : 'Add'}</span>
@@ -201,7 +201,7 @@ export default function DailyTasks() {
             {/* Tasks */}
             <div className="flex flex-col">
               {catTasks.length === 0 && !isAdding && (
-                <p className="py-3 text-xs" style={{ color: '#8a8a8a' }}>
+                <p className="py-3 text-xs" style={{ color: '#787774' }}>
                   No tasks — tap Add to plan your {cat} work
                 </p>
               )}
@@ -210,7 +210,7 @@ export default function DailyTasks() {
                 <div
                   key={task.id}
                   className="flex items-start gap-3 py-2.5 group"
-                  style={{ borderBottom: '1px solid #33333333' }}
+                  style={{ borderBottom: '1px solid #e3e3e033' }}
                 >
                   {/* Time block */}
                   <div className="flex-shrink-0 w-12 pt-0.5">
@@ -222,7 +222,7 @@ export default function DailyTasks() {
                         {task.time_block}
                       </span>
                     ) : (
-                      <span style={{ fontSize: '10px', color: '#333333' }}>——</span>
+                      <span style={{ fontSize: '10px', color: '#e3e3e0' }}>——</span>
                     )}
                   </div>
 
@@ -233,7 +233,7 @@ export default function DailyTasks() {
                     style={{
                       width: '18px',
                       height: '18px',
-                      border: `2px solid ${task.completed ? color : '#333333'}`,
+                      border: `2px solid ${task.completed ? color : '#e3e3e0'}`,
                       backgroundColor: task.completed ? color : 'transparent',
                       display: 'flex',
                       alignItems: 'center',
@@ -260,7 +260,7 @@ export default function DailyTasks() {
                   <button
                     onClick={() => deleteTask(task.id)}
                     className="flex-shrink-0 opacity-30 hover:opacity-100 active:opacity-100 transition-opacity"
-                    style={{ color: '#8a8a8a' }}
+                    style={{ color: '#787774' }}
                   >
                     <Trash2 size={14} />
                   </button>
@@ -283,7 +283,7 @@ export default function DailyTasks() {
                       style={{ fontSize: '10px', color: newTime ? '#ffffff' : '#8a8a8a', width: '52px' }}
                     >
                       {TIME_OPTIONS.map(t => (
-                        <option key={t} value={t} style={{ backgroundColor: '#252525' }}>
+                        <option key={t} value={t} style={{ backgroundColor: '#f7f7f5' }}>
                           {t || '——'}
                         </option>
                       ))}
@@ -320,7 +320,7 @@ export default function DailyTasks() {
                     onClick={() => saveTask(cat)}
                     disabled={saving || !newTitle.trim()}
                     className="flex-shrink-0 px-2.5 py-1 rounded-lg font-medium disabled:opacity-40 transition-all"
-                    style={{ backgroundColor: color, color: '#ffffff', fontSize: '11px' }}
+                    style={{ backgroundColor: color, color: '#37352f', fontSize: '11px' }}
                   >
                     {saving ? '...' : 'Save'}
                   </button>

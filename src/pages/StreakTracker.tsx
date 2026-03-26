@@ -111,7 +111,7 @@ export default function StreakTracker() {
   useEffect(() => { load() }, [load])
 
   const heatmapColor = (pct: number) => {
-    if (pct === 0) return '#333333'
+    if (pct === 0) return '#e3e3e0'
     if (pct <= 40) return '#F4F6FA22'
     if (pct <= 70) return '#1D9E7544'
     if (pct <= 89) return '#1D9E75'
@@ -129,8 +129,8 @@ export default function StreakTracker() {
       <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>Streak Tracker</h1>
 
       {/* 30-day heatmap */}
-      <div className="rounded-xl p-4" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
-        <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#8a8a8a', letterSpacing: '0.06em' }}>30-Day Heatmap</p>
+      <div className="rounded-xl p-4" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
+        <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#787774', letterSpacing: '0.06em' }}>30-Day Heatmap</p>
         <div className="grid gap-1.5" style={{ gridTemplateColumns: 'repeat(10, 1fr)' }}>
           {heatmap.map(({ date, pct }) => (
             <div
@@ -142,24 +142,24 @@ export default function StreakTracker() {
           ))}
         </div>
         <div className="flex items-center gap-3 mt-3 flex-wrap">
-          {[['0%', '#333333'], ['1–40%', '#F4F6FA22'], ['41–70%', '#1D9E7544'], ['71–89%', '#1D9E75'], ['90–100%', '#EF9F27']].map(([label, color]) => (
+          {[['0%', '#e3e3e0'], ['1–40%', '#F4F6FA22'], ['41–70%', '#1D9E7544'], ['71–89%', '#1D9E75'], ['90–100%', '#EF9F27']].map(([label, color]) => (
             <div key={label} className="flex items-center gap-1">
               <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: color }} />
-              <span style={{ fontSize: '9px', color: '#8a8a8a' }}>{label}</span>
+              <span style={{ fontSize: '9px', color: '#787774' }}>{label}</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* Weekly bar chart */}
-      <div className="rounded-xl p-4" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
-        <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#8a8a8a', letterSpacing: '0.06em' }}>This Week</p>
+      <div className="rounded-xl p-4" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
+        <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#787774', letterSpacing: '0.06em' }}>This Week</p>
         <ResponsiveContainer width="100%" height={120}>
           <BarChart data={weekData} barCategoryGap="30%">
             <XAxis dataKey="day" tick={{ fill: '#8a8a8a', fontSize: 10, fontFamily: 'Manrope' }} axisLine={false} tickLine={false} />
             <YAxis hide domain={[0, 100]} />
             <Tooltip
-              contentStyle={{ backgroundColor: '#252525', border: '1px solid #333333', borderRadius: 8, fontSize: 11 }}
+              contentStyle={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0', borderRadius: 8, fontSize: 11 }}
               itemStyle={{ color: '#fff' }}
               formatter={(v: number) => [`${v}%`, 'Completion']}
             />
@@ -179,9 +179,9 @@ export default function StreakTracker() {
           { label: 'Longest Streak', value: `${allTime.longestStreak}d` },
           { label: 'Best Week', value: `${Math.round(allTime.bestWeek)}%` },
         ].map(({ label, value }) => (
-          <div key={label} className="rounded-xl p-3 text-center" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+          <div key={label} className="rounded-xl p-3 text-center" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
             <p className="font-bold text-white" style={{ fontSize: '20px' }}>{value}</p>
-            <p style={{ fontSize: '9px', color: '#8a8a8a', marginTop: '2px' }}>{label}</p>
+            <p style={{ fontSize: '9px', color: '#787774', marginTop: '2px' }}>{label}</p>
           </div>
         ))}
       </div>
@@ -189,20 +189,20 @@ export default function StreakTracker() {
       {/* Per-habit streak cards */}
       <div className="flex flex-col gap-3">
         {streaks.map(({ habit, currentStreak, bestStreak, last14 }) => (
-          <div key={habit.id} className="rounded-xl p-4" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+          <div key={habit.id} className="rounded-xl p-4" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <span style={{ fontSize: '16px' }}>{habit.icon}</span>
-                <span style={{ fontSize: '12px', fontWeight: 500, color: '#ffffff' }}>{habit.name}</span>
+                <span style={{ fontSize: '12px', fontWeight: 500, color: '#37352f' }}>{habit.name}</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="text-center">
                   <p className="font-bold" style={{ fontSize: '14px', color: '#1D9E75' }}>{currentStreak}</p>
-                  <p style={{ fontSize: '9px', color: '#8a8a8a' }}>current</p>
+                  <p style={{ fontSize: '9px', color: '#787774' }}>current</p>
                 </div>
                 <div className="text-center">
                   <p className="font-bold" style={{ fontSize: '14px', color: '#EF9F27' }}>{bestStreak}</p>
-                  <p style={{ fontSize: '9px', color: '#8a8a8a' }}>best</p>
+                  <p style={{ fontSize: '9px', color: '#787774' }}>best</p>
                 </div>
               </div>
             </div>
@@ -211,7 +211,7 @@ export default function StreakTracker() {
                 <div
                   key={i}
                   className="flex-1 rounded-full"
-                  style={{ height: '8px', backgroundColor: done ? '#1D9E75' : '#333333' }}
+                  style={{ height: '8px', backgroundColor: done ? '#1D9E75' : '#e3e3e0' }}
                 />
               ))}
             </div>

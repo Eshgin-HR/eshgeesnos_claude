@@ -119,7 +119,7 @@ export default function BudgetTracker() {
           <button
             onClick={() => setShowReport(true)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium"
-            style={{ backgroundColor: '#252525', border: '1px solid #333333', color: '#7F77DD', fontSize: '12px' }}
+            style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0', color: '#7F77DD', fontSize: '12px' }}
           >
             <BarChart2 size={13} /> Report
           </button>
@@ -139,7 +139,7 @@ export default function BudgetTracker() {
           <Wallet size={18} color="#EF9F27" />
           <div className="flex-1">
             <p className="text-sm font-medium" style={{ color: '#EF9F27' }}>Budget not configured</p>
-            <p className="text-xs mt-0.5" style={{ color: '#8a8a8a' }}>Go to Settings → Budget Settings to set your salary & limit.</p>
+            <p className="text-xs mt-0.5" style={{ color: '#787774' }}>Go to Settings → Budget Settings to set your salary & limit.</p>
           </div>
         </div>
       )}
@@ -147,42 +147,42 @@ export default function BudgetTracker() {
       {/* Overview stats row */}
       <div className="grid grid-cols-3 gap-3">
         {/* Spent */}
-        <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
           <TrendingDown size={14} color="#EF9F27" />
           <p className="font-bold text-white" style={{ fontSize: '16px' }}>{totalSpent.toFixed(0)}</p>
-          <p style={{ fontSize: '9px', color: '#8a8a8a' }}>Spent AZN</p>
+          <p style={{ fontSize: '9px', color: '#787774' }}>Spent AZN</p>
         </div>
         {/* Remaining / Budget */}
-        <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
           <Wallet size={14} color={isWarning ? '#EF9F27' : '#1D9E75'} />
           <p className="font-bold" style={{ fontSize: '16px', color: isWarning ? '#EF9F27' : '#ffffff' }}>
             {budget > 0 ? remaining.toFixed(0) : '—'}
           </p>
-          <p style={{ fontSize: '9px', color: '#8a8a8a' }}>Remaining</p>
+          <p style={{ fontSize: '9px', color: '#787774' }}>Remaining</p>
         </div>
         {/* Savings */}
-        <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
           <TrendingUp size={14} color="#7F77DD" />
           <p className="font-bold" style={{ fontSize: '16px', color: savings !== null && savings >= 0 ? '#7F77DD' : '#ef4444' }}>
             {savings !== null ? savings.toFixed(0) : '—'}
           </p>
-          <p style={{ fontSize: '9px', color: '#8a8a8a' }}>Saved AZN</p>
+          <p style={{ fontSize: '9px', color: '#787774' }}>Saved AZN</p>
         </div>
       </div>
 
       {/* Monthly overview card */}
       {(salary > 0 || budget > 0) && (
-        <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
           <div className="flex items-center justify-between">
             <div>
-              <p style={{ fontSize: '10px', color: '#8a8a8a' }}>Spent this month</p>
+              <p style={{ fontSize: '10px', color: '#787774' }}>Spent this month</p>
               <p className="font-bold text-white" style={{ fontSize: '22px' }}>
-                {totalSpent.toFixed(0)} <span style={{ fontSize: '12px', color: '#8a8a8a' }}>AZN</span>
+                {totalSpent.toFixed(0)} <span style={{ fontSize: '12px', color: '#787774' }}>AZN</span>
               </p>
             </div>
             {salary > 0 && (
               <div className="text-right">
-                <p style={{ fontSize: '10px', color: '#8a8a8a' }}>Salary</p>
+                <p style={{ fontSize: '10px', color: '#787774' }}>Salary</p>
                 <p className="font-bold" style={{ fontSize: '16px', color: '#1D9E75' }}>{salary.toLocaleString()} AZN</p>
               </div>
             )}
@@ -191,10 +191,10 @@ export default function BudgetTracker() {
           {budget > 0 && (
             <div>
               <div className="flex justify-between mb-1.5">
-                <span style={{ fontSize: '10px', color: '#8a8a8a' }}>Budget limit: {budget.toLocaleString()} AZN</span>
+                <span style={{ fontSize: '10px', color: '#787774' }}>Budget limit: {budget.toLocaleString()} AZN</span>
                 <span style={{ fontSize: '10px', color: isWarning ? '#EF9F27' : '#8a8a8a' }}>{Math.round(pct)}% used</span>
               </div>
-              <div className="rounded-full overflow-hidden" style={{ height: '6px', backgroundColor: '#333333' }}>
+              <div className="rounded-full overflow-hidden" style={{ height: '6px', backgroundColor: '#e3e3e0' }}>
                 <div
                   className="h-full rounded-full transition-all"
                   style={{ width: `${pct}%`, backgroundColor: isWarning ? '#EF9F27' : '#1D9E75' }}
@@ -211,14 +211,14 @@ export default function BudgetTracker() {
       )}
 
       {/* Weekly chart */}
-      <div className="rounded-xl p-4" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
-        <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#8a8a8a' }}>This Week</p>
+      <div className="rounded-xl p-4" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
+        <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#787774' }}>This Week</p>
         <ResponsiveContainer width="100%" height={90}>
           <BarChart data={weekData} barCategoryGap="30%">
             <XAxis dataKey="day" tick={{ fill: '#8a8a8a', fontSize: 10 }} axisLine={false} tickLine={false} />
             <YAxis hide />
             <Tooltip
-              contentStyle={{ backgroundColor: '#252525', border: '1px solid #333333', borderRadius: 8, fontSize: 11 }}
+              contentStyle={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0', borderRadius: 8, fontSize: 11 }}
               itemStyle={{ color: '#fff' }}
               formatter={(v: number) => [`${v} AZN`, '']}
             />
@@ -232,22 +232,22 @@ export default function BudgetTracker() {
       {/* Expense list */}
       {Object.keys(grouped).sort((a, b) => b.localeCompare(a)).map(date => (
         <div key={date} className="flex flex-col gap-2">
-          <p style={{ fontSize: '10px', color: '#8a8a8a', fontWeight: 500 }}>
+          <p style={{ fontSize: '10px', color: '#787774', fontWeight: 500 }}>
             {new Date(date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
           </p>
-          <div className="rounded-xl overflow-hidden" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+          <div className="rounded-xl overflow-hidden" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
             {grouped[date].map((e, i) => (
               <div
                 key={e.id}
                 className="flex items-center gap-3 px-4 py-3"
-                style={{ borderBottom: i < grouped[date].length - 1 ? '1px solid #333333' : 'none' }}
+                style={{ borderBottom: i < grouped[date].length - 1 ? '1px solid #e3e3e0' : 'none' }}
               >
                 <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>{CAT_ICONS[e.category]}</span>
                 <div className="flex-1">
-                  <p style={{ fontSize: '12px', fontWeight: 500, color: '#ffffff' }}>{e.category}</p>
-                  {e.note && <p style={{ fontSize: '10px', color: '#8a8a8a' }}>{e.note}</p>}
+                  <p style={{ fontSize: '12px', fontWeight: 500, color: '#37352f' }}>{e.category}</p>
+                  {e.note && <p style={{ fontSize: '10px', color: '#787774' }}>{e.note}</p>}
                 </div>
-                <p className="font-bold" style={{ fontSize: '13px', color: '#ffffff' }}>{e.amount} AZN</p>
+                <p className="font-bold" style={{ fontSize: '13px', color: '#37352f' }}>{e.amount} AZN</p>
                 <button onClick={() => deleteExpense(e.id)} className="ml-1 opacity-40 hover:opacity-100 transition-opacity">
                   <Trash2 size={12} color="#8a8a8a" />
                 </button>
@@ -258,7 +258,7 @@ export default function BudgetTracker() {
       ))}
 
       {expenses.length === 0 && (
-        <div className="text-center py-12" style={{ color: '#8a8a8a' }}>
+        <div className="text-center py-12" style={{ color: '#787774' }}>
           <p style={{ fontSize: '13px' }}>No expenses this month</p>
           <p style={{ fontSize: '11px', marginTop: '4px' }}>Tap "Add" to log your first expense</p>
         </div>
@@ -274,18 +274,18 @@ export default function BudgetTracker() {
           <div
             className="w-full md:max-w-sm rounded-t-2xl md:rounded-xl flex flex-col"
             style={{
-              backgroundColor: '#252525',
-              border: '1px solid #333333',
+              backgroundColor: '#f7f7f5',
+              border: '1px solid #e3e3e0',
               maxHeight: 'calc(100dvh - 72px)',
             }}
           >
             {/* Drag handle */}
             <div className="flex justify-center pt-3 pb-1 md:hidden flex-shrink-0">
-              <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#333333' }} />
+              <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#e3e3e0' }} />
             </div>
 
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #333333' }}>
+            <div className="flex items-center justify-between px-5 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #e3e3e0' }}>
               <p className="font-bold text-white" style={{ fontSize: '15px' }}>Add Expense</p>
               <button onClick={() => { setShowModal(false); setAddError(null) }} className="p-1">
                 <X size={18} color="#8a8a8a" />
@@ -296,29 +296,29 @@ export default function BudgetTracker() {
             <div className="flex flex-col gap-4 px-5 py-4 overflow-y-auto flex-1">
               <div className="flex gap-3">
                 <div className="flex-1">
-                  <label style={{ fontSize: '11px', color: '#8a8a8a', marginBottom: '6px', display: 'block' }}>Amount (AZN)</label>
+                  <label style={{ fontSize: '11px', color: '#787774', marginBottom: '6px', display: 'block' }}>Amount (AZN)</label>
                   <input
                     type="number" placeholder="0"
                     value={newExpense.amount}
                     onChange={e => setNewExpense(p => ({ ...p, amount: e.target.value }))}
                     className="w-full rounded-xl px-4 py-3 text-white outline-none"
-                    style={{ backgroundColor: '#191919', border: '1px solid #333333', fontSize: '15px', fontWeight: 600 }}
+                    style={{ backgroundColor: '#ffffff', border: '1px solid #e3e3e0', fontSize: '15px', fontWeight: 600 }}
                   />
                 </div>
                 <div className="flex-1">
-                  <label style={{ fontSize: '11px', color: '#8a8a8a', marginBottom: '6px', display: 'block' }}>Date</label>
+                  <label style={{ fontSize: '11px', color: '#787774', marginBottom: '6px', display: 'block' }}>Date</label>
                   <input
                     type="date"
                     value={newExpense.date}
                     onChange={e => setNewExpense(p => ({ ...p, date: e.target.value }))}
                     className="w-full rounded-xl px-3 py-3 text-white outline-none"
-                    style={{ backgroundColor: '#191919', border: '1px solid #333333', fontSize: '13px', colorScheme: 'dark' }}
+                    style={{ backgroundColor: '#ffffff', border: '1px solid #e3e3e0', fontSize: '13px', colorScheme: 'dark' }}
                   />
                 </div>
               </div>
 
               <div>
-                <label style={{ fontSize: '11px', color: '#8a8a8a', marginBottom: '8px', display: 'block' }}>Category</label>
+                <label style={{ fontSize: '11px', color: '#787774', marginBottom: '8px', display: 'block' }}>Category</label>
                 <div className="flex flex-wrap gap-2">
                   {CATEGORIES.map(cat => (
                     <button
@@ -326,9 +326,9 @@ export default function BudgetTracker() {
                       onClick={() => setNewExpense(p => ({ ...p, category: cat }))}
                       className="px-3 py-1.5 rounded-full font-medium transition-all"
                       style={{
-                        backgroundColor: newExpense.category === cat ? '#1D9E75' : '#191919',
+                        backgroundColor: newExpense.category === cat ? '#1D9E75' : '#ffffff',
                         color: newExpense.category === cat ? '#fff' : '#8a8a8a',
-                        border: `1px solid ${newExpense.category === cat ? '#1D9E75' : '#333333'}`,
+                        border: `1px solid ${newExpense.category === cat ? '#1D9E75' : '#e3e3e0'}`,
                         fontSize: '12px',
                       }}
                     >
@@ -339,19 +339,19 @@ export default function BudgetTracker() {
               </div>
 
               <div>
-                <label style={{ fontSize: '11px', color: '#8a8a8a', marginBottom: '6px', display: 'block' }}>Note (optional)</label>
+                <label style={{ fontSize: '11px', color: '#787774', marginBottom: '6px', display: 'block' }}>Note (optional)</label>
                 <input
                   type="text" placeholder="What was it?"
                   value={newExpense.note}
                   onChange={e => setNewExpense(p => ({ ...p, note: e.target.value }))}
                   className="w-full rounded-xl px-4 py-3 text-white outline-none placeholder-gray-600"
-                  style={{ backgroundColor: '#191919', border: '1px solid #333333', fontSize: '13px' }}
+                  style={{ backgroundColor: '#ffffff', border: '1px solid #e3e3e0', fontSize: '13px' }}
                 />
               </div>
             </div>
 
             {/* Footer */}
-            <div className="px-5 py-4 flex-shrink-0 flex flex-col gap-2" style={{ borderTop: '1px solid #333333' }}>
+            <div className="px-5 py-4 flex-shrink-0 flex flex-col gap-2" style={{ borderTop: '1px solid #e3e3e0' }}>
               {addError && (
                 <p className="text-xs text-center rounded-lg px-3 py-2" style={{ color: '#ef4444', backgroundColor: '#2a0a0a', border: '1px solid #ef444433' }}>
                   {addError}

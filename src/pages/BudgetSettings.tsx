@@ -45,10 +45,10 @@ export default function BudgetSettings() {
   }
 
   const inputStyle = {
-    backgroundColor: '#191919',
-    border: '1px solid #333333',
+    backgroundColor: '#ffffff',
+    border: '1px solid #e3e3e0',
     borderRadius: '10px',
-    color: '#ffffff',
+    color: '#37352f',
     fontSize: '14px',
     padding: '10px 12px',
     width: '100%',
@@ -66,11 +66,11 @@ export default function BudgetSettings() {
       </div>
 
       {/* Income card */}
-      <div className="rounded-xl p-5 flex flex-col gap-4" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+      <div className="rounded-xl p-5 flex flex-col gap-4" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
         <p className="font-semibold text-white" style={{ fontSize: '13px' }}>Monthly Income</p>
 
         <div className="flex flex-col gap-1.5">
-          <label style={{ fontSize: '11px', color: '#8a8a8a' }}>Salary (AZN)</label>
+          <label style={{ fontSize: '11px', color: '#787774' }}>Salary (AZN)</label>
           <div className="relative">
             <input
               type="number"
@@ -79,18 +79,18 @@ export default function BudgetSettings() {
               onChange={e => setSalary(e.target.value)}
               style={inputStyle}
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs" style={{ color: '#8a8a8a' }}>AZN/mo</span>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs" style={{ color: '#787774' }}>AZN/mo</span>
           </div>
-          <p style={{ fontSize: '10px', color: '#8a8a8a' }}>Your net monthly salary or primary income source.</p>
+          <p style={{ fontSize: '10px', color: '#787774' }}>Your net monthly salary or primary income source.</p>
         </div>
       </div>
 
       {/* Spending limit card */}
-      <div className="rounded-xl p-5 flex flex-col gap-4" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+      <div className="rounded-xl p-5 flex flex-col gap-4" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
         <p className="font-semibold text-white" style={{ fontSize: '13px' }}>Monthly Budget Limit</p>
 
         <div className="flex flex-col gap-1.5">
-          <label style={{ fontSize: '11px', color: '#8a8a8a' }}>Spending limit (AZN)</label>
+          <label style={{ fontSize: '11px', color: '#787774' }}>Spending limit (AZN)</label>
           <div className="relative">
             <input
               type="number"
@@ -99,15 +99,15 @@ export default function BudgetSettings() {
               onChange={e => setLimit(e.target.value)}
               style={inputStyle}
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs" style={{ color: '#8a8a8a' }}>AZN/mo</span>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs" style={{ color: '#787774' }}>AZN/mo</span>
           </div>
-          <p style={{ fontSize: '10px', color: '#8a8a8a' }}>Maximum you want to spend this month.</p>
+          <p style={{ fontSize: '10px', color: '#787774' }}>Maximum you want to spend this month.</p>
         </div>
 
         {/* Savings preview */}
         {Number(salary) > 0 && Number(limit) > 0 && (
-          <div className="flex items-center justify-between rounded-lg px-3 py-2" style={{ backgroundColor: '#191919' }}>
-            <span style={{ fontSize: '11px', color: '#8a8a8a' }}>Target monthly savings</span>
+          <div className="flex items-center justify-between rounded-lg px-3 py-2" style={{ backgroundColor: '#ffffff' }}>
+            <span style={{ fontSize: '11px', color: '#787774' }}>Target monthly savings</span>
             <span className="font-bold" style={{ fontSize: '13px', color: '#1D9E75' }}>
               {(Number(salary) - Number(limit)).toLocaleString()} AZN
             </span>
