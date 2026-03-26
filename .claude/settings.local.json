@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "mcp__f69ea750-b655-4d4d-8245-e3067c2d2d0b__apply_migration",
+      "mcp__Claude_Preview__preview_start",
+      "mcp__f69ea750-b655-4d4d-8245-e3067c2d2d0b__execute_sql",
+      "mcp__f69ea750-b655-4d4d-8245-e3067c2d2d0b__list_projects",
+      "mcp__f69ea750-b655-4d4d-8245-e3067c2d2d0b__get_publishable_keys"
+    ]
+  }
+}
