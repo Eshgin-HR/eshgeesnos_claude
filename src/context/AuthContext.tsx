@@ -2,6 +2,9 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { Session, User } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
 
+const AUTO_EMAIL = 'eshgeen@eshgeenos.app'
+const AUTO_PASS  = 'Eshgeen2026!'
+
 interface AuthContextType {
   session: Session | null
   user: User | null
@@ -17,10 +20,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
+    const init = async () => {
+      // Try to reuse existing session
+      const { data: { session: existing } } = await supabase.auth.getSession()
+      if (existing) {
+        setSession(existing)
+        setLoading(false)
+        return
+      }
+      // Auto sign-in silently
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: AUTO_EMAIL,
+        password: AUTO_PASS,
+      })
+      if (!error) {
+        setSession(data.session)
+      }
       setLoading(false)
-    })
+    }
+
+    init()
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
@@ -31,7 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signInWithPassword = async (password: string): Promise<string | null> => {
     const { error } = await supabase.auth.signInWithPassword({
-      email: 'eshgeen@eshgeenos.app',
+      email: AUTO_EMAIL,
       password,
     })
     if (error) return error.message
