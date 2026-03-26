@@ -155,10 +155,10 @@ export default function QuickNotes() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {notes.map(note => (
-            <button
+            <div
               key={note.id}
               onClick={() => openEdit(note)}
-              className="rounded-xl p-4 text-left flex flex-col gap-2 hover:brightness-110 transition-all relative overflow-hidden"
+              className="rounded-xl p-4 text-left flex flex-col gap-2 hover:brightness-110 transition-all relative overflow-hidden cursor-pointer"
               style={{
                 backgroundColor: '#0d1f35',
                 border: '1px solid #1a2a40',
@@ -191,7 +191,7 @@ export default function QuickNotes() {
                   {new Date(note.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                 </span>
               </div>
-            </button>
+            </div>
           ))}
         </div>
       )}
