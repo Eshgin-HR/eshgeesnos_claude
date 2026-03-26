@@ -123,7 +123,7 @@ export default function WeeklyReview() {
     <div className="flex flex-col gap-4">
       {/* Header with week nav */}
       <div className="flex items-center justify-between">
-        <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>Weekly Review</h1>
+        <h1 className="font-bold" style={{ fontSize: '18px', color: '#37352f' }}>Weekly Review</h1>
         <div className="flex items-center gap-2">
           <button onClick={() => setWeekOffset(o => o - 1)} className="p-1.5 rounded-lg" style={{ backgroundColor: '#f7f7f5', color: '#787774' }}>
             <ChevronLeft size={14} />
@@ -158,7 +158,7 @@ export default function WeeklyReview() {
             type="number" min={0} max={100} step={0.5}
             value={form.tapwork_hours}
             onChange={e => setForm(p => ({ ...p, tapwork_hours: Number(e.target.value) }))}
-            className="w-24 rounded-lg px-3 py-2 text-white outline-none"
+            className="w-24 rounded-lg px-3 py-2 outline-none"
             style={{ backgroundColor: '#ffffff', border: '1px solid #e3e3e0', fontSize: '13px' }}
           />
           <span style={{ fontSize: '12px', color: '#787774' }}>hours this week</span>
@@ -178,7 +178,7 @@ export default function WeeklyReview() {
               onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))}
               placeholder={key === 'top_win' ? 'The biggest win this week...' : 'One sentence to anchor next week...'}
               rows={2}
-              className="w-full resize-none outline-none rounded-lg px-3 py-2.5 text-white placeholder-gray-600"
+              className="w-full resize-none outline-none rounded-lg px-3 py-2.5 placeholder-gray-600"
               style={{ backgroundColor: '#ffffff', border: '1px solid #e3e3e0', fontSize: '12px' }}
             />
           </div>
@@ -201,7 +201,7 @@ export default function WeeklyReview() {
       <button
         onClick={handleSave}
         disabled={saving}
-        className="w-full py-3 rounded-lg font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+        className="w-full py-3 rounded-lg font-medium transition-opacity hover:opacity-90 disabled:opacity-50"
         style={{ backgroundColor: saved ? '#f7f7f5' : '#1D9E75', fontSize: '14px', border: saved ? '1px solid #1D9E75' : 'none' }}
       >
         {saving ? 'Saving...' : saved ? 'Saved ✓' : 'Save Week Review'}

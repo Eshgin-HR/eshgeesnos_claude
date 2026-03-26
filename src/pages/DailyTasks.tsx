@@ -142,7 +142,7 @@ export default function DailyTasks() {
       <div className="flex items-end justify-between">
         <div>
           <p className="text-xs mb-0.5" style={{ color: '#787774' }}>{dateLabel}</p>
-          <h1 className="font-bold text-white" style={{ fontSize: '20px' }}>Daily Tasks</h1>
+          <h1 className="font-bold" style={{ fontSize: '20px', color: '#37352f' }}>Daily Tasks</h1>
         </div>
         {totalTasks > 0 && (
           <div className="text-right">
@@ -311,7 +311,7 @@ export default function DailyTasks() {
                       if (e.key === 'Enter') saveTask(cat)
                       if (e.key === 'Escape') cancelAdd()
                     }}
-                    className="flex-1 bg-transparent outline-none text-white placeholder-gray-600"
+                    className="flex-1 bg-transparent outline-none placeholder-gray-600"
                     style={{ fontSize: '13px' }}
                   />
 

@@ -74,12 +74,12 @@ export default function NightlyAudit() {
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 text-center">
         <div className="text-5xl">🌙</div>
         <div>
-          <h2 className="text-xl font-bold text-white">Good night.</h2>
+          <h2 className="text-xl font-bold">Good night.</h2>
           <p className="mt-2" style={{ fontSize: '14px', color: '#787774' }}>Tomorrow starts at 5 AM.</p>
         </div>
         <div className="rounded-xl px-4 py-3" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
           <p style={{ fontSize: '12px', color: '#787774' }}>Tomorrow's TapWork task</p>
-          <p className="font-medium text-white mt-1" style={{ fontSize: '13px' }}>{form.tapwork_task || '—'}</p>
+          <p className="font-medium mt-1" style={{ fontSize: '13px' }}>{form.tapwork_task || '—'}</p>
         </div>
         <button
           onClick={() => setSaved(false)}
@@ -96,7 +96,7 @@ export default function NightlyAudit() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center">
         <div className="text-4xl">🔒</div>
-        <h2 className="font-bold text-white" style={{ fontSize: '18px' }}>Nightly Audit</h2>
+        <h2 className="font-bold" style={{ fontSize: '18px', color: '#37352f' }}>Nightly Audit</h2>
         <p style={{ fontSize: '13px', color: '#787774' }}>Opens at 19:00</p>
         <div
           className="rounded-xl px-6 py-4 mt-2"
@@ -119,7 +119,7 @@ export default function NightlyAudit() {
         onChange={e => setForm(prev => ({ ...prev, [key]: e.target.value }))}
         placeholder={placeholder}
         rows={2}
-        className="w-full resize-none outline-none rounded-lg px-3 py-2.5 text-white placeholder-gray-600"
+        className="w-full resize-none outline-none rounded-lg px-3 py-2.5 placeholder-gray-600"
         style={{
           backgroundColor: '#ffffff',
           border: '1px solid #e3e3e0',
@@ -132,7 +132,7 @@ export default function NightlyAudit() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>Nightly Audit</h1>
+      <h1 className="font-bold" style={{ fontSize: '18px', color: '#37352f' }}>Nightly Audit</h1>
 
       <div className="rounded-xl p-4 flex flex-col gap-4" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
         <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#787774', letterSpacing: '0.06em' }}>3 Wins Today</p>
@@ -177,7 +177,7 @@ export default function NightlyAudit() {
       <button
         onClick={handleSave}
         disabled={saving}
-        className="w-full py-3 rounded-lg font-medium text-white transition-opacity hover:opacity-90 active:opacity-80 disabled:opacity-50"
+        className="w-full py-3 rounded-lg font-medium transition-opacity hover:opacity-90 active:opacity-80 disabled:opacity-50"
         style={{ backgroundColor: '#1D9E75', fontSize: '14px' }}
       >
         {saving ? 'Saving...' : 'Save Nightly Audit'}

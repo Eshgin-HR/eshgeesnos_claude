@@ -32,7 +32,7 @@ body {
 
 /* Override text-white to be dark on light backgrounds */
 .text-white {
-  color: #37352f;
+  color: #37352f !important;
 }
 
 ::selection {

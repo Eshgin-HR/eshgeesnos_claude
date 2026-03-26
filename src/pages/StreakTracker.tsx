@@ -126,7 +126,7 @@ export default function StreakTracker() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>Streak Tracker</h1>
+      <h1 className="font-bold" style={{ fontSize: '18px', color: '#37352f' }}>Streak Tracker</h1>
 
       {/* 30-day heatmap */}
       <div className="rounded-xl p-4" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
@@ -180,7 +180,7 @@ export default function StreakTracker() {
           { label: 'Best Week', value: `${Math.round(allTime.bestWeek)}%` },
         ].map(({ label, value }) => (
           <div key={label} className="rounded-xl p-3 text-center" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
-            <p className="font-bold text-white" style={{ fontSize: '20px' }}>{value}</p>
+            <p className="font-bold" style={{ fontSize: '20px', color: '#37352f' }}>{value}</p>
             <p style={{ fontSize: '9px', color: '#787774', marginTop: '2px' }}>{label}</p>
           </div>
         ))}
@@ -192,7 +192,7 @@ export default function StreakTracker() {
           <div key={habit.id} className="rounded-xl p-4" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <span style={{ fontSize: '16px' }}>{habit.icon}</span>
+                <span style={{ fontSize: '16px', color: '#37352f' }}>{habit.icon}</span>
                 <span style={{ fontSize: '12px', fontWeight: 500, color: '#37352f' }}>{habit.name}</span>
               </div>
               <div className="flex items-center gap-3">

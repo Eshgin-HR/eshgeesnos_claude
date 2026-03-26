@@ -34,7 +34,7 @@ export default function Login() {
             E
           </div>
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-white tracking-tight">EshgeenOS</h1>
+            <h1 className="text-2xl font-bold tracking-tight">EshgeenOS</h1>
             <p className="text-sm mt-1" style={{ color: '#787774' }}>Personal Operating System</p>
           </div>
         </div>
@@ -55,7 +55,7 @@ export default function Login() {
               onChange={e => setPassword(e.target.value)}
               placeholder="Enter your password"
               autoFocus
-              className="w-full rounded-lg px-3 py-3 text-white outline-none placeholder-gray-600"
+              className="w-full rounded-lg px-3 py-3 outline-none placeholder-gray-600"
               style={{
                 backgroundColor: '#ffffff',
                 border: `1px solid ${error ? '#ef4444' : '#e3e3e0'}`,
@@ -70,7 +70,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading || !password}
-            className="w-full py-3 rounded-lg font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+            className="w-full py-3 rounded-lg font-medium transition-opacity hover:opacity-90 disabled:opacity-40"
             style={{ backgroundColor: '#1D9E75', fontSize: '14px' }}
           >
             {loading ? 'Signing in...' : 'Enter EshgeenOS'}

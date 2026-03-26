@@ -62,12 +62,12 @@ export default function BudgetSettings() {
         <button onClick={() => navigate('/settings')} className="opacity-60 hover:opacity-100 transition-opacity">
           <ArrowLeft size={18} color="#ffffff" />
         </button>
-        <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>Budget Settings</h1>
+        <h1 className="font-bold" style={{ fontSize: '18px', color: '#37352f' }}>Budget Settings</h1>
       </div>
 
       {/* Income card */}
       <div className="rounded-xl p-5 flex flex-col gap-4" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
-        <p className="font-semibold text-white" style={{ fontSize: '13px' }}>Monthly Income</p>
+        <p className="font-semibold" style={{ fontSize: '13px' }}>Monthly Income</p>
 
         <div className="flex flex-col gap-1.5">
           <label style={{ fontSize: '11px', color: '#787774' }}>Salary (AZN)</label>
@@ -87,7 +87,7 @@ export default function BudgetSettings() {
 
       {/* Spending limit card */}
       <div className="rounded-xl p-5 flex flex-col gap-4" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
-        <p className="font-semibold text-white" style={{ fontSize: '13px' }}>Monthly Budget Limit</p>
+        <p className="font-semibold" style={{ fontSize: '13px' }}>Monthly Budget Limit</p>
 
         <div className="flex flex-col gap-1.5">
           <label style={{ fontSize: '11px', color: '#787774' }}>Spending limit (AZN)</label>

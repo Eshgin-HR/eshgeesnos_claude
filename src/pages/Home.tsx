@@ -120,7 +120,7 @@ export default function Home() {
       {/* Header */}
       <div>
         <p className="text-sm mb-1" style={{ color: '#787774' }}>{dateLabel}</p>
-        <h1 className="text-2xl font-bold text-white">{greeting()}, Eshgin</h1>
+        <h1 className="text-2xl font-bold">{greeting()}, Eshgin</h1>
       </div>
 
       {/* Top stats row */}
@@ -147,7 +147,7 @@ export default function Home() {
                 strokeLinecap="round"
                 transform="rotate(-90 32 32)"
               />
-              <text x="32" y="37" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">
+              <text x="32" y="37" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#37352f">
                 {stats.habitsDone}/{stats.habitsTotal}
               </text>
             </svg>
@@ -161,7 +161,7 @@ export default function Home() {
             onClick={() => navigate('/streaks')}
           >
             <Flame size={24} color="#EF9F27" />
-            <span className="text-2xl font-bold text-white">{stats.streak}</span>
+            <span className="text-2xl font-bold">{stats.streak}</span>
             <span className="text-xs" style={{ color: '#787774' }}>Day streak</span>
           </div>
 
@@ -172,7 +172,7 @@ export default function Home() {
             onClick={() => navigate('/budget')}
           >
             <Wallet size={24} color="#7F77DD" />
-            <span className="text-2xl font-bold text-white">
+            <span className="text-2xl font-bold">
               {stats.todaySpend === 0 ? '—' : `₼${stats.todaySpend.toFixed(0)}`}
             </span>
             <span className="text-xs" style={{ color: '#787774' }}>Spent today</span>
@@ -197,7 +197,7 @@ export default function Home() {
               <Moon size={18} color="#7F77DD" />
             )}
             <div className="text-left">
-              <p className="text-sm font-medium text-white">
+              <p className="text-sm font-medium">
                 {stats.nightlyDone ? 'Nightly audit done' : 'Nightly audit pending'}
               </p>
               {stats.lastEmotion && (
@@ -234,7 +234,7 @@ export default function Home() {
                 <Icon size={18} color={color} />
               </div>
               <div>
-                <p className="text-sm font-semibold text-white">{label}</p>
+                <p className="text-sm font-semibold">{label}</p>
                 <p className="text-xs mt-0.5" style={{ color: '#787774' }}>{desc}</p>
               </div>
             </button>

@@ -52,7 +52,7 @@ export default function HabitManager() {
         <button onClick={() => navigate('/settings')} className="p-1.5 rounded-lg" style={{ backgroundColor: '#f7f7f5', color: '#787774' }}>
           <ArrowLeft size={14} />
         </button>
-        <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>Manage Habits</h1>
+        <h1 className="font-bold" style={{ fontSize: '18px', color: '#37352f' }}>Manage Habits</h1>
       </div>
 
       <DragDropContext onDragEnd={onDragEnd}>
@@ -84,7 +84,7 @@ export default function HabitManager() {
                         <GripVertical size={14} />
                       </div>
                       <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>{habit.icon}</span>
-                      <span className="flex-1 font-medium text-white" style={{ fontSize: '12px' }}>{habit.name}</span>
+                      <span className="flex-1 font-medium" style={{ fontSize: '12px' }}>{habit.name}</span>
                       <button
                         onClick={() => navigate(`/settings/habits/${habit.id}`)}
                         className="p-1.5 rounded-lg mr-1"
@@ -122,7 +122,7 @@ export default function HabitManager() {
             >
               <div style={{ width: '14px' }} />
               <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>{habit.icon}</span>
-              <span className="flex-1 font-medium text-white" style={{ fontSize: '12px' }}>{habit.name}</span>
+              <span className="flex-1 font-medium" style={{ fontSize: '12px' }}>{habit.name}</span>
               <button
                 onClick={() => navigate(`/settings/habits/${habit.id}`)}
                 className="p-1.5 rounded-lg mr-1"

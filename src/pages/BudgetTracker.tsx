@@ -114,7 +114,7 @@ export default function BudgetTracker() {
     <div className="flex flex-col gap-4">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>Budget</h1>
+        <h1 className="font-bold" style={{ fontSize: '18px', color: '#37352f' }}>Budget</h1>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowReport(true)}
@@ -149,7 +149,7 @@ export default function BudgetTracker() {
         {/* Spent */}
         <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
           <TrendingDown size={14} color="#EF9F27" />
-          <p className="font-bold text-white" style={{ fontSize: '16px' }}>{totalSpent.toFixed(0)}</p>
+          <p className="font-bold" style={{ fontSize: '16px', color: '#37352f' }}>{totalSpent.toFixed(0)}</p>
           <p style={{ fontSize: '9px', color: '#787774' }}>Spent AZN</p>
         </div>
         {/* Remaining / Budget */}
@@ -176,7 +176,7 @@ export default function BudgetTracker() {
           <div className="flex items-center justify-between">
             <div>
               <p style={{ fontSize: '10px', color: '#787774' }}>Spent this month</p>
-              <p className="font-bold text-white" style={{ fontSize: '22px' }}>
+              <p className="font-bold" style={{ fontSize: '22px', color: '#37352f' }}>
                 {totalSpent.toFixed(0)} <span style={{ fontSize: '12px', color: '#787774' }}>AZN</span>
               </p>
             </div>
@@ -286,7 +286,7 @@ export default function BudgetTracker() {
 
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #e3e3e0' }}>
-              <p className="font-bold text-white" style={{ fontSize: '15px' }}>Add Expense</p>
+              <p className="font-bold" style={{ fontSize: '15px' }}>Add Expense</p>
               <button onClick={() => { setShowModal(false); setAddError(null) }} className="p-1">
                 <X size={18} color="#8a8a8a" />
               </button>
@@ -301,7 +301,7 @@ export default function BudgetTracker() {
                     type="number" placeholder="0"
                     value={newExpense.amount}
                     onChange={e => setNewExpense(p => ({ ...p, amount: e.target.value }))}
-                    className="w-full rounded-xl px-4 py-3 text-white outline-none"
+                    className="w-full rounded-xl px-4 py-3 outline-none"
                     style={{ backgroundColor: '#ffffff', border: '1px solid #e3e3e0', fontSize: '15px', fontWeight: 600 }}
                   />
                 </div>
@@ -311,7 +311,7 @@ export default function BudgetTracker() {
                     type="date"
                     value={newExpense.date}
                     onChange={e => setNewExpense(p => ({ ...p, date: e.target.value }))}
-                    className="w-full rounded-xl px-3 py-3 text-white outline-none"
+                    className="w-full rounded-xl px-3 py-3 outline-none"
                     style={{ backgroundColor: '#ffffff', border: '1px solid #e3e3e0', fontSize: '13px', colorScheme: 'dark' }}
                   />
                 </div>
@@ -344,7 +344,7 @@ export default function BudgetTracker() {
                   type="text" placeholder="What was it?"
                   value={newExpense.note}
                   onChange={e => setNewExpense(p => ({ ...p, note: e.target.value }))}
-                  className="w-full rounded-xl px-4 py-3 text-white outline-none placeholder-gray-600"
+                  className="w-full rounded-xl px-4 py-3 outline-none placeholder-gray-600"
                   style={{ backgroundColor: '#ffffff', border: '1px solid #e3e3e0', fontSize: '13px' }}
                 />
               </div>
@@ -360,7 +360,7 @@ export default function BudgetTracker() {
               <button
                 onClick={addExpense}
                 disabled={adding || !newExpense.amount}
-                className="w-full py-3 rounded-xl font-semibold text-white disabled:opacity-50"
+                className="w-full py-3 rounded-xl font-semibold disabled:opacity-50"
                 style={{ backgroundColor: '#1D9E75', fontSize: '14px' }}
               >
                 {adding ? 'Saving...' : 'Add Expense'}

@@ -113,7 +113,7 @@ export default function QuickNotes() {
             type="text" placeholder="Search notes..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="flex-1 bg-transparent outline-none text-white placeholder-gray-600"
+            className="flex-1 bg-transparent outline-none placeholder-gray-600"
             style={{ fontSize: '13px' }}
           />
           {search && <button onClick={() => setSearch('')}><X size={12} style={{ color: '#787774' }} /></button>}
@@ -166,7 +166,7 @@ export default function QuickNotes() {
               }}
             >
               <div className="flex items-start justify-between gap-2">
-                <p className="font-medium text-white line-clamp-1" style={{ fontSize: '13px' }}>{note.title}</p>
+                <p className="font-medium line-clamp-1" style={{ fontSize: '13px' }}>{note.title}</p>
                 <button
                   onClick={e => togglePin(note, e)}
                   className="flex-shrink-0 transition-opacity"
@@ -218,7 +218,7 @@ export default function QuickNotes() {
 
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #e3e3e0' }}>
-              <p className="font-bold text-white" style={{ fontSize: '15px' }}>{editNote ? 'Edit Note' : 'New Note'}</p>
+              <p className="font-bold" style={{ fontSize: '15px' }}>{editNote ? 'Edit Note' : 'New Note'}</p>
               <button onClick={() => setShowEditor(false)} className="p-1">
                 <X size={18} color="#8a8a8a" />
               </button>
@@ -231,7 +231,7 @@ export default function QuickNotes() {
                 placeholder="Title"
                 value={form.title}
                 onChange={e => setForm(p => ({ ...p, title: e.target.value }))}
-                className="w-full rounded-xl px-4 py-3 text-white outline-none placeholder-gray-600 font-medium"
+                className="w-full rounded-xl px-4 py-3 outline-none placeholder-gray-600 font-medium"
                 style={{ backgroundColor: '#ffffff', border: '1px solid #e3e3e0', fontSize: '15px' }}
               />
 
@@ -241,7 +241,7 @@ export default function QuickNotes() {
                   value={form.body}
                   onChange={e => setForm(p => ({ ...p, body: e.target.value }))}
                   rows={5}
-                  className="w-full resize-none rounded-xl px-4 py-3 text-white outline-none placeholder-gray-600"
+                  className="w-full resize-none rounded-xl px-4 py-3 outline-none placeholder-gray-600"
                   style={{
                     backgroundColor: '#ffffff',
                     border: '1px solid #e3e3e0',
@@ -296,7 +296,7 @@ export default function QuickNotes() {
               )}
               <button
                 onClick={saveNote}
-                className="flex-1 py-3 rounded-xl font-semibold text-white"
+                className="flex-1 py-3 rounded-xl font-semibold"
                 style={{ backgroundColor: '#1D9E75', fontSize: '14px' }}
               >
                 {editNote ? 'Save Changes' : 'Save Note'}

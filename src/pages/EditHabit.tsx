@@ -79,7 +79,7 @@ export default function EditHabit() {
         <button onClick={() => navigate('/settings/habits')} className="p-1.5 rounded-lg" style={{ backgroundColor: '#f7f7f5', color: '#787774' }}>
           <ArrowLeft size={14} />
         </button>
-        <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>{isNew ? 'New Habit' : 'Edit Habit'}</h1>
+        <h1 className="font-bold" style={{ fontSize: '18px', color: '#37352f' }}>{isNew ? 'New Habit' : 'Edit Habit'}</h1>
       </div>
 
       {/* Name */}
@@ -89,7 +89,7 @@ export default function EditHabit() {
           type="text" placeholder="e.g. TapWork session done"
           value={form.name}
           onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-          className="w-full rounded-lg px-3 py-2.5 text-white outline-none placeholder-gray-600"
+          className="w-full rounded-lg px-3 py-2.5 outline-none placeholder-gray-600"
           style={{ backgroundColor: '#ffffff', border: '1px solid #e3e3e0', fontSize: '13px' }}
         />
       </div>
@@ -161,7 +161,7 @@ export default function EditHabit() {
       <button
         onClick={handleSave}
         disabled={saving || !form.name.trim()}
-        className="w-full py-3 rounded-lg font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+        className="w-full py-3 rounded-lg font-medium transition-opacity hover:opacity-90 disabled:opacity-40"
         style={{ backgroundColor: '#1D9E75', fontSize: '14px' }}
       >
         {saving ? 'Saving...' : 'Save Habit'}
@@ -180,11 +180,11 @@ export default function EditHabit() {
       {showDeleteConfirm && (
         <div className="fixed inset-0 flex items-center justify-center z-50 px-4" style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
           <div className="w-full max-w-sm rounded-xl p-6 flex flex-col gap-4 text-center" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
-            <p className="font-bold text-white" style={{ fontSize: '16px' }}>Delete this habit?</p>
+            <p className="font-bold" style={{ fontSize: '16px', color: '#37352f' }}>Delete this habit?</p>
             <p style={{ fontSize: '12px', color: '#787774' }}>This will delete all history for this habit. Are you sure?</p>
             <div className="flex gap-3">
               <button onClick={() => setShowDeleteConfirm(false)} className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: '#ffffff', border: '1px solid #e3e3e0', color: '#787774', fontSize: '13px' }}>Cancel</button>
-              <button onClick={handleDelete} className="flex-1 py-2.5 rounded-lg font-medium text-white" style={{ backgroundColor: '#ef4444', fontSize: '13px' }}>Delete</button>
+              <button onClick={handleDelete} className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: '#ef4444', fontSize: '13px' }}>Delete</button>
             </div>
           </div>
         </div>

@@ -39,7 +39,7 @@ export default function Settings() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>Settings</h1>
+      <h1 className="font-bold" style={{ fontSize: '18px', color: '#37352f' }}>Settings</h1>
 
       {/* Profile card */}
       <div className="rounded-xl p-4 flex items-center gap-3" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
@@ -47,7 +47,7 @@ export default function Settings() {
           E
         </div>
         <div>
-          <p className="font-bold text-white" style={{ fontSize: '14px' }}>Eshgeen Jafarov</p>
+          <p className="font-bold" style={{ fontSize: '14px' }}>Eshgeen Jafarov</p>
           <p style={{ fontSize: '11px', color: '#787774' }}>Senior People Analyst · Founder</p>
           <p style={{ fontSize: '10px', color: '#787774', marginTop: '2px' }}>{user?.email}</p>
         </div>
@@ -68,7 +68,7 @@ export default function Settings() {
               style={{ borderBottom: i < arr.length - 1 ? '1px solid #e3e3e0' : 'none' }}
             >
               <div className="flex-1">
-                <p className="font-medium text-white" style={{ fontSize: '13px' }}>{label}</p>
+                <p className="font-medium" style={{ fontSize: '13px' }}>{label}</p>
                 <p style={{ fontSize: '10px', color: '#787774', marginTop: '1px' }}>{desc}</p>
               </div>
               <ChevronRight size={14} style={{ color: '#787774' }} />
@@ -88,7 +88,7 @@ export default function Settings() {
           >
             <Download size={16} style={{ color: '#1D9E75' }} />
             <div className="flex-1">
-              <p className="font-medium text-white" style={{ fontSize: '13px' }}>Export All Data</p>
+              <p className="font-medium" style={{ fontSize: '13px' }}>Export All Data</p>
               <p style={{ fontSize: '10px', color: '#787774', marginTop: '1px' }}>Download as JSON</p>
             </div>
           </button>
@@ -118,13 +118,13 @@ export default function Settings() {
       {showResetConfirm && (
         <div className="fixed inset-0 flex items-center justify-center z-[60] px-4" style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
           <div className="w-full max-w-sm rounded-xl p-6 flex flex-col gap-4 text-center" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
-            <p className="font-bold text-white" style={{ fontSize: '16px' }}>Reset all streaks?</p>
+            <p className="font-bold" style={{ fontSize: '16px', color: '#37352f' }}>Reset all streaks?</p>
             <p style={{ fontSize: '12px', color: '#787774' }}>This will delete all historical check-in data. This cannot be undone.</p>
             <div className="flex gap-3">
               <button onClick={() => setShowResetConfirm(false)} className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: '#ffffff', border: '1px solid #e3e3e0', color: '#787774', fontSize: '13px' }}>
                 Cancel
               </button>
-              <button onClick={resetStreaks} disabled={resetting} className="flex-1 py-2.5 rounded-lg font-medium text-white disabled:opacity-50" style={{ backgroundColor: '#ef4444', fontSize: '13px' }}>
+              <button onClick={resetStreaks} disabled={resetting} className="flex-1 py-2.5 rounded-lg font-medium disabled:opacity-50" style={{ backgroundColor: '#ef4444', fontSize: '13px' }}>
                 {resetting ? 'Resetting...' : 'Reset'}
               </button>
             </div>

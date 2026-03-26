@@ -36,7 +36,7 @@ function CompletionRing({ pct }: { pct: number }) {
         transform="rotate(-90 56 56)"
         style={{ transition: 'stroke-dashoffset 0.5s ease' }}
       />
-      <text x="56" y="52" textAnchor="middle" fill="white" fontSize="22" fontWeight="700" fontFamily="Manrope">
+      <text x="56" y="52" textAnchor="middle" fill="#37352f" fontSize="22" fontWeight="700" fontFamily="Manrope">
         {Math.round(pct)}%
       </text>
       <text x="56" y="67" textAnchor="middle" fill="#8a8a8a" fontSize="10" fontFamily="Manrope">
@@ -139,7 +139,7 @@ export default function DailyCheckin() {
     <div className="flex flex-col gap-4">
       {/* Header */}
       <div>
-        <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>{greeting}, Eshgeen</h1>
+        <h1 className="font-bold" style={{ fontSize: '18px', color: '#37352f' }}>{greeting}, Eshgeen</h1>
         <p style={{ fontSize: '12px', color: '#787774', marginTop: '2px' }}>{dateStr}</p>
       </div>
 
@@ -149,7 +149,7 @@ export default function DailyCheckin() {
           className="rounded-xl px-4 py-3 flex items-center gap-2"
           style={{ backgroundColor: '#2a1f0a', border: '1px solid #EF9F27' }}
         >
-          <span style={{ fontSize: '16px' }}>⚠️</span>
+          <span style={{ fontSize: '16px', color: '#37352f' }}>⚠️</span>
           <div>
             <p className="font-medium" style={{ fontSize: '12px', color: '#EF9F27' }}>Streak at risk!</p>
             <p style={{ fontSize: '11px', color: '#787774' }}>Complete at least {6 - doneCount} more habit{6 - doneCount !== 1 ? 's' : ''} before midnight</p>

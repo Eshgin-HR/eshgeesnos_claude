@@ -77,7 +77,7 @@ export default function BudgetReport({ expenses, salary, budget, onClose }: Prop
           style={{ backgroundColor: '#ffffff', borderBottom: '1px solid #e3e3e0' }}
         >
           <div>
-            <p className="font-bold text-white" style={{ fontSize: '16px' }}>Budget Report</p>
+            <p className="font-bold" style={{ fontSize: '16px', color: '#37352f' }}>Budget Report</p>
             <p style={{ fontSize: '11px', color: '#787774' }}>{monthName}</p>
           </div>
           <button onClick={onClose} className="opacity-60 hover:opacity-100 transition-opacity">
@@ -90,7 +90,7 @@ export default function BudgetReport({ expenses, salary, budget, onClose }: Prop
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
               <p style={{ fontSize: '10px', color: '#787774' }}>Total Spent</p>
-              <p className="font-bold text-white" style={{ fontSize: '20px' }}>{totalSpent.toFixed(0)}<span style={{ fontSize: '11px', color: '#787774' }}> AZN</span></p>
+              <p className="font-bold" style={{ fontSize: '20px', color: '#37352f' }}>{totalSpent.toFixed(0)}<span style={{ fontSize: '11px', color: '#787774' }}> AZN</span></p>
               {budget > 0 && <p style={{ fontSize: '10px', color: '#787774' }}>{pct.toFixed(0)}% of {budget.toLocaleString()} AZN limit</p>}
             </div>
             {savings !== null && (
@@ -112,7 +112,7 @@ export default function BudgetReport({ expenses, salary, budget, onClose }: Prop
             )}
             <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
               <p style={{ fontSize: '10px', color: '#787774' }}>Transactions</p>
-              <p className="font-bold text-white" style={{ fontSize: '20px' }}>{expenses.length}</p>
+              <p className="font-bold" style={{ fontSize: '20px', color: '#37352f' }}>{expenses.length}</p>
               <p style={{ fontSize: '10px', color: '#787774' }}>
                 avg {expenses.length > 0 ? (totalSpent / expenses.length).toFixed(0) : 0} AZN each
               </p>
