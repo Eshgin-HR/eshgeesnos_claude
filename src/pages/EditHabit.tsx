@@ -52,12 +52,12 @@ export default function EditHabit() {
   }
 
   const Toggle = ({ label, value, onChange }: { label: string; value: boolean; onChange: (v: boolean) => void }) => (
-    <div className="flex items-center justify-between py-2.5" style={{ borderBottom: '1px solid #1a2a40' }}>
+    <div className="flex items-center justify-between py-2.5" style={{ borderBottom: '1px solid #333333' }}>
       <span style={{ fontSize: '12px', color: '#ffffff', fontWeight: 500 }}>{label}</span>
       <button
         onClick={() => onChange(!value)}
         className="w-10 h-6 rounded-full transition-colors flex items-center px-0.5"
-        style={{ backgroundColor: value ? '#1D9E75' : '#1a2a40' }}
+        style={{ backgroundColor: value ? '#1D9E75' : '#333333' }}
       >
         <div
           className="w-5 h-5 rounded-full bg-white transition-transform"
@@ -76,27 +76,27 @@ export default function EditHabit() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
-        <button onClick={() => navigate('/settings/habits')} className="p-1.5 rounded-lg" style={{ backgroundColor: '#0d1f35', color: '#6B7280' }}>
+        <button onClick={() => navigate('/settings/habits')} className="p-1.5 rounded-lg" style={{ backgroundColor: '#252525', color: '#8a8a8a' }}>
           <ArrowLeft size={14} />
         </button>
         <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>{isNew ? 'New Habit' : 'Edit Habit'}</h1>
       </div>
 
       {/* Name */}
-      <div className="rounded-xl p-4 flex flex-col gap-2" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-        <label style={{ fontSize: '10px', color: '#6B7280', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Habit Name</label>
+      <div className="rounded-xl p-4 flex flex-col gap-2" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <label style={{ fontSize: '10px', color: '#8a8a8a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Habit Name</label>
         <input
           type="text" placeholder="e.g. TapWork session done"
           value={form.name}
           onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
           className="w-full rounded-lg px-3 py-2.5 text-white outline-none placeholder-gray-600"
-          style={{ backgroundColor: '#0A1628', border: '1px solid #1a2a40', fontSize: '13px' }}
+          style={{ backgroundColor: '#191919', border: '1px solid #333333', fontSize: '13px' }}
         />
       </div>
 
       {/* Icon */}
-      <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-        <label style={{ fontSize: '10px', color: '#6B7280', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Icon</label>
+      <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <label style={{ fontSize: '10px', color: '#8a8a8a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Icon</label>
         <div className="grid gap-2" style={{ gridTemplateColumns: 'repeat(8, 1fr)' }}>
           {EMOJI_OPTIONS.map(emoji => (
             <button
@@ -104,8 +104,8 @@ export default function EditHabit() {
               onClick={() => setForm(p => ({ ...p, icon: emoji }))}
               className="aspect-square rounded-lg flex items-center justify-center text-xl transition-all"
               style={{
-                backgroundColor: form.icon === emoji ? '#1D9E75' : '#0A1628',
-                border: `1px solid ${form.icon === emoji ? '#1D9E75' : '#1a2a40'}`,
+                backgroundColor: form.icon === emoji ? '#1D9E75' : '#191919',
+                border: `1px solid ${form.icon === emoji ? '#1D9E75' : '#333333'}`,
                 fontSize: '18px',
               }}
             >
@@ -116,8 +116,8 @@ export default function EditHabit() {
       </div>
 
       {/* Category */}
-      <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-        <label style={{ fontSize: '10px', color: '#6B7280', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Category</label>
+      <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <label style={{ fontSize: '10px', color: '#8a8a8a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Category</label>
         <div className="flex flex-wrap gap-2">
           {CATEGORIES.map(cat => (
             <button
@@ -127,9 +127,9 @@ export default function EditHabit() {
               style={{
                 borderRadius: '20px',
                 fontSize: '11px',
-                backgroundColor: form.category === cat ? '#1D9E75' : '#0A1628',
-                color: form.category === cat ? '#ffffff' : '#6B7280',
-                border: `1px solid ${form.category === cat ? '#1D9E75' : '#1a2a40'}`,
+                backgroundColor: form.category === cat ? '#1D9E75' : '#191919',
+                color: form.category === cat ? '#ffffff' : '#8a8a8a',
+                border: `1px solid ${form.category === cat ? '#1D9E75' : '#333333'}`,
               }}
             >
               {cat}
@@ -139,8 +139,8 @@ export default function EditHabit() {
       </div>
 
       {/* Toggles */}
-      <div className="rounded-xl px-4 pb-2 pt-4" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-        <label style={{ fontSize: '10px', color: '#6B7280', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '4px' }}>Options</label>
+      <div className="rounded-xl px-4 pb-2 pt-4" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <label style={{ fontSize: '10px', color: '#8a8a8a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: '4px' }}>Options</label>
         <Toggle label="Active" value={form.active} onChange={v => setForm(p => ({ ...p, active: v }))} />
         <Toggle label="Counts toward daily score" value={form.counts_toward_score} onChange={v => setForm(p => ({ ...p, counts_toward_score: v }))} />
         <div className="flex items-center justify-between py-2.5">
@@ -148,7 +148,7 @@ export default function EditHabit() {
           <button
             onClick={() => setForm(p => ({ ...p, streak_tracking: !p.streak_tracking }))}
             className="w-10 h-6 rounded-full transition-colors flex items-center px-0.5"
-            style={{ backgroundColor: form.streak_tracking ? '#1D9E75' : '#1a2a40' }}
+            style={{ backgroundColor: form.streak_tracking ? '#1D9E75' : '#333333' }}
           >
             <div
               className="w-5 h-5 rounded-full bg-white transition-transform"
@@ -171,7 +171,7 @@ export default function EditHabit() {
         <button
           onClick={() => setShowDeleteConfirm(true)}
           className="w-full py-3 rounded-lg font-medium transition-opacity hover:opacity-80"
-          style={{ backgroundColor: '#0d1f35', border: '1px solid #ef444433', color: '#ef4444', fontSize: '13px' }}
+          style={{ backgroundColor: '#252525', border: '1px solid #ef444433', color: '#ef4444', fontSize: '13px' }}
         >
           Delete Habit
         </button>
@@ -179,11 +179,11 @@ export default function EditHabit() {
 
       {showDeleteConfirm && (
         <div className="fixed inset-0 flex items-center justify-center z-50 px-4" style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
-          <div className="w-full max-w-sm rounded-xl p-6 flex flex-col gap-4 text-center" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+          <div className="w-full max-w-sm rounded-xl p-6 flex flex-col gap-4 text-center" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
             <p className="font-bold text-white" style={{ fontSize: '16px' }}>Delete this habit?</p>
-            <p style={{ fontSize: '12px', color: '#6B7280' }}>This will delete all history for this habit. Are you sure?</p>
+            <p style={{ fontSize: '12px', color: '#8a8a8a' }}>This will delete all history for this habit. Are you sure?</p>
             <div className="flex gap-3">
-              <button onClick={() => setShowDeleteConfirm(false)} className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: '#0A1628', border: '1px solid #1a2a40', color: '#6B7280', fontSize: '13px' }}>Cancel</button>
+              <button onClick={() => setShowDeleteConfirm(false)} className="flex-1 py-2.5 rounded-lg font-medium" style={{ backgroundColor: '#191919', border: '1px solid #333333', color: '#8a8a8a', fontSize: '13px' }}>Cancel</button>
               <button onClick={handleDelete} className="flex-1 py-2.5 rounded-lg font-medium text-white" style={{ backgroundColor: '#ef4444', fontSize: '13px' }}>Delete</button>
             </div>
           </div>

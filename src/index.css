@@ -1,24 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  --color-navy: #0A1628;
-  --color-card: #0d1f35;
-  --color-border: #1a2a40;
+  --color-bg: #191919;
+  --color-surface: #252525;
+  --color-surface-hover: #2e2e2e;
+  --color-border: #333333;
+  --color-border-subtle: rgba(255,255,255,0.06);
   --color-teal: #1D9E75;
   --color-gold: #EF9F27;
   --color-purple: #7F77DD;
-  --color-lightgray: #F4F6FA;
-  --color-muted: #6B7280;
-  --color-alert-bg: #2a1f0a;
+  --color-text: #e8e8e8;
+  --color-muted: #8a8a8a;
+  --color-dim: #555555;
 
-  --font-sans: 'Manrope', sans-serif;
+  --font-sans: 'Inter', 'Manrope', sans-serif;
   --font-mono: 'Fira Code', monospace;
-
-  --radius-card: 12px;
-  --radius-input: 8px;
-  --radius-pill: 20px;
-
-  --spacing: 4px;
 }
 
 * {
@@ -26,20 +22,30 @@
 }
 
 body {
-  background-color: #0A1628;
-  color: #ffffff;
-  font-family: 'Manrope', sans-serif;
+  background-color: #191919;
+  color: #e8e8e8;
+  font-family: 'Inter', 'Manrope', ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom slider styles */
+/* Notion-style selection */
+::selection {
+  background: rgba(29, 158, 117, 0.25);
+}
+
+/* Inputs */
+input, textarea, select {
+  font-family: inherit;
+}
+
 input[type='range'] {
   -webkit-appearance: none;
   appearance: none;
-  height: 4px;
-  background: #1a2a40;
+  height: 3px;
+  background: #333;
   border-radius: 2px;
   outline: none;
   width: 100%;
@@ -48,31 +54,41 @@ input[type='range'] {
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   background: #EF9F27;
   border-radius: 50%;
   cursor: pointer;
-  border: 2px solid #0d1f35;
 }
 
 input[type='range']::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   background: #EF9F27;
   border-radius: 50%;
   cursor: pointer;
-  border: 2px solid #0d1f35;
+  border: none;
 }
 
-/* Scrollbar */
+/* Minimal scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 3px;
 }
 ::-webkit-scrollbar-track {
-  background: #0A1628;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1a2a40;
+  background: #333;
   border-radius: 2px;
+}
+
+/* Notion-style page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 150ms ease, transform 150ms ease;
 }

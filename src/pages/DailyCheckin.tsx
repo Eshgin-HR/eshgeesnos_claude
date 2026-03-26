@@ -24,7 +24,7 @@ function CompletionRing({ pct }: { pct: number }) {
   const offset = circ - (pct / 100) * circ
   return (
     <svg width="112" height="112" viewBox="0 0 112 112">
-      <circle cx="56" cy="56" r={r} fill="none" stroke="#1a2a40" strokeWidth="8" />
+      <circle cx="56" cy="56" r={r} fill="none" stroke="#333333" strokeWidth="8" />
       <circle
         cx="56" cy="56" r={r}
         fill="none"
@@ -39,7 +39,7 @@ function CompletionRing({ pct }: { pct: number }) {
       <text x="56" y="52" textAnchor="middle" fill="white" fontSize="22" fontWeight="700" fontFamily="Manrope">
         {Math.round(pct)}%
       </text>
-      <text x="56" y="67" textAnchor="middle" fill="#6B7280" fontSize="10" fontFamily="Manrope">
+      <text x="56" y="67" textAnchor="middle" fill="#8a8a8a" fontSize="10" fontFamily="Manrope">
         done
       </text>
     </svg>
@@ -140,7 +140,7 @@ export default function DailyCheckin() {
       {/* Header */}
       <div>
         <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>{greeting}, Eshgeen</h1>
-        <p style={{ fontSize: '12px', color: '#6B7280', marginTop: '2px' }}>{dateStr}</p>
+        <p style={{ fontSize: '12px', color: '#8a8a8a', marginTop: '2px' }}>{dateStr}</p>
       </div>
 
       {/* Streak at risk alert */}
@@ -152,7 +152,7 @@ export default function DailyCheckin() {
           <span style={{ fontSize: '16px' }}>⚠️</span>
           <div>
             <p className="font-medium" style={{ fontSize: '12px', color: '#EF9F27' }}>Streak at risk!</p>
-            <p style={{ fontSize: '11px', color: '#6B7280' }}>Complete at least {6 - doneCount} more habit{6 - doneCount !== 1 ? 's' : ''} before midnight</p>
+            <p style={{ fontSize: '11px', color: '#8a8a8a' }}>Complete at least {6 - doneCount} more habit{6 - doneCount !== 1 ? 's' : ''} before midnight</p>
           </div>
         </div>
       )}
@@ -160,10 +160,10 @@ export default function DailyCheckin() {
       {/* Completion ring */}
       <div
         className="rounded-xl flex flex-col items-center py-6 gap-1"
-        style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
+        style={{ backgroundColor: '#252525', border: '1px solid #333333' }}
       >
         <CompletionRing pct={pct} />
-        <p style={{ fontSize: '11px', color: '#6B7280', marginTop: '4px' }}>
+        <p style={{ fontSize: '11px', color: '#8a8a8a', marginTop: '4px' }}>
           {doneCount} of {scoringHabits.length} habits complete today
         </p>
       </div>
@@ -171,9 +171,9 @@ export default function DailyCheckin() {
       {/* Sliders */}
       <div
         className="rounded-xl px-4 py-4 flex flex-col gap-4"
-        style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
+        style={{ backgroundColor: '#252525', border: '1px solid #333333' }}
       >
-        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#6B7280', letterSpacing: '0.06em' }}>How are you feeling?</p>
+        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#8a8a8a', letterSpacing: '0.06em' }}>How are you feeling?</p>
         {([['Energy', energy, setEnergy], ['Focus', focus, setFocus], ['Mood', mood, setMood]] as [string, number, (v: number) => void][]).map(([label, val, setter]) => (
           <div key={label} className="flex flex-col gap-2">
             <div className="flex justify-between items-center">
@@ -193,10 +193,10 @@ export default function DailyCheckin() {
       {/* Habit checklist */}
       <div
         className="rounded-xl overflow-hidden"
-        style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
+        style={{ backgroundColor: '#252525', border: '1px solid #333333' }}
       >
-        <div className="px-4 py-3" style={{ borderBottom: '1px solid #1a2a40' }}>
-          <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#6B7280', letterSpacing: '0.06em' }}>Daily Habits</p>
+        <div className="px-4 py-3" style={{ borderBottom: '1px solid #333333' }}>
+          <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#8a8a8a', letterSpacing: '0.06em' }}>Daily Habits</p>
         </div>
         {habits.map((habit, i) => (
           <button
@@ -204,7 +204,7 @@ export default function DailyCheckin() {
             onClick={() => toggleHabit(habit.id)}
             className="w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:brightness-110"
             style={{
-              borderBottom: i < habits.length - 1 ? '1px solid #1a2a40' : 'none',
+              borderBottom: i < habits.length - 1 ? '1px solid #333333' : 'none',
               backgroundColor: 'transparent',
             }}
           >
@@ -214,7 +214,7 @@ export default function DailyCheckin() {
               style={{
                 fontSize: '13px',
                 fontWeight: 500,
-                color: checkins[habit.id] ? '#6B7280' : '#ffffff',
+                color: checkins[habit.id] ? '#8a8a8a' : '#ffffff',
                 textDecoration: checkins[habit.id] ? 'line-through' : 'none',
               }}
             >
@@ -224,7 +224,7 @@ export default function DailyCheckin() {
               className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 transition-all"
               style={{
                 backgroundColor: checkins[habit.id] ? '#1D9E75' : 'transparent',
-                border: checkins[habit.id] ? 'none' : '2px solid #1a2a40',
+                border: checkins[habit.id] ? 'none' : '2px solid #333333',
               }}
             >
               {checkins[habit.id] && (

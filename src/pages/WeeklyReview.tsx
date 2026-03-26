@@ -125,24 +125,24 @@ export default function WeeklyReview() {
       <div className="flex items-center justify-between">
         <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>Weekly Review</h1>
         <div className="flex items-center gap-2">
-          <button onClick={() => setWeekOffset(o => o - 1)} className="p-1.5 rounded-lg" style={{ backgroundColor: '#0d1f35', color: '#6B7280' }}>
+          <button onClick={() => setWeekOffset(o => o - 1)} className="p-1.5 rounded-lg" style={{ backgroundColor: '#252525', color: '#8a8a8a' }}>
             <ChevronLeft size={14} />
           </button>
-          <span style={{ fontSize: '11px', color: '#6B7280', minWidth: '100px', textAlign: 'center' }}>{weekLabel}</span>
-          <button onClick={() => setWeekOffset(o => Math.min(o + 1, 0))} disabled={weekOffset === 0} className="p-1.5 rounded-lg disabled:opacity-30" style={{ backgroundColor: '#0d1f35', color: '#6B7280' }}>
+          <span style={{ fontSize: '11px', color: '#8a8a8a', minWidth: '100px', textAlign: 'center' }}>{weekLabel}</span>
+          <button onClick={() => setWeekOffset(o => Math.min(o + 1, 0))} disabled={weekOffset === 0} className="p-1.5 rounded-lg disabled:opacity-30" style={{ backgroundColor: '#252525', color: '#8a8a8a' }}>
             <ChevronRight size={14} />
           </button>
         </div>
       </div>
 
       {/* Habit completion chart */}
-      <div className="rounded-xl p-4" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-        <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#6B7280', letterSpacing: '0.06em' }}>Habit Completion</p>
+      <div className="rounded-xl p-4" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#8a8a8a', letterSpacing: '0.06em' }}>Habit Completion</p>
         <ResponsiveContainer width="100%" height={120}>
           <BarChart data={weekData} barCategoryGap="30%">
-            <XAxis dataKey="day" tick={{ fill: '#6B7280', fontSize: 10, fontFamily: 'Manrope' }} axisLine={false} tickLine={false} />
+            <XAxis dataKey="day" tick={{ fill: '#8a8a8a', fontSize: 10, fontFamily: 'Manrope' }} axisLine={false} tickLine={false} />
             <YAxis hide domain={[0, 100]} />
-            <Tooltip contentStyle={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40', borderRadius: 8, fontSize: 11 }} itemStyle={{ color: '#fff' }} formatter={(v: number) => [`${v}%`, '']} />
+            <Tooltip contentStyle={{ backgroundColor: '#252525', border: '1px solid #333333', borderRadius: 8, fontSize: 11 }} itemStyle={{ color: '#fff' }} formatter={(v: number) => [`${v}%`, '']} />
             <Bar dataKey="pct" radius={[4, 4, 0, 0]}>
               {weekData.map((e, i) => <Cell key={i} fill={e.pct >= 90 ? '#EF9F27' : '#1D9E75'} />)}
             </Bar>
@@ -151,23 +151,23 @@ export default function WeeklyReview() {
       </div>
 
       {/* TapWork hours */}
-      <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#6B7280', letterSpacing: '0.06em' }}>TapWork Hours</p>
+      <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#8a8a8a', letterSpacing: '0.06em' }}>TapWork Hours</p>
         <div className="flex items-center gap-3">
           <input
             type="number" min={0} max={100} step={0.5}
             value={form.tapwork_hours}
             onChange={e => setForm(p => ({ ...p, tapwork_hours: Number(e.target.value) }))}
             className="w-24 rounded-lg px-3 py-2 text-white outline-none"
-            style={{ backgroundColor: '#0A1628', border: '1px solid #1a2a40', fontSize: '13px' }}
+            style={{ backgroundColor: '#191919', border: '1px solid #333333', fontSize: '13px' }}
           />
-          <span style={{ fontSize: '12px', color: '#6B7280' }}>hours this week</span>
+          <span style={{ fontSize: '12px', color: '#8a8a8a' }}>hours this week</span>
         </div>
       </div>
 
       {/* Top win & next focus */}
-      <div className="rounded-xl p-4 flex flex-col gap-4" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#6B7280', letterSpacing: '0.06em' }}>Review</p>
+      <div className="rounded-xl p-4 flex flex-col gap-4" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#8a8a8a', letterSpacing: '0.06em' }}>Review</p>
         {(['top_win', 'next_focus'] as const).map(key => (
           <div key={key} className="flex flex-col gap-2">
             <label style={{ fontSize: '12px', fontWeight: 500, color: '#ffffff' }}>
@@ -179,20 +179,20 @@ export default function WeeklyReview() {
               placeholder={key === 'top_win' ? 'The biggest win this week...' : 'One sentence to anchor next week...'}
               rows={2}
               className="w-full resize-none outline-none rounded-lg px-3 py-2.5 text-white placeholder-gray-600"
-              style={{ backgroundColor: '#0A1628', border: '1px solid #1a2a40', fontSize: '12px' }}
+              style={{ backgroundColor: '#191919', border: '1px solid #333333', fontSize: '12px' }}
             />
           </div>
         ))}
       </div>
 
       {/* 4-week trend */}
-      <div className="rounded-xl p-4" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-        <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#6B7280', letterSpacing: '0.06em' }}>4-Week Momentum</p>
+      <div className="rounded-xl p-4" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#8a8a8a', letterSpacing: '0.06em' }}>4-Week Momentum</p>
         <ResponsiveContainer width="100%" height={100}>
           <LineChart data={trend}>
-            <XAxis dataKey="week" tick={{ fill: '#6B7280', fontSize: 10, fontFamily: 'Manrope' }} axisLine={false} tickLine={false} />
+            <XAxis dataKey="week" tick={{ fill: '#8a8a8a', fontSize: 10, fontFamily: 'Manrope' }} axisLine={false} tickLine={false} />
             <YAxis hide domain={[0, 100]} />
-            <Tooltip contentStyle={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40', borderRadius: 8, fontSize: 11 }} itemStyle={{ color: '#fff' }} formatter={(v: number) => [`${v}%`, '']} />
+            <Tooltip contentStyle={{ backgroundColor: '#252525', border: '1px solid #333333', borderRadius: 8, fontSize: 11 }} itemStyle={{ color: '#fff' }} formatter={(v: number) => [`${v}%`, '']} />
             <Line type="monotone" dataKey="pct" stroke="#1D9E75" strokeWidth={2} dot={{ fill: '#1D9E75', r: 3 }} />
           </LineChart>
         </ResponsiveContainer>
@@ -202,7 +202,7 @@ export default function WeeklyReview() {
         onClick={handleSave}
         disabled={saving}
         className="w-full py-3 rounded-lg font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-        style={{ backgroundColor: saved ? '#0d1f35' : '#1D9E75', fontSize: '14px', border: saved ? '1px solid #1D9E75' : 'none' }}
+        style={{ backgroundColor: saved ? '#252525' : '#1D9E75', fontSize: '14px', border: saved ? '1px solid #1D9E75' : 'none' }}
       >
         {saving ? 'Saving...' : saved ? 'Saved ✓' : 'Save Week Review'}
       </button>

@@ -75,16 +75,16 @@ export default function NightlyAudit() {
         <div className="text-5xl">🌙</div>
         <div>
           <h2 className="text-xl font-bold text-white">Good night.</h2>
-          <p className="mt-2" style={{ fontSize: '14px', color: '#6B7280' }}>Tomorrow starts at 5 AM.</p>
+          <p className="mt-2" style={{ fontSize: '14px', color: '#8a8a8a' }}>Tomorrow starts at 5 AM.</p>
         </div>
-        <div className="rounded-xl px-4 py-3" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-          <p style={{ fontSize: '12px', color: '#6B7280' }}>Tomorrow's TapWork task</p>
+        <div className="rounded-xl px-4 py-3" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+          <p style={{ fontSize: '12px', color: '#8a8a8a' }}>Tomorrow's TapWork task</p>
           <p className="font-medium text-white mt-1" style={{ fontSize: '13px' }}>{form.tapwork_task || '—'}</p>
         </div>
         <button
           onClick={() => setSaved(false)}
           className="text-sm underline"
-          style={{ color: '#6B7280' }}
+          style={{ color: '#8a8a8a' }}
         >
           Edit tonight's audit
         </button>
@@ -97,15 +97,15 @@ export default function NightlyAudit() {
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center">
         <div className="text-4xl">🔒</div>
         <h2 className="font-bold text-white" style={{ fontSize: '18px' }}>Nightly Audit</h2>
-        <p style={{ fontSize: '13px', color: '#6B7280' }}>Opens at 19:00</p>
+        <p style={{ fontSize: '13px', color: '#8a8a8a' }}>Opens at 19:00</p>
         <div
           className="rounded-xl px-6 py-4 mt-2"
-          style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
+          style={{ backgroundColor: '#252525', border: '1px solid #333333' }}
         >
           <p className="font-bold" style={{ fontSize: '24px', color: '#EF9F27' }}>
             {hoursUntil}h {minutesUntil}m
           </p>
-          <p style={{ fontSize: '11px', color: '#6B7280', marginTop: '4px' }}>until it unlocks</p>
+          <p style={{ fontSize: '11px', color: '#8a8a8a', marginTop: '4px' }}>until it unlocks</p>
         </div>
       </div>
     )
@@ -121,8 +121,8 @@ export default function NightlyAudit() {
         rows={2}
         className="w-full resize-none outline-none rounded-lg px-3 py-2.5 text-white placeholder-gray-600"
         style={{
-          backgroundColor: '#0A1628',
-          border: '1px solid #1a2a40',
+          backgroundColor: '#191919',
+          border: '1px solid #333333',
           fontSize: '12px',
           lineHeight: '1.5',
         }}
@@ -134,26 +134,26 @@ export default function NightlyAudit() {
     <div className="flex flex-col gap-4">
       <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>Nightly Audit</h1>
 
-      <div className="rounded-xl p-4 flex flex-col gap-4" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#6B7280', letterSpacing: '0.06em' }}>3 Wins Today</p>
+      <div className="rounded-xl p-4 flex flex-col gap-4" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#8a8a8a', letterSpacing: '0.06em' }}>3 Wins Today</p>
         {field('Win 1', 'win1', 'Something that went well today...')}
         {field('Win 2', 'win2', 'Something that went well today...')}
         {field('Win 3', 'win3', 'Something that went well today...')}
       </div>
 
-      <div className="rounded-xl p-4 flex flex-col gap-4" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#6B7280', letterSpacing: '0.06em' }}>Reflection</p>
+      <div className="rounded-xl p-4 flex flex-col gap-4" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#8a8a8a', letterSpacing: '0.06em' }}>Reflection</p>
         {field('1 Thing to Improve', 'improvement', 'One honest thing to do better...')}
         {field('Gratitude', 'gratitude', 'One thing I\'m grateful for today...')}
       </div>
 
-      <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#6B7280', letterSpacing: '0.06em' }}>Tomorrow's 6 AM Session</p>
+      <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#8a8a8a', letterSpacing: '0.06em' }}>Tomorrow's 6 AM Session</p>
         {field("Tomorrow's TapWork Task", 'tapwork_task', 'At 6:00 AM I will...')}
       </div>
 
-      <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#6B7280', letterSpacing: '0.06em' }}>How was today?</p>
+      <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#8a8a8a', letterSpacing: '0.06em' }}>How was today?</p>
         <div className="flex flex-wrap gap-2">
           {EMOTIONS.map(e => (
             <button
@@ -163,9 +163,9 @@ export default function NightlyAudit() {
               style={{
                 fontSize: '12px',
                 borderRadius: '20px',
-                backgroundColor: form.emotion_tag === e ? '#1D9E75' : '#0A1628',
-                color: form.emotion_tag === e ? '#ffffff' : '#6B7280',
-                border: `1px solid ${form.emotion_tag === e ? '#1D9E75' : '#1a2a40'}`,
+                backgroundColor: form.emotion_tag === e ? '#1D9E75' : '#191919',
+                color: form.emotion_tag === e ? '#ffffff' : '#8a8a8a',
+                border: `1px solid ${form.emotion_tag === e ? '#1D9E75' : '#333333'}`,
               }}
             >
               {e}

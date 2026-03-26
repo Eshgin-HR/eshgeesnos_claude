@@ -36,7 +36,7 @@ const CARDS = [
 const EMOTION_COLORS: Record<string, string> = {
   Good: '#1D9E75',
   Energized: '#EF9F27',
-  Neutral: '#6B7280',
+  Neutral: '#8a8a8a',
   Hard: '#EF4444',
   Tired: '#7F77DD',
 }
@@ -119,7 +119,7 @@ export default function Home() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <p className="text-sm mb-1" style={{ color: '#6B7280' }}>{dateLabel}</p>
+        <p className="text-sm mb-1" style={{ color: '#8a8a8a' }}>{dateLabel}</p>
         <h1 className="text-2xl font-bold text-white">{greeting()}, Eshgin</h1>
       </div>
 
@@ -127,7 +127,7 @@ export default function Home() {
       {loading ? (
         <div className="flex gap-4">
           {[1, 2, 3].map(i => (
-            <div key={i} className="flex-1 h-24 rounded-xl animate-pulse" style={{ backgroundColor: '#0d1f35' }} />
+            <div key={i} className="flex-1 h-24 rounded-xl animate-pulse" style={{ backgroundColor: '#252525' }} />
           ))}
         </div>
       ) : (
@@ -135,11 +135,11 @@ export default function Home() {
           {/* Habit progress */}
           <div
             className="rounded-xl p-4 flex flex-col items-center gap-2 cursor-pointer hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
+            style={{ backgroundColor: '#252525', border: '1px solid #333333' }}
             onClick={() => navigate('/today')}
           >
             <svg width="64" height="64" viewBox="0 0 64 64">
-              <circle cx="32" cy="32" r="28" fill="none" stroke="#1a2a40" strokeWidth="5" />
+              <circle cx="32" cy="32" r="28" fill="none" stroke="#333333" strokeWidth="5" />
               <circle
                 cx="32" cy="32" r="28" fill="none"
                 stroke="#1D9E75" strokeWidth="5"
@@ -151,31 +151,31 @@ export default function Home() {
                 {stats.habitsDone}/{stats.habitsTotal}
               </text>
             </svg>
-            <span className="text-xs" style={{ color: '#6B7280' }}>Habits</span>
+            <span className="text-xs" style={{ color: '#8a8a8a' }}>Habits</span>
           </div>
 
           {/* Streak */}
           <div
             className="rounded-xl p-4 flex flex-col items-center justify-center gap-1 cursor-pointer hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
+            style={{ backgroundColor: '#252525', border: '1px solid #333333' }}
             onClick={() => navigate('/streaks')}
           >
             <Flame size={24} color="#EF9F27" />
             <span className="text-2xl font-bold text-white">{stats.streak}</span>
-            <span className="text-xs" style={{ color: '#6B7280' }}>Day streak</span>
+            <span className="text-xs" style={{ color: '#8a8a8a' }}>Day streak</span>
           </div>
 
           {/* Today's spend */}
           <div
             className="rounded-xl p-4 flex flex-col items-center justify-center gap-1 cursor-pointer hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
+            style={{ backgroundColor: '#252525', border: '1px solid #333333' }}
             onClick={() => navigate('/budget')}
           >
             <Wallet size={24} color="#7F77DD" />
             <span className="text-2xl font-bold text-white">
               {stats.todaySpend === 0 ? '—' : `₼${stats.todaySpend.toFixed(0)}`}
             </span>
-            <span className="text-xs" style={{ color: '#6B7280' }}>Spent today</span>
+            <span className="text-xs" style={{ color: '#8a8a8a' }}>Spent today</span>
           </div>
         </div>
       )}
@@ -186,8 +186,8 @@ export default function Home() {
           onClick={() => navigate('/nightly')}
           className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-opacity hover:opacity-90"
           style={{
-            backgroundColor: stats.nightlyDone ? '#0d2b1f' : '#0d1f35',
-            border: `1px solid ${stats.nightlyDone ? '#1D9E75' : '#1a2a40'}`,
+            backgroundColor: stats.nightlyDone ? '#0d2b1f' : '#252525',
+            border: `1px solid ${stats.nightlyDone ? '#1D9E75' : '#333333'}`,
           }}
         >
           <div className="flex items-center gap-3">
@@ -201,22 +201,22 @@ export default function Home() {
                 {stats.nightlyDone ? 'Nightly audit done' : 'Nightly audit pending'}
               </p>
               {stats.lastEmotion && (
-                <p className="text-xs" style={{ color: EMOTION_COLORS[stats.lastEmotion] ?? '#6B7280' }}>
+                <p className="text-xs" style={{ color: EMOTION_COLORS[stats.lastEmotion] ?? '#8a8a8a' }}>
                   Feeling: {stats.lastEmotion}
                 </p>
               )}
               {!stats.nightlyDone && (
-                <p className="text-xs" style={{ color: '#6B7280' }}>Tap to reflect on today</p>
+                <p className="text-xs" style={{ color: '#8a8a8a' }}>Tap to reflect on today</p>
               )}
             </div>
           </div>
-          <ArrowRight size={16} color="#6B7280" />
+          <ArrowRight size={16} color="#8a8a8a" />
         </button>
       )}
 
       {/* Module cards */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: '#6B7280' }}>
+        <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: '#8a8a8a' }}>
           Modules
         </p>
         <div className="grid grid-cols-2 gap-3">
@@ -225,7 +225,7 @@ export default function Home() {
               key={to}
               onClick={() => navigate(to)}
               className="flex flex-col gap-3 p-4 rounded-xl text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
-              style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
+              style={{ backgroundColor: '#252525', border: '1px solid #333333' }}
             >
               <div
                 className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -235,7 +235,7 @@ export default function Home() {
               </div>
               <div>
                 <p className="text-sm font-semibold text-white">{label}</p>
-                <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>{desc}</p>
+                <p className="text-xs mt-0.5" style={{ color: '#8a8a8a' }}>{desc}</p>
               </div>
             </button>
           ))}

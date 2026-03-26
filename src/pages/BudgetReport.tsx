@@ -18,7 +18,7 @@ const CAT_COLORS: Record<string, string> = {
   Learning: '#8b5cf6',
   Social: '#f97316',
   Home: '#10b981',
-  Other: '#6B7280',
+  Other: '#8a8a8a',
 }
 
 interface Props {
@@ -69,16 +69,16 @@ export default function BudgetReport({ expenses, salary, budget, onClose }: Prop
     >
       <div
         className="w-full md:max-w-lg rounded-t-2xl md:rounded-2xl overflow-y-auto"
-        style={{ backgroundColor: '#0A1628', border: '1px solid #1a2a40', maxHeight: 'calc(100dvh - 72px)' }}
+        style={{ backgroundColor: '#191919', border: '1px solid #333333', maxHeight: 'calc(100dvh - 72px)' }}
       >
         {/* Header */}
         <div
           className="flex items-center justify-between px-5 py-4 sticky top-0 z-10"
-          style={{ backgroundColor: '#0A1628', borderBottom: '1px solid #1a2a40' }}
+          style={{ backgroundColor: '#191919', borderBottom: '1px solid #333333' }}
         >
           <div>
             <p className="font-bold text-white" style={{ fontSize: '16px' }}>Budget Report</p>
-            <p style={{ fontSize: '11px', color: '#6B7280' }}>{monthName}</p>
+            <p style={{ fontSize: '11px', color: '#8a8a8a' }}>{monthName}</p>
           </div>
           <button onClick={onClose} className="opacity-60 hover:opacity-100 transition-opacity">
             <X size={20} color="#ffffff" />
@@ -88,32 +88,32 @@ export default function BudgetReport({ expenses, salary, budget, onClose }: Prop
         <div className="p-5 flex flex-col gap-5">
           {/* Summary cards */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-              <p style={{ fontSize: '10px', color: '#6B7280' }}>Total Spent</p>
-              <p className="font-bold text-white" style={{ fontSize: '20px' }}>{totalSpent.toFixed(0)}<span style={{ fontSize: '11px', color: '#6B7280' }}> AZN</span></p>
-              {budget > 0 && <p style={{ fontSize: '10px', color: '#6B7280' }}>{pct.toFixed(0)}% of {budget.toLocaleString()} AZN limit</p>}
+            <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+              <p style={{ fontSize: '10px', color: '#8a8a8a' }}>Total Spent</p>
+              <p className="font-bold text-white" style={{ fontSize: '20px' }}>{totalSpent.toFixed(0)}<span style={{ fontSize: '11px', color: '#8a8a8a' }}> AZN</span></p>
+              {budget > 0 && <p style={{ fontSize: '10px', color: '#8a8a8a' }}>{pct.toFixed(0)}% of {budget.toLocaleString()} AZN limit</p>}
             </div>
             {savings !== null && (
-              <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-                <p style={{ fontSize: '10px', color: '#6B7280' }}>Saved this month</p>
+              <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+                <p style={{ fontSize: '10px', color: '#8a8a8a' }}>Saved this month</p>
                 <p className="font-bold" style={{ fontSize: '20px', color: savings >= 0 ? '#1D9E75' : '#ef4444' }}>
-                  {savings >= 0 ? '+' : ''}{savings.toFixed(0)}<span style={{ fontSize: '11px', color: '#6B7280' }}> AZN</span>
+                  {savings >= 0 ? '+' : ''}{savings.toFixed(0)}<span style={{ fontSize: '11px', color: '#8a8a8a' }}> AZN</span>
                 </p>
-                <p style={{ fontSize: '10px', color: '#6B7280' }}>Salary: {salary.toLocaleString()} AZN</p>
+                <p style={{ fontSize: '10px', color: '#8a8a8a' }}>Salary: {salary.toLocaleString()} AZN</p>
               </div>
             )}
             {remaining !== null && (
-              <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-                <p style={{ fontSize: '10px', color: '#6B7280' }}>Remaining Budget</p>
+              <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+                <p style={{ fontSize: '10px', color: '#8a8a8a' }}>Remaining Budget</p>
                 <p className="font-bold" style={{ fontSize: '20px', color: remaining >= 0 ? '#EF9F27' : '#ef4444' }}>
-                  {remaining.toFixed(0)}<span style={{ fontSize: '11px', color: '#6B7280' }}> AZN</span>
+                  {remaining.toFixed(0)}<span style={{ fontSize: '11px', color: '#8a8a8a' }}> AZN</span>
                 </p>
               </div>
             )}
-            <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-              <p style={{ fontSize: '10px', color: '#6B7280' }}>Transactions</p>
+            <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
+              <p style={{ fontSize: '10px', color: '#8a8a8a' }}>Transactions</p>
               <p className="font-bold text-white" style={{ fontSize: '20px' }}>{expenses.length}</p>
-              <p style={{ fontSize: '10px', color: '#6B7280' }}>
+              <p style={{ fontSize: '10px', color: '#8a8a8a' }}>
                 avg {expenses.length > 0 ? (totalSpent / expenses.length).toFixed(0) : 0} AZN each
               </p>
             </div>
@@ -122,15 +122,15 @@ export default function BudgetReport({ expenses, salary, budget, onClose }: Prop
           {/* Top 5 categories */}
           {top5.length > 0 && (
             <div>
-              <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#6B7280' }}>
+              <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#8a8a8a' }}>
                 Top Categories
               </p>
-              <div className="rounded-xl overflow-hidden" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+              <div className="rounded-xl overflow-hidden" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
                 {top5.map((cat, i) => (
                   <div
                     key={cat.name}
                     className="flex items-center gap-3 px-4 py-3"
-                    style={{ borderBottom: i < top5.length - 1 ? '1px solid #1a2a40' : 'none' }}
+                    style={{ borderBottom: i < top5.length - 1 ? '1px solid #333333' : 'none' }}
                   >
                     <span style={{ fontSize: '14px', width: '20px', textAlign: 'center' }}>
                       {CAT_ICONS[cat.name as ExpenseCategory] ?? '💳'}
@@ -140,16 +140,16 @@ export default function BudgetReport({ expenses, salary, budget, onClose }: Prop
                         <span style={{ fontSize: '12px', fontWeight: 500, color: '#ffffff' }}>{cat.name}</span>
                         <span style={{ fontSize: '12px', fontWeight: 600, color: '#ffffff' }}>{cat.value} AZN</span>
                       </div>
-                      <div className="rounded-full overflow-hidden" style={{ height: '4px', backgroundColor: '#1a2a40' }}>
+                      <div className="rounded-full overflow-hidden" style={{ height: '4px', backgroundColor: '#333333' }}>
                         <div
                           className="h-full rounded-full"
                           style={{
                             width: `${cat.pct}%`,
-                            backgroundColor: CAT_COLORS[cat.name] ?? '#6B7280',
+                            backgroundColor: CAT_COLORS[cat.name] ?? '#8a8a8a',
                           }}
                         />
                       </div>
-                      <p className="mt-0.5" style={{ fontSize: '9px', color: '#6B7280' }}>{cat.pct}% of total</p>
+                      <p className="mt-0.5" style={{ fontSize: '9px', color: '#8a8a8a' }}>{cat.pct}% of total</p>
                     </div>
                   </div>
                 ))}
@@ -160,29 +160,29 @@ export default function BudgetReport({ expenses, salary, budget, onClose }: Prop
           {/* Bar chart: spending by category */}
           {catData.length > 0 && (
             <div>
-              <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#6B7280' }}>
+              <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#8a8a8a' }}>
                 Spending by Category
               </p>
-              <div className="rounded-xl p-3" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+              <div className="rounded-xl p-3" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
                 <ResponsiveContainer width="100%" height={160}>
                   <BarChart data={catData} barCategoryGap="25%" layout="vertical">
                     <XAxis type="number" hide />
                     <YAxis
                       type="category"
                       dataKey="name"
-                      tick={{ fill: '#6B7280', fontSize: 10 }}
+                      tick={{ fill: '#8a8a8a', fontSize: 10 }}
                       axisLine={false}
                       tickLine={false}
                       width={60}
                     />
                     <Tooltip
-                      contentStyle={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40', borderRadius: 8, fontSize: 11 }}
+                      contentStyle={{ backgroundColor: '#252525', border: '1px solid #333333', borderRadius: 8, fontSize: 11 }}
                       itemStyle={{ color: '#fff' }}
                       formatter={(v: number) => [`${v} AZN`, '']}
                     />
                     <Bar dataKey="value" radius={[0, 4, 4, 0]}>
                       {catData.map((entry) => (
-                        <Cell key={entry.name} fill={CAT_COLORS[entry.name] ?? '#6B7280'} />
+                        <Cell key={entry.name} fill={CAT_COLORS[entry.name] ?? '#8a8a8a'} />
                       ))}
                     </Bar>
                   </BarChart>
@@ -194,16 +194,16 @@ export default function BudgetReport({ expenses, salary, budget, onClose }: Prop
           {/* Daily trend */}
           {dailyData.length > 1 && (
             <div>
-              <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#6B7280' }}>
+              <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#8a8a8a' }}>
                 Daily Spending Trend
               </p>
-              <div className="rounded-xl p-3" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+              <div className="rounded-xl p-3" style={{ backgroundColor: '#252525', border: '1px solid #333333' }}>
                 <ResponsiveContainer width="100%" height={100}>
                   <BarChart data={dailyData} barCategoryGap="20%">
-                    <XAxis dataKey="day" tick={{ fill: '#6B7280', fontSize: 9 }} axisLine={false} tickLine={false} />
+                    <XAxis dataKey="day" tick={{ fill: '#8a8a8a', fontSize: 9 }} axisLine={false} tickLine={false} />
                     <YAxis hide />
                     <Tooltip
-                      contentStyle={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40', borderRadius: 8, fontSize: 11 }}
+                      contentStyle={{ backgroundColor: '#252525', border: '1px solid #333333', borderRadius: 8, fontSize: 11 }}
                       itemStyle={{ color: '#fff' }}
                       formatter={(v: number) => [`${v} AZN`, '']}
                     />
@@ -215,7 +215,7 @@ export default function BudgetReport({ expenses, salary, budget, onClose }: Prop
           )}
 
           {expenses.length === 0 && (
-            <div className="text-center py-8" style={{ color: '#6B7280' }}>
+            <div className="text-center py-8" style={{ color: '#8a8a8a' }}>
               <p style={{ fontSize: '13px' }}>No expenses this month to report on.</p>
             </div>
           )}
