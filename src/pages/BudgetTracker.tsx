@@ -26,6 +26,8 @@ export default function BudgetTracker() {
     note: '',
     date: new Date().toISOString().split('T')[0],
   })
+  const [addError, setAddError] = useState<string | null>(null)
+  const [adding, setAdding] = useState(false)
 
   const cfg = loadBudgetConfig()
   const salary = cfg.salary
@@ -71,14 +73,22 @@ export default function BudgetTracker() {
 
   const addExpense = async () => {
     if (!user || !newExpense.amount) return
-    await supabase.from('expenses').insert({
+    setAdding(true)
+    setAddError(null)
+    const { error } = await supabase.from('expenses').insert({
       user_id: user.id,
       amount: Number(newExpense.amount),
       category: newExpense.category,
       note: newExpense.note,
       date: newExpense.date,
     })
+    setAdding(false)
+    if (error) {
+      setAddError(error.message)
+      return
+    }
     setShowModal(false)
+    setAddError(null)
     setNewExpense({ amount: '', category: 'Food', note: '', date: new Date().toISOString().split('T')[0] })
     load()
   }
@@ -259,7 +269,7 @@ export default function BudgetTracker() {
         <div
           className="fixed inset-0 flex items-end md:items-center justify-center z-[60] px-0 md:px-4"
           style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
-          onClick={e => { if (e.target === e.currentTarget) setShowModal(false) }}
+          onClick={e => { if (e.target === e.currentTarget) { setShowModal(false); setAddError(null) } }}
         >
           <div
             className="w-full md:max-w-sm rounded-t-2xl md:rounded-xl flex flex-col"
@@ -277,7 +287,7 @@ export default function BudgetTracker() {
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #1a2a40' }}>
               <p className="font-bold text-white" style={{ fontSize: '15px' }}>Add Expense</p>
-              <button onClick={() => setShowModal(false)} className="p-1">
+              <button onClick={() => { setShowModal(false); setAddError(null) }} className="p-1">
                 <X size={18} color="#6B7280" />
               </button>
             </div>
@@ -341,13 +351,19 @@ export default function BudgetTracker() {
             </div>
 
             {/* Footer */}
-            <div className="px-5 py-4 flex-shrink-0" style={{ borderTop: '1px solid #1a2a40' }}>
+            <div className="px-5 py-4 flex-shrink-0 flex flex-col gap-2" style={{ borderTop: '1px solid #1a2a40' }}>
+              {addError && (
+                <p className="text-xs text-center rounded-lg px-3 py-2" style={{ color: '#ef4444', backgroundColor: '#2a0a0a', border: '1px solid #ef444433' }}>
+                  {addError}
+                </p>
+              )}
               <button
                 onClick={addExpense}
-                className="w-full py-3 rounded-xl font-semibold text-white"
+                disabled={adding || !newExpense.amount}
+                className="w-full py-3 rounded-xl font-semibold text-white disabled:opacity-50"
                 style={{ backgroundColor: '#1D9E75', fontSize: '14px' }}
               >
-                Add Expense
+                {adding ? 'Saving...' : 'Add Expense'}
               </button>
             </div>
           </div>
