@@ -64,12 +64,13 @@ export default function BudgetReport({ expenses, salary, budget, onClose }: Prop
 
   return (
     <div
-      className="fixed inset-0 flex items-end md:items-center justify-center z-50 px-0 md:px-4"
+      className="fixed inset-0 flex items-end md:items-center justify-center z-[60] px-0 md:px-4"
       style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}
+      onClick={e => { if (e.target === e.currentTarget) onClose() }}
     >
       <div
         className="w-full md:max-w-lg rounded-t-2xl md:rounded-2xl overflow-y-auto"
-        style={{ backgroundColor: '#0A1628', border: '1px solid #1a2a40', maxHeight: '90vh' }}
+        style={{ backgroundColor: '#0A1628', border: '1px solid #1a2a40', maxHeight: 'calc(100dvh - 72px)' }}
       >
         {/* Header */}
         <div

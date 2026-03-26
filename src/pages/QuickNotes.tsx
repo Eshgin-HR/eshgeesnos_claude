@@ -198,77 +198,109 @@ export default function QuickNotes() {
 
       {/* Note editor modal */}
       {showEditor && (
-        <div className="fixed inset-0 flex items-end md:items-center justify-center z-50 px-4 pb-4 md:pb-0" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}>
-          <div className="w-full max-w-lg rounded-xl p-5 flex flex-col gap-4" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40', maxHeight: '85vh', overflowY: 'auto' }}>
-            <div className="flex items-center justify-between">
+        <div
+          className="fixed inset-0 flex items-end md:items-center justify-center z-[60] px-0 md:px-4"
+          style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
+          onClick={e => { if (e.target === e.currentTarget) setShowEditor(false) }}
+        >
+          <div
+            className="w-full md:max-w-lg rounded-t-2xl md:rounded-xl flex flex-col"
+            style={{
+              backgroundColor: '#0d1f35',
+              border: '1px solid #1a2a40',
+              maxHeight: 'calc(100dvh - 72px)',
+            }}
+          >
+            {/* Drag handle */}
+            <div className="flex justify-center pt-3 pb-1 md:hidden flex-shrink-0">
+              <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#1a2a40' }} />
+            </div>
+
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #1a2a40' }}>
               <p className="font-bold text-white" style={{ fontSize: '15px' }}>{editNote ? 'Edit Note' : 'New Note'}</p>
-              <button onClick={() => setShowEditor(false)}><X size={16} style={{ color: '#6B7280' }} /></button>
+              <button onClick={() => setShowEditor(false)} className="p-1">
+                <X size={18} color="#6B7280" />
+              </button>
             </div>
 
-            <input
-              type="text" placeholder="Title"
-              value={form.title}
-              onChange={e => setForm(p => ({ ...p, title: e.target.value }))}
-              className="w-full rounded-lg px-3 py-2.5 text-white outline-none placeholder-gray-600 font-medium"
-              style={{ backgroundColor: '#0A1628', border: '1px solid #1a2a40', fontSize: '14px' }}
-            />
-
-            <div className="relative">
-              <textarea
-                placeholder="Start writing..."
-                value={form.body}
-                onChange={e => setForm(p => ({ ...p, body: e.target.value }))}
-                rows={6}
-                className="w-full resize-none rounded-lg px-3 py-2.5 text-white outline-none placeholder-gray-600"
-                style={{ backgroundColor: '#0A1628', border: '1px solid #1a2a40', fontSize: '12px', lineHeight: 1.6, paddingRight: '40px' }}
+            {/* Scrollable content */}
+            <div className="flex flex-col gap-4 px-5 py-4 overflow-y-auto flex-1">
+              <input
+                type="text"
+                placeholder="Title"
+                value={form.title}
+                onChange={e => setForm(p => ({ ...p, title: e.target.value }))}
+                className="w-full rounded-xl px-4 py-3 text-white outline-none placeholder-gray-600 font-medium"
+                style={{ backgroundColor: '#0A1628', border: '1px solid #1a2a40', fontSize: '15px' }}
               />
-              <button
-                onClick={toggleVoice}
-                className="absolute top-2.5 right-2.5 p-1.5 rounded-lg transition-colors"
-                style={{ backgroundColor: listening ? '#1D9E75' : '#1a2a40', color: '#ffffff' }}
-                title="Voice to text"
-              >
-                <Mic size={12} />
-              </button>
-            </div>
 
-            {/* Tag selector */}
-            <div className="flex gap-2">
-              {TAGS.map(tag => (
-                <button
-                  key={tag}
-                  onClick={() => setForm(p => ({ ...p, tag }))}
-                  className="flex-1 py-1.5 rounded-full font-medium transition-all"
+              <div className="relative">
+                <textarea
+                  placeholder="Start writing..."
+                  value={form.body}
+                  onChange={e => setForm(p => ({ ...p, body: e.target.value }))}
+                  rows={5}
+                  className="w-full resize-none rounded-xl px-4 py-3 text-white outline-none placeholder-gray-600"
                   style={{
-                    fontSize: '11px',
-                    borderRadius: '20px',
-                    backgroundColor: form.tag === tag ? TAG_COLORS[tag] : '#0A1628',
-                    color: form.tag === tag ? '#ffffff' : '#6B7280',
-                    border: `1px solid ${form.tag === tag ? TAG_COLORS[tag] : '#1a2a40'}`,
+                    backgroundColor: '#0A1628',
+                    border: '1px solid #1a2a40',
+                    fontSize: '13px',
+                    lineHeight: 1.7,
+                    paddingRight: '44px',
                   }}
+                />
+                <button
+                  onClick={toggleVoice}
+                  className="absolute top-3 right-3 p-1.5 rounded-lg transition-colors"
+                  style={{ backgroundColor: listening ? '#1D9E75' : '#1a2a40', color: '#ffffff' }}
+                  title="Voice to text"
                 >
-                  {tag}
+                  <Mic size={13} />
                 </button>
-              ))}
+              </div>
+
+              {/* Tag selector */}
+              <div className="flex gap-2">
+                {TAGS.map(tag => (
+                  <button
+                    key={tag}
+                    onClick={() => setForm(p => ({ ...p, tag }))}
+                    className="flex-1 py-2 rounded-full font-medium transition-all"
+                    style={{
+                      fontSize: '12px',
+                      backgroundColor: form.tag === tag ? TAG_COLORS[tag] : '#0A1628',
+                      color: form.tag === tag ? '#ffffff' : '#6B7280',
+                      border: `1px solid ${form.tag === tag ? TAG_COLORS[tag] : '#1a2a40'}`,
+                    }}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <div className="flex gap-2">
-              <button
-                onClick={saveNote}
-                className="flex-1 py-2.5 rounded-lg font-medium text-white"
-                style={{ backgroundColor: '#1D9E75', fontSize: '13px' }}
-              >
-                Save
-              </button>
+            {/* Footer actions - always visible */}
+            <div
+              className="flex gap-3 px-5 py-4 flex-shrink-0"
+              style={{ borderTop: '1px solid #1a2a40' }}
+            >
               {editNote && (
                 <button
                   onClick={deleteNote}
-                  className="px-4 py-2.5 rounded-lg font-medium"
-                  style={{ backgroundColor: '#0A1628', border: '1px solid #ef444444', color: '#ef4444', fontSize: '13px' }}
+                  className="px-4 py-3 rounded-xl font-medium"
+                  style={{ backgroundColor: '#0A1628', border: '1px solid #ef4444', color: '#ef4444', fontSize: '13px' }}
                 >
                   Delete
                 </button>
               )}
+              <button
+                onClick={saveNote}
+                className="flex-1 py-3 rounded-xl font-semibold text-white"
+                style={{ backgroundColor: '#1D9E75', fontSize: '14px' }}
+              >
+                {editNote ? 'Save Changes' : 'Save Note'}
+              </button>
             </div>
           </div>
         </div>

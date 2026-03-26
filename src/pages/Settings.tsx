@@ -116,7 +116,7 @@ export default function Settings() {
 
       {/* Reset confirm dialog */}
       {showResetConfirm && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 px-4" style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
+        <div className="fixed inset-0 flex items-center justify-center z-[60] px-4" style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
           <div className="w-full max-w-sm rounded-xl p-6 flex flex-col gap-4 text-center" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
             <p className="font-bold text-white" style={{ fontSize: '16px' }}>Reset all streaks?</p>
             <p style={{ fontSize: '12px', color: '#6B7280' }}>This will delete all historical check-in data. This cannot be undone.</p>
