@@ -59,7 +59,7 @@ export default function Settings() {
         <div className="rounded-xl overflow-hidden" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
           {[
             { label: 'Manage Habits', desc: 'Add, edit, reorder habits', action: () => navigate('/settings/habits') },
-            { label: 'Budget Settings', desc: 'Edit monthly limit', action: () => navigate('/budget') },
+            { label: 'Budget Settings', desc: 'Set salary & spending limit', action: () => navigate('/settings/budget') },
           ].map(({ label, desc, action }, i, arr) => (
             <button
               key={label}

@@ -12,6 +12,7 @@ import QuickNotes from './pages/QuickNotes'
 import Settings from './pages/Settings'
 import HabitManager from './pages/HabitManager'
 import EditHabit from './pages/EditHabit'
+import BudgetSettings from './pages/BudgetSettings'
 
 function ProtectedRoutes() {
   const { session, loading } = useAuth()
@@ -39,6 +40,7 @@ function ProtectedRoutes() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/settings/habits" element={<HabitManager />} />
         <Route path="/settings/habits/:id" element={<EditHabit />} />
+        <Route path="/settings/budget" element={<BudgetSettings />} />
         <Route path="/" element={<Navigate to="/home" replace />} />
       </Routes>
     </Layout>

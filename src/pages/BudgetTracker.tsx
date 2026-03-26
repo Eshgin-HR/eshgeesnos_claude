@@ -1,26 +1,35 @@
 import { useEffect, useState, useCallback } from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
-import { Plus, Trash2, X } from 'lucide-react'
+import { Plus, Trash2, X, BarChart2, TrendingUp, TrendingDown, Wallet } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import type { Expense, ExpenseCategory } from '../lib/supabase'
+import { loadBudgetConfig } from './BudgetSettings'
+import BudgetReport from './BudgetReport'
 
 const CATEGORIES: ExpenseCategory[] = ['Food', 'Transport', 'Coffee', 'Shopping', 'Health', 'Learning', 'Social', 'Home', 'Other']
 const CAT_ICONS: Record<ExpenseCategory, string> = {
   Food: '🍔', Transport: '🚌', Coffee: '☕', Shopping: '🛍️',
   Health: '💊', Learning: '📚', Social: '🎉', Home: '🏠', Other: '💳',
 }
-const DEFAULT_BUDGET = 1000
 
 export default function BudgetTracker() {
   const { user } = useAuth()
   const [expenses, setExpenses] = useState<Expense[]>([])
-  const [budget, setBudget] = useState(DEFAULT_BUDGET)
-  const [editingBudget, setEditingBudget] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [showReport, setShowReport] = useState(false)
   const [weekData, setWeekData] = useState<{ day: string; amount: number }[]>([])
   const [loading, setLoading] = useState(true)
-  const [newExpense, setNewExpense] = useState({ amount: '', category: 'Food' as ExpenseCategory, note: '', date: new Date().toISOString().split('T')[0] })
+  const [newExpense, setNewExpense] = useState({
+    amount: '',
+    category: 'Food' as ExpenseCategory,
+    note: '',
+    date: new Date().toISOString().split('T')[0],
+  })
+
+  const cfg = loadBudgetConfig()
+  const salary = cfg.salary
+  const budget = cfg.limit
 
   const now = new Date()
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0]
@@ -36,15 +45,16 @@ export default function BudgetTracker() {
       .lte('date', monthEnd)
       .order('date', { ascending: false })
 
-    setExpenses(data as Expense[] ?? [])
+    const list = (data as Expense[]) ?? []
+    setExpenses(list)
 
-    // Week data
     const dayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
     const dayOfWeek = now.getDay() === 0 ? 6 : now.getDay() - 1
     const wData = dayLabels.map((day, i) => {
-      const d = new Date(now); d.setDate(now.getDate() - dayOfWeek + i)
+      const d = new Date(now)
+      d.setDate(now.getDate() - dayOfWeek + i)
       const dateStr = d.toISOString().split('T')[0]
-      const amount = (data as Expense[] ?? []).filter(e => e.date === dateStr).reduce((s, e) => s + e.amount, 0)
+      const amount = list.filter(e => e.date === dateStr).reduce((s, e) => s + e.amount, 0)
       return { day, amount: Math.round(amount) }
     })
     setWeekData(wData)
@@ -54,9 +64,10 @@ export default function BudgetTracker() {
   useEffect(() => { load() }, [load])
 
   const totalSpent = expenses.reduce((s, e) => s + e.amount, 0)
-  const remaining = budget - totalSpent
-  const pct = Math.min((totalSpent / budget) * 100, 100)
-  const isWarning = remaining / budget < 0.2
+  const remaining = budget > 0 ? budget - totalSpent : salary - totalSpent
+  const pct = budget > 0 ? Math.min((totalSpent / budget) * 100, 100) : 0
+  const savings = salary > 0 ? salary - totalSpent : null
+  const isWarning = budget > 0 && remaining / budget < 0.2
 
   const addExpense = async () => {
     if (!user || !newExpense.amount) return
@@ -77,7 +88,6 @@ export default function BudgetTracker() {
     setExpenses(prev => prev.filter(e => e.id !== id))
   }
 
-  // Group by date
   const grouped: Record<string, Expense[]> = {}
   expenses.forEach(e => {
     if (!grouped[e.date]) grouped[e.date] = []
@@ -92,67 +102,116 @@ export default function BudgetTracker() {
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>Budget Tracker</h1>
-        <button
-          onClick={() => setShowModal(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium"
-          style={{ backgroundColor: '#1D9E75', color: '#ffffff', fontSize: '12px' }}
-        >
-          <Plus size={14} /> Add expense
-        </button>
+        <h1 className="font-bold text-white" style={{ fontSize: '18px' }}>Budget</h1>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowReport(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium"
+            style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40', color: '#7F77DD', fontSize: '12px' }}
+          >
+            <BarChart2 size={13} /> Report
+          </button>
+          <button
+            onClick={() => setShowModal(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium"
+            style={{ backgroundColor: '#1D9E75', color: '#ffffff', fontSize: '12px' }}
+          >
+            <Plus size={14} /> Add
+          </button>
+        </div>
       </div>
 
-      {/* Monthly overview */}
-      <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-        <div className="flex items-center justify-between">
-          <div>
-            <p style={{ fontSize: '11px', color: '#6B7280' }}>Spent this month</p>
-            <p className="font-bold text-white" style={{ fontSize: '24px' }}>{totalSpent.toFixed(0)} <span style={{ fontSize: '14px', color: '#6B7280' }}>AZN</span></p>
+      {/* No budget configured notice */}
+      {salary === 0 && budget === 0 && (
+        <div className="rounded-xl p-4 flex items-center gap-3" style={{ backgroundColor: '#1a1000', border: '1px solid #EF9F27' }}>
+          <Wallet size={18} color="#EF9F27" />
+          <div className="flex-1">
+            <p className="text-sm font-medium" style={{ color: '#EF9F27' }}>Budget not configured</p>
+            <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>Go to Settings → Budget Settings to set your salary & limit.</p>
           </div>
-          <div className="text-right">
-            {editingBudget ? (
-              <input
-                type="number"
-                value={budget}
-                onChange={e => setBudget(Number(e.target.value))}
-                onBlur={() => setEditingBudget(false)}
-                autoFocus
-                className="w-24 text-right rounded-lg px-2 py-1 text-white outline-none"
-                style={{ backgroundColor: '#0A1628', border: '1px solid #1a2a40', fontSize: '14px' }}
-              />
-            ) : (
-              <button onClick={() => setEditingBudget(true)} className="text-right">
-                <p style={{ fontSize: '11px', color: '#6B7280' }}>Budget limit</p>
-                <p className="font-bold" style={{ fontSize: '16px', color: isWarning ? '#EF9F27' : '#ffffff' }}>{budget} AZN</p>
-              </button>
+        </div>
+      )}
+
+      {/* Overview stats row */}
+      <div className="grid grid-cols-3 gap-3">
+        {/* Spent */}
+        <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+          <TrendingDown size={14} color="#EF9F27" />
+          <p className="font-bold text-white" style={{ fontSize: '16px' }}>{totalSpent.toFixed(0)}</p>
+          <p style={{ fontSize: '9px', color: '#6B7280' }}>Spent AZN</p>
+        </div>
+        {/* Remaining / Budget */}
+        <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+          <Wallet size={14} color={isWarning ? '#EF9F27' : '#1D9E75'} />
+          <p className="font-bold" style={{ fontSize: '16px', color: isWarning ? '#EF9F27' : '#ffffff' }}>
+            {budget > 0 ? remaining.toFixed(0) : '—'}
+          </p>
+          <p style={{ fontSize: '9px', color: '#6B7280' }}>Remaining</p>
+        </div>
+        {/* Savings */}
+        <div className="rounded-xl p-3 flex flex-col gap-1" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+          <TrendingUp size={14} color="#7F77DD" />
+          <p className="font-bold" style={{ fontSize: '16px', color: savings !== null && savings >= 0 ? '#7F77DD' : '#ef4444' }}>
+            {savings !== null ? savings.toFixed(0) : '—'}
+          </p>
+          <p style={{ fontSize: '9px', color: '#6B7280' }}>Saved AZN</p>
+        </div>
+      </div>
+
+      {/* Monthly overview card */}
+      {(salary > 0 || budget > 0) && (
+        <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+          <div className="flex items-center justify-between">
+            <div>
+              <p style={{ fontSize: '10px', color: '#6B7280' }}>Spent this month</p>
+              <p className="font-bold text-white" style={{ fontSize: '22px' }}>
+                {totalSpent.toFixed(0)} <span style={{ fontSize: '12px', color: '#6B7280' }}>AZN</span>
+              </p>
+            </div>
+            {salary > 0 && (
+              <div className="text-right">
+                <p style={{ fontSize: '10px', color: '#6B7280' }}>Salary</p>
+                <p className="font-bold" style={{ fontSize: '16px', color: '#1D9E75' }}>{salary.toLocaleString()} AZN</p>
+              </div>
             )}
           </div>
-        </div>
 
-        {/* Progress bar */}
-        <div>
-          <div className="flex justify-between mb-1">
-            <span style={{ fontSize: '10px', color: '#6B7280' }}>Remaining: {remaining.toFixed(0)} AZN</span>
-            <span style={{ fontSize: '10px', color: isWarning ? '#EF9F27' : '#6B7280' }}>{Math.round(pct)}%</span>
-          </div>
-          <div className="rounded-full overflow-hidden" style={{ height: '6px', backgroundColor: '#1a2a40' }}>
-            <div
-              className="h-full rounded-full transition-all"
-              style={{ width: `${pct}%`, backgroundColor: isWarning ? '#EF9F27' : '#1D9E75' }}
-            />
-          </div>
+          {budget > 0 && (
+            <div>
+              <div className="flex justify-between mb-1.5">
+                <span style={{ fontSize: '10px', color: '#6B7280' }}>Budget limit: {budget.toLocaleString()} AZN</span>
+                <span style={{ fontSize: '10px', color: isWarning ? '#EF9F27' : '#6B7280' }}>{Math.round(pct)}% used</span>
+              </div>
+              <div className="rounded-full overflow-hidden" style={{ height: '6px', backgroundColor: '#1a2a40' }}>
+                <div
+                  className="h-full rounded-full transition-all"
+                  style={{ width: `${pct}%`, backgroundColor: isWarning ? '#EF9F27' : '#1D9E75' }}
+                />
+              </div>
+              {isWarning && (
+                <p className="mt-1.5" style={{ fontSize: '10px', color: '#EF9F27' }}>
+                  ⚠️ Less than 20% of budget remaining
+                </p>
+              )}
+            </div>
+          )}
         </div>
-      </div>
+      )}
 
       {/* Weekly chart */}
       <div className="rounded-xl p-4" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-        <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#6B7280', letterSpacing: '0.06em' }}>This Week</p>
-        <ResponsiveContainer width="100%" height={100}>
+        <p className="font-bold uppercase tracking-widest mb-3" style={{ fontSize: '10px', color: '#6B7280' }}>This Week</p>
+        <ResponsiveContainer width="100%" height={90}>
           <BarChart data={weekData} barCategoryGap="30%">
-            <XAxis dataKey="day" tick={{ fill: '#6B7280', fontSize: 10, fontFamily: 'Manrope' }} axisLine={false} tickLine={false} />
+            <XAxis dataKey="day" tick={{ fill: '#6B7280', fontSize: 10 }} axisLine={false} tickLine={false} />
             <YAxis hide />
-            <Tooltip contentStyle={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40', borderRadius: 8, fontSize: 11 }} itemStyle={{ color: '#fff' }} formatter={(v: number) => [`${v} AZN`, '']} />
+            <Tooltip
+              contentStyle={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40', borderRadius: 8, fontSize: 11 }}
+              itemStyle={{ color: '#fff' }}
+              formatter={(v: number) => [`${v} AZN`, '']}
+            />
             <Bar dataKey="amount" radius={[4, 4, 0, 0]}>
               {weekData.map((_, i) => <Cell key={i} fill="#1D9E75" />)}
             </Bar>
@@ -180,7 +239,7 @@ export default function BudgetTracker() {
                 </div>
                 <p className="font-bold" style={{ fontSize: '13px', color: '#ffffff' }}>{e.amount} AZN</p>
                 <button onClick={() => deleteExpense(e.id)} className="ml-1 opacity-40 hover:opacity-100 transition-opacity">
-                  <Trash2 size={12} style={{ color: '#6B7280' }} />
+                  <Trash2 size={12} color="#6B7280" />
                 </button>
               </div>
             ))}
@@ -191,6 +250,7 @@ export default function BudgetTracker() {
       {expenses.length === 0 && (
         <div className="text-center py-12" style={{ color: '#6B7280' }}>
           <p style={{ fontSize: '13px' }}>No expenses this month</p>
+          <p style={{ fontSize: '11px', marginTop: '4px' }}>Tap "Add" to log your first expense</p>
         </div>
       )}
 
@@ -200,7 +260,7 @@ export default function BudgetTracker() {
           <div className="w-full max-w-sm rounded-xl p-5 flex flex-col gap-4" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
             <div className="flex items-center justify-between">
               <p className="font-bold text-white" style={{ fontSize: '15px' }}>Add Expense</p>
-              <button onClick={() => setShowModal(false)}><X size={16} style={{ color: '#6B7280' }} /></button>
+              <button onClick={() => setShowModal(false)}><X size={16} color="#6B7280" /></button>
             </div>
 
             <div className="flex flex-col gap-3">
@@ -228,19 +288,18 @@ export default function BudgetTracker() {
               </div>
 
               <div>
-                <label style={{ fontSize: '11px', color: '#6B7280', marginBottom: '4px', display: 'block' }}>Category</label>
+                <label style={{ fontSize: '11px', color: '#6B7280', marginBottom: '6px', display: 'block' }}>Category</label>
                 <div className="flex flex-wrap gap-1.5">
                   {CATEGORIES.map(cat => (
                     <button
                       key={cat}
                       onClick={() => setNewExpense(p => ({ ...p, category: cat }))}
-                      className="px-2.5 py-1 rounded-full text-xs font-medium"
+                      className="px-2.5 py-1 rounded-full text-xs font-medium transition-all"
                       style={{
                         backgroundColor: newExpense.category === cat ? '#1D9E75' : '#0A1628',
                         color: newExpense.category === cat ? '#fff' : '#6B7280',
                         border: `1px solid ${newExpense.category === cat ? '#1D9E75' : '#1a2a40'}`,
                         fontSize: '11px',
-                        borderRadius: '20px',
                       }}
                     >
                       {CAT_ICONS[cat]} {cat}
@@ -270,6 +329,17 @@ export default function BudgetTracker() {
             </button>
           </div>
         </div>
+      )}
+
+      {/* Report modal */}
+      {showReport && (
+        <BudgetReport
+          expenses={expenses}
+          salary={salary}
+          budget={budget}
+          monthStart={monthStart}
+          onClose={() => setShowReport(false)}
+        />
       )}
     </div>
   )
