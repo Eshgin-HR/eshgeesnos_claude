@@ -13,6 +13,7 @@ import Settings from './pages/Settings'
 import HabitManager from './pages/HabitManager'
 import EditHabit from './pages/EditHabit'
 import BudgetSettings from './pages/BudgetSettings'
+import DailyTasks from './pages/DailyTasks'
 
 function ProtectedRoutes() {
   const { session, loading } = useAuth()
@@ -31,6 +32,7 @@ function ProtectedRoutes() {
     <Layout>
       <Routes>
         <Route path="/home" element={<Home />} />
+        <Route path="/tasks" element={<DailyTasks />} />
         <Route path="/today" element={<DailyCheckin />} />
         <Route path="/streaks" element={<StreakTracker />} />
         <Route path="/nightly" element={<NightlyAudit />} />

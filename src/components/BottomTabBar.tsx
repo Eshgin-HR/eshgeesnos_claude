@@ -1,9 +1,10 @@
 import { NavLink } from 'react-router-dom'
-import { Home, Sun, Flame, Moon, BarChart2, Wallet, FileText, Settings } from 'lucide-react'
+import { Home, Sun, CheckSquare, Flame, Moon, BarChart2, Wallet, FileText, Settings } from 'lucide-react'
 
 const TABS = [
   { to: '/home', icon: Home, label: 'Home' },
   { to: '/today', icon: Sun, label: 'Today' },
+  { to: '/tasks', icon: CheckSquare, label: 'Tasks' },
   { to: '/streaks', icon: Flame, label: 'Streaks' },
   { to: '/nightly', icon: Moon, label: 'Nightly' },
   { to: '/weekly', icon: BarChart2, label: 'Weekly' },
