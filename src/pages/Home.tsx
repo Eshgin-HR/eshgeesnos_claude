@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Sun, Flame, Moon, BarChart2, Wallet, FileText, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { Sun, Flame, Moon, BarChart2, Wallet, FileText, ArrowRight, CheckCircle2, CheckSquare, Check } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 
@@ -11,6 +11,21 @@ interface Stats {
   todaySpend: number
   lastEmotion: string | null
   nightlyDone: boolean
+}
+
+interface Task {
+  id: string
+  title: string
+  category: 'PASHA' | 'Personal' | 'Startup' | 'Other'
+  completed: boolean
+  time_block: string | null
+}
+
+const CAT_COLORS: Record<string, string> = {
+  PASHA: '#1D9E75',
+  Personal: '#EF9F27',
+  Startup: '#7F77DD',
+  Other: '#5a6a7e',
 }
 
 function greeting() {
@@ -36,7 +51,7 @@ const CARDS = [
 const EMOTION_COLORS: Record<string, string> = {
   Good: '#1D9E75',
   Energized: '#EF9F27',
-  Neutral: '#8a8a8a',
+  Neutral: '#5a6a7e',
   Hard: '#EF4444',
   Tired: '#7F77DD',
 }
@@ -45,13 +60,10 @@ export default function Home() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [stats, setStats] = useState<Stats>({
-    habitsTotal: 0,
-    habitsDone: 0,
-    streak: 0,
-    todaySpend: 0,
-    lastEmotion: null,
-    nightlyDone: false,
+    habitsTotal: 0, habitsDone: 0, streak: 0,
+    todaySpend: 0, lastEmotion: null, nightlyDone: false,
   })
+  const [tasks, setTasks] = useState<Task[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -61,12 +73,13 @@ export default function Home() {
 
   async function loadStats() {
     const today = todayStr()
-
-    const [habitsRes, checkinRes, spendRes, nightlyRes] = await Promise.all([
+    const [habitsRes, checkinRes, spendRes, nightlyRes, tasksRes] = await Promise.all([
       supabase.from('habits').select('id').eq('user_id', user!.id).eq('active', true),
       supabase.from('daily_checkins').select('habit_id, completed').eq('user_id', user!.id).eq('date', today),
       supabase.from('expenses').select('amount').eq('user_id', user!.id).eq('date', today),
       supabase.from('nightly_audits').select('emotion_tag').eq('user_id', user!.id).eq('date', today).maybeSingle(),
+      supabase.from('daily_tasks').select('id, title, category, completed, time_block')
+        .eq('user_id', user!.id).eq('date', today).eq('completed', false).order('sort_order'),
     ])
 
     const habitsTotal = habitsRes.data?.length ?? 0
@@ -74,11 +87,20 @@ export default function Home() {
     const todaySpend = spendRes.data?.reduce((s, e) => s + Number(e.amount), 0) ?? 0
     const lastEmotion = nightlyRes.data?.emotion_tag ?? null
     const nightlyDone = !!nightlyRes.data
-
-    // Simple streak: count consecutive days with at least 1 completed habit
     const streak = await calcStreak(user!.id)
 
     setStats({ habitsTotal, habitsDone, streak, todaySpend, lastEmotion, nightlyDone })
+
+    // Sort: PASHA first, then Startup, then by time_block
+    const catOrder = { PASHA: 0, Startup: 1, Personal: 2, Other: 3 }
+    const sorted = ((tasksRes.data ?? []) as Task[]).sort((a, b) => {
+      const co = (catOrder[a.category] ?? 3) - (catOrder[b.category] ?? 3)
+      if (co !== 0) return co
+      if (a.time_block && !b.time_block) return -1
+      if (!a.time_block && b.time_block) return 1
+      return 0
+    })
+    setTasks(sorted.slice(0, 3))
     setLoading(false)
   }
 
@@ -92,12 +114,10 @@ export default function Home() {
       .limit(100)
 
     if (!data || data.length === 0) return 0
-
     const days = [...new Set(data.map(r => r.date))].sort().reverse()
     let streak = 0
     let cursor = new Date()
     cursor.setHours(0, 0, 0, 0)
-
     for (const day of days) {
       const d = new Date(day + 'T00:00:00')
       const diff = Math.round((cursor.getTime() - d.getTime()) / 86400000)
@@ -108,38 +128,40 @@ export default function Home() {
     return streak
   }
 
+  const toggleTask = async (task: Task) => {
+    setTasks(prev => prev.filter(t => t.id !== task.id))
+    await supabase.from('daily_tasks').update({ completed: true }).eq('id', task.id)
+  }
+
   const progress = stats.habitsTotal > 0 ? stats.habitsDone / stats.habitsTotal : 0
   const circumference = 2 * Math.PI * 28
   const strokeDash = circumference * progress
-
-  const now = new Date()
-  const dateLabel = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+  const dateLabel = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <p className="text-sm mb-1" style={{ color: '#787774' }}>{dateLabel}</p>
-        <h1 className="text-2xl font-bold">{greeting()}, Eshgin</h1>
+        <p className="text-sm mb-1" style={{ color: '#7a8a9e' }}>{dateLabel}</p>
+        <h1 className="text-2xl font-bold" style={{ color: '#e8edf3' }}>{greeting()}, Eshgin</h1>
       </div>
 
       {/* Top stats row */}
       {loading ? (
-        <div className="flex gap-4">
+        <div className="grid grid-cols-3 gap-3">
           {[1, 2, 3].map(i => (
-            <div key={i} className="flex-1 h-24 rounded-xl animate-pulse" style={{ backgroundColor: '#f7f7f5' }} />
+            <div key={i} className="h-24 rounded-xl animate-pulse" style={{ backgroundColor: '#0d1f35' }} />
           ))}
         </div>
       ) : (
         <div className="grid grid-cols-3 gap-3">
-          {/* Habit progress */}
           <div
             className="rounded-xl p-4 flex flex-col items-center gap-2 cursor-pointer hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}
+            style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
             onClick={() => navigate('/today')}
           >
             <svg width="64" height="64" viewBox="0 0 64 64">
-              <circle cx="32" cy="32" r="28" fill="none" stroke="#e3e3e0" strokeWidth="5" />
+              <circle cx="32" cy="32" r="28" fill="none" stroke="#1a2a40" strokeWidth="5" />
               <circle
                 cx="32" cy="32" r="28" fill="none"
                 stroke="#1D9E75" strokeWidth="5"
@@ -147,36 +169,89 @@ export default function Home() {
                 strokeLinecap="round"
                 transform="rotate(-90 32 32)"
               />
-              <text x="32" y="37" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#37352f">
+              <text x="32" y="37" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#e8edf3">
                 {stats.habitsDone}/{stats.habitsTotal}
               </text>
             </svg>
-            <span className="text-xs" style={{ color: '#787774' }}>Habits</span>
+            <span className="text-xs" style={{ color: '#7a8a9e' }}>Habits</span>
           </div>
 
-          {/* Streak */}
           <div
             className="rounded-xl p-4 flex flex-col items-center justify-center gap-1 cursor-pointer hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}
+            style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
             onClick={() => navigate('/streaks')}
           >
             <Flame size={24} color="#EF9F27" />
-            <span className="text-2xl font-bold">{stats.streak}</span>
-            <span className="text-xs" style={{ color: '#787774' }}>Day streak</span>
+            <span className="text-2xl font-bold" style={{ color: '#e8edf3' }}>{stats.streak}</span>
+            <span className="text-xs" style={{ color: '#7a8a9e' }}>Day streak</span>
           </div>
 
-          {/* Today's spend */}
           <div
             className="rounded-xl p-4 flex flex-col items-center justify-center gap-1 cursor-pointer hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}
+            style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
             onClick={() => navigate('/budget')}
           >
             <Wallet size={24} color="#7F77DD" />
-            <span className="text-2xl font-bold">
+            <span className="text-2xl font-bold" style={{ color: '#e8edf3' }}>
               {stats.todaySpend === 0 ? '—' : `₼${stats.todaySpend.toFixed(0)}`}
             </span>
-            <span className="text-xs" style={{ color: '#787774' }}>Spent today</span>
+            <span className="text-xs" style={{ color: '#7a8a9e' }}>Spent today</span>
           </div>
+        </div>
+      )}
+
+      {/* Today's Focus — top 3 incomplete tasks */}
+      {!loading && (
+        <div className="rounded-xl overflow-hidden" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+          <button
+            className="w-full flex items-center justify-between px-4 py-3"
+            style={{ borderBottom: '1px solid #1a2a40' }}
+            onClick={() => navigate('/tasks')}
+          >
+            <div className="flex items-center gap-2">
+              <CheckSquare size={15} color="#1D9E75" />
+              <span className="font-semibold" style={{ fontSize: '13px', color: '#e8edf3' }}>Today's Focus</span>
+            </div>
+            <ArrowRight size={14} color="#4a5568" />
+          </button>
+
+          {tasks.length === 0 ? (
+            <p className="px-4 py-4 text-xs" style={{ color: '#4a5568' }}>
+              All tasks done or none added yet — tap to plan your day
+            </p>
+          ) : (
+            tasks.map((task, i) => (
+              <div
+                key={task.id}
+                className="flex items-center gap-3 px-4 py-3"
+                style={{ borderTop: i === 0 ? 'none' : '1px solid #1a2a4040' }}
+              >
+                <div
+                  className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: CAT_COLORS[task.category] }}
+                />
+                {task.time_block && (
+                  <span className="font-mono flex-shrink-0" style={{ fontSize: '10px', color: '#4a5568' }}>
+                    {task.time_block}
+                  </span>
+                )}
+                <p className="flex-1 text-sm" style={{ color: '#e8edf3', fontWeight: 500 }}>{task.title}</p>
+                <button
+                  onClick={e => { e.stopPropagation(); toggleTask(task) }}
+                  className="flex-shrink-0 transition-all"
+                  style={{
+                    width: '20px', height: '20px',
+                    border: `2px solid #1a2a40`,
+                    backgroundColor: 'transparent',
+                    borderRadius: '6px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}
+                >
+                  <Check size={11} color="#1D9E75" strokeWidth={3} />
+                </button>
+              </div>
+            ))
+          )}
         </div>
       )}
 
@@ -186,8 +261,8 @@ export default function Home() {
           onClick={() => navigate('/nightly')}
           className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-opacity hover:opacity-90"
           style={{
-            backgroundColor: stats.nightlyDone ? '#0d2b1f' : '#f7f7f5',
-            border: `1px solid ${stats.nightlyDone ? '#1D9E75' : '#e3e3e0'}`,
+            backgroundColor: stats.nightlyDone ? '#0d2b1f' : '#0d1f35',
+            border: `1px solid ${stats.nightlyDone ? '#1D9E75' : '#1a2a40'}`,
           }}
         >
           <div className="flex items-center gap-3">
@@ -197,26 +272,26 @@ export default function Home() {
               <Moon size={18} color="#7F77DD" />
             )}
             <div className="text-left">
-              <p className="text-sm font-medium">
+              <p className="text-sm font-medium" style={{ color: '#e8edf3' }}>
                 {stats.nightlyDone ? 'Nightly audit done' : 'Nightly audit pending'}
               </p>
               {stats.lastEmotion && (
-                <p className="text-xs" style={{ color: EMOTION_COLORS[stats.lastEmotion] ?? '#8a8a8a' }}>
+                <p className="text-xs" style={{ color: EMOTION_COLORS[stats.lastEmotion] ?? '#5a6a7e' }}>
                   Feeling: {stats.lastEmotion}
                 </p>
               )}
               {!stats.nightlyDone && (
-                <p className="text-xs" style={{ color: '#787774' }}>Tap to reflect on today</p>
+                <p className="text-xs" style={{ color: '#7a8a9e' }}>Tap to reflect on today</p>
               )}
             </div>
           </div>
-          <ArrowRight size={16} color="#8a8a8a" />
+          <ArrowRight size={16} color="#4a5568" />
         </button>
       )}
 
       {/* Module cards */}
       <div>
-        <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: '#787774' }}>
+        <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: '#4a5568' }}>
           Modules
         </p>
         <div className="grid grid-cols-2 gap-3">
@@ -225,7 +300,7 @@ export default function Home() {
               key={to}
               onClick={() => navigate(to)}
               className="flex flex-col gap-3 p-4 rounded-xl text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
-              style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}
+              style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
             >
               <div
                 className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -234,8 +309,8 @@ export default function Home() {
                 <Icon size={18} color={color} />
               </div>
               <div>
-                <p className="text-sm font-semibold">{label}</p>
-                <p className="text-xs mt-0.5" style={{ color: '#787774' }}>{desc}</p>
+                <p className="text-sm font-semibold" style={{ color: '#e8edf3' }}>{label}</p>
+                <p className="text-xs mt-0.5" style={{ color: '#7a8a9e' }}>{desc}</p>
               </div>
             </button>
           ))}

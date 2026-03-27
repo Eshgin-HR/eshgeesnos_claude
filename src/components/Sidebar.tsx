@@ -20,7 +20,7 @@ export default function Sidebar() {
   return (
     <div
       className="w-52 min-h-screen flex flex-col py-5 px-3"
-      style={{ backgroundColor: '#ffffff', borderRight: '1px solid #e3e3e0' }}
+      style={{ backgroundColor: '#0d1f35', borderRight: '1px solid #1a2a40' }}
     >
       {/* Logo */}
       <div className="flex items-center gap-2.5 px-3 mb-6">
@@ -30,7 +30,7 @@ export default function Sidebar() {
         >
           E
         </div>
-        <span className="font-semibold text-sm" style={{ color: '#37352f', letterSpacing: '-0.01em' }}>
+        <span className="font-semibold text-sm" style={{ color: '#e8edf3', letterSpacing: '-0.01em' }}>
           EshgeenOS
         </span>
       </div>
@@ -43,12 +43,12 @@ export default function Sidebar() {
             to={to}
             className={({ isActive }) =>
               `flex items-center gap-2.5 px-3 py-1.5 rounded-md text-sm transition-all duration-100 ${
-                isActive ? 'font-medium' : 'hover:bg-[#f1f1ef]'
+                isActive ? 'font-medium' : 'hover:bg-[#112240]'
               }`
             }
             style={({ isActive }) => ({
-              backgroundColor: isActive ? '#f1f1ef' : 'transparent',
-              color: isActive ? '#37352f' : '#787774',
+              backgroundColor: isActive ? '#112240' : 'transparent',
+              color: isActive ? '#e8edf3' : '#7a8a9e',
             })}
           >
             {({ isActive }) => (
@@ -56,7 +56,7 @@ export default function Sidebar() {
                 <Icon
                   size={15}
                   strokeWidth={isActive ? 2 : 1.5}
-                  style={{ color: isActive ? '#1D9E75' : '#acacac', flexShrink: 0 }}
+                  style={{ color: isActive ? '#1D9E75' : '#4a5568', flexShrink: 0 }}
                 />
                 <span>{label}</span>
               </>
@@ -67,8 +67,8 @@ export default function Sidebar() {
 
       <button
         onClick={signOut}
-        className="flex items-center gap-2 px-3 py-2 text-xs rounded-md transition-all hover:bg-[#f1f1ef] mt-2"
-        style={{ color: '#acacac' }}
+        className="flex items-center gap-2 px-3 py-2 text-xs rounded-md transition-all hover:bg-[#112240] mt-2"
+        style={{ color: '#4a5568' }}
       >
         Sign out
       </button>

@@ -22,7 +22,7 @@ export default function Login() {
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center px-6"
-      style={{ backgroundColor: '#ffffff' }}
+      style={{ backgroundColor: '#0d1f35' }}
     >
       <div className="w-full max-w-xs flex flex-col items-center gap-8">
         {/* Logo */}
@@ -35,7 +35,7 @@ export default function Login() {
           </div>
           <div className="text-center">
             <h1 className="text-2xl font-bold tracking-tight">EshgeenOS</h1>
-            <p className="text-sm mt-1" style={{ color: '#787774' }}>Personal Operating System</p>
+            <p className="text-sm mt-1" style={{ color: '#7a8a9e' }}>Personal Operating System</p>
           </div>
         </div>
 
@@ -43,10 +43,10 @@ export default function Login() {
         <form
           onSubmit={handleSubmit}
           className="w-full rounded-xl p-6 flex flex-col gap-4"
-          style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}
+          style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
         >
           <div className="flex flex-col gap-2">
-            <label style={{ fontSize: '11px', color: '#787774', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            <label style={{ fontSize: '11px', color: '#7a8a9e', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               Password
             </label>
             <input
@@ -57,8 +57,8 @@ export default function Login() {
               autoFocus
               className="w-full rounded-lg px-3 py-3 outline-none placeholder-gray-600"
               style={{
-                backgroundColor: '#ffffff',
-                border: `1px solid ${error ? '#ef4444' : '#e3e3e0'}`,
+                backgroundColor: '#0d1f35',
+                border: `1px solid ${error ? '#ef4444' : '#1a2a40'}`,
                 fontSize: '14px',
               }}
             />
@@ -77,7 +77,7 @@ export default function Login() {
           </button>
         </form>
 
-        <p style={{ fontSize: '10px', color: '#787774' }}>
+        <p style={{ fontSize: '10px', color: '#7a8a9e' }}>
           Built for one person. Runs your entire day.
         </p>
       </div>

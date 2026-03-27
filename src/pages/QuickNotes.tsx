@@ -4,11 +4,17 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import type { Note, NoteTag } from '../lib/supabase'
 
-const TAGS: NoteTag[] = ['TapWork', 'PASHA', 'Personal']
+const TAGS: NoteTag[] = ['TapWork', 'PASHA', 'Personal', 'Family', 'Health', 'Finance', 'Learning', 'Startup', 'Other']
 const TAG_COLORS: Record<NoteTag, string> = {
   TapWork: '#7F77DD',
   PASHA: '#1D9E75',
   Personal: '#EF9F27',
+  Family: '#F472B6',
+  Health: '#34D399',
+  Finance: '#60A5FA',
+  Learning: '#FBBF24',
+  Startup: '#A78BFA',
+  Other: '#6B7280',
 }
 
 export default function QuickNotes() {
@@ -107,8 +113,8 @@ export default function QuickNotes() {
     <div className="flex flex-col gap-4">
       {/* Header */}
       <div className="flex items-center gap-2">
-        <div className="flex-1 flex items-center gap-2 rounded-lg px-3 py-2" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
-          <Search size={14} style={{ color: '#787774', flexShrink: 0 }} />
+        <div className="flex-1 flex items-center gap-2 rounded-lg px-3 py-2" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+          <Search size={14} style={{ color: '#7a8a9e', flexShrink: 0 }} />
           <input
             type="text" placeholder="Search notes..."
             value={search}
@@ -116,7 +122,7 @@ export default function QuickNotes() {
             className="flex-1 bg-transparent outline-none placeholder-gray-600"
             style={{ fontSize: '13px' }}
           />
-          {search && <button onClick={() => setSearch('')}><X size={12} style={{ color: '#787774' }} /></button>}
+          {search && <button onClick={() => setSearch('')}><X size={12} style={{ color: '#7a8a9e' }} /></button>}
         </div>
         <button
           onClick={openNew}
@@ -137,9 +143,9 @@ export default function QuickNotes() {
             style={{
               fontSize: '11px',
               borderRadius: '20px',
-              backgroundColor: tagFilter === tag ? (tag === 'All' ? '#1D9E75' : TAG_COLORS[tag as NoteTag]) : '#f7f7f5',
-              color: tagFilter === tag ? '#ffffff' : '#8a8a8a',
-              border: `1px solid ${tagFilter === tag ? 'transparent' : '#e3e3e0'}`,
+              backgroundColor: tagFilter === tag ? (tag === 'All' ? '#1D9E75' : TAG_COLORS[tag as NoteTag]) : '#0d1f35',
+              color: tagFilter === tag ? '#ffffff' : '#5a6a7e',
+              border: `1px solid ${tagFilter === tag ? 'transparent' : '#1a2a40'}`,
             }}
           >
             {tag}
@@ -149,7 +155,7 @@ export default function QuickNotes() {
 
       {/* Notes grid */}
       {notes.length === 0 ? (
-        <div className="text-center py-12" style={{ color: '#787774' }}>
+        <div className="text-center py-12" style={{ color: '#7a8a9e' }}>
           <p style={{ fontSize: '13px' }}>{search || tagFilter !== 'All' ? 'No notes found' : 'No notes yet — tap New to start'}</p>
         </div>
       ) : (
@@ -160,8 +166,8 @@ export default function QuickNotes() {
               onClick={() => openEdit(note)}
               className="rounded-xl p-4 text-left flex flex-col gap-2 hover:brightness-110 transition-all relative overflow-hidden cursor-pointer"
               style={{
-                backgroundColor: '#f7f7f5',
-                border: '1px solid #e3e3e0',
+                backgroundColor: '#0d1f35',
+                border: '1px solid #1a2a40',
                 borderLeft: `3px solid ${TAG_COLORS[note.tag]}`,
               }}
             >
@@ -172,11 +178,11 @@ export default function QuickNotes() {
                   className="flex-shrink-0 transition-opacity"
                   style={{ opacity: note.pinned ? 1 : 0.3 }}
                 >
-                  <Pin size={12} style={{ color: note.pinned ? '#EF9F27' : '#8a8a8a' }} />
+                  <Pin size={12} style={{ color: note.pinned ? '#EF9F27' : '#5a6a7e' }} />
                 </button>
               </div>
               {note.body && (
-                <p style={{ fontSize: '11px', color: '#787774', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                <p style={{ fontSize: '11px', color: '#7a8a9e', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
                   {note.body.slice(0, 80)}{note.body.length > 80 ? '...' : ''}
                 </p>
               )}
@@ -187,7 +193,7 @@ export default function QuickNotes() {
                 >
                   {note.tag}
                 </span>
-                <span style={{ fontSize: '9px', color: '#787774' }}>
+                <span style={{ fontSize: '9px', color: '#7a8a9e' }}>
                   {new Date(note.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                 </span>
               </div>
@@ -206,21 +212,21 @@ export default function QuickNotes() {
           <div
             className="w-full md:max-w-lg rounded-t-2xl md:rounded-xl flex flex-col"
             style={{
-              backgroundColor: '#f7f7f5',
-              border: '1px solid #e3e3e0',
+              backgroundColor: '#0d1f35',
+              border: '1px solid #1a2a40',
               maxHeight: 'calc(100dvh - 72px)',
             }}
           >
             {/* Drag handle */}
             <div className="flex justify-center pt-3 pb-1 md:hidden flex-shrink-0">
-              <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#e3e3e0' }} />
+              <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#1a2a40' }} />
             </div>
 
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #e3e3e0' }}>
+            <div className="flex items-center justify-between px-5 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #1a2a40' }}>
               <p className="font-bold" style={{ fontSize: '15px' }}>{editNote ? 'Edit Note' : 'New Note'}</p>
               <button onClick={() => setShowEditor(false)} className="p-1">
-                <X size={18} color="#8a8a8a" />
+                <X size={18} color="#5a6a7e" />
               </button>
             </div>
 
@@ -232,7 +238,7 @@ export default function QuickNotes() {
                 value={form.title}
                 onChange={e => setForm(p => ({ ...p, title: e.target.value }))}
                 className="w-full rounded-xl px-4 py-3 outline-none placeholder-gray-600 font-medium"
-                style={{ backgroundColor: '#ffffff', border: '1px solid #e3e3e0', fontSize: '15px' }}
+                style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40', fontSize: '15px' }}
               />
 
               <div className="relative">
@@ -243,8 +249,8 @@ export default function QuickNotes() {
                   rows={5}
                   className="w-full resize-none rounded-xl px-4 py-3 outline-none placeholder-gray-600"
                   style={{
-                    backgroundColor: '#ffffff',
-                    border: '1px solid #e3e3e0',
+                    backgroundColor: '#0d1f35',
+                    border: '1px solid #1a2a40',
                     fontSize: '13px',
                     lineHeight: 1.7,
                     paddingRight: '44px',
@@ -253,7 +259,7 @@ export default function QuickNotes() {
                 <button
                   onClick={toggleVoice}
                   className="absolute top-3 right-3 p-1.5 rounded-lg transition-colors"
-                  style={{ backgroundColor: listening ? '#1D9E75' : '#e3e3e0', color: '#37352f' }}
+                  style={{ backgroundColor: listening ? '#1D9E75' : '#1a2a40', color: '#e8edf3' }}
                   title="Voice to text"
                 >
                   <Mic size={13} />
@@ -270,8 +276,8 @@ export default function QuickNotes() {
                     style={{
                       fontSize: '12px',
                       backgroundColor: form.tag === tag ? TAG_COLORS[tag] : '#ffffff',
-                      color: form.tag === tag ? '#ffffff' : '#8a8a8a',
-                      border: `1px solid ${form.tag === tag ? TAG_COLORS[tag] : '#e3e3e0'}`,
+                      color: form.tag === tag ? '#ffffff' : '#5a6a7e',
+                      border: `1px solid ${form.tag === tag ? TAG_COLORS[tag] : '#1a2a40'}`,
                     }}
                   >
                     {tag}
@@ -283,13 +289,13 @@ export default function QuickNotes() {
             {/* Footer actions - always visible */}
             <div
               className="flex gap-3 px-5 py-4 flex-shrink-0"
-              style={{ borderTop: '1px solid #e3e3e0' }}
+              style={{ borderTop: '1px solid #1a2a40' }}
             >
               {editNote && (
                 <button
                   onClick={deleteNote}
                   className="px-4 py-3 rounded-xl font-medium"
-                  style={{ backgroundColor: '#ffffff', border: '1px solid #ef4444', color: '#ef4444', fontSize: '13px' }}
+                  style={{ backgroundColor: '#0d1f35', border: '1px solid #ef4444', color: '#ef4444', fontSize: '13px' }}
                 >
                   Delete
                 </button>

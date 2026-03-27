@@ -6,7 +6,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY ?? 'eyJhbGciOiJIU
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export type EmotionTag = 'Good' | 'Neutral' | 'Hard' | 'Energized' | 'Tired'
-export type NoteTag = 'TapWork' | 'PASHA' | 'Personal'
+export type NoteTag = 'TapWork' | 'PASHA' | 'Personal' | 'Family' | 'Health' | 'Finance' | 'Learning' | 'Startup' | 'Other'
 export type ExpenseCategory =
   | 'Food'
   | 'Transport'

@@ -75,16 +75,16 @@ export default function NightlyAudit() {
         <div className="text-5xl">🌙</div>
         <div>
           <h2 className="text-xl font-bold">Good night.</h2>
-          <p className="mt-2" style={{ fontSize: '14px', color: '#787774' }}>Tomorrow starts at 5 AM.</p>
+          <p className="mt-2" style={{ fontSize: '14px', color: '#7a8a9e' }}>Tomorrow starts at 5 AM.</p>
         </div>
-        <div className="rounded-xl px-4 py-3" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
-          <p style={{ fontSize: '12px', color: '#787774' }}>Tomorrow's TapWork task</p>
+        <div className="rounded-xl px-4 py-3" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+          <p style={{ fontSize: '12px', color: '#7a8a9e' }}>Tomorrow's TapWork task</p>
           <p className="font-medium mt-1" style={{ fontSize: '13px' }}>{form.tapwork_task || '—'}</p>
         </div>
         <button
           onClick={() => setSaved(false)}
           className="text-sm underline"
-          style={{ color: '#787774' }}
+          style={{ color: '#7a8a9e' }}
         >
           Edit tonight's audit
         </button>
@@ -96,16 +96,16 @@ export default function NightlyAudit() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center">
         <div className="text-4xl">🔒</div>
-        <h2 className="font-bold" style={{ fontSize: '18px', color: '#37352f' }}>Nightly Audit</h2>
-        <p style={{ fontSize: '13px', color: '#787774' }}>Opens at 19:00</p>
+        <h2 className="font-bold" style={{ fontSize: '18px', color: '#e8edf3' }}>Nightly Audit</h2>
+        <p style={{ fontSize: '13px', color: '#7a8a9e' }}>Opens at 19:00</p>
         <div
           className="rounded-xl px-6 py-4 mt-2"
-          style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}
+          style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
         >
           <p className="font-bold" style={{ fontSize: '24px', color: '#EF9F27' }}>
             {hoursUntil}h {minutesUntil}m
           </p>
-          <p style={{ fontSize: '11px', color: '#787774', marginTop: '4px' }}>until it unlocks</p>
+          <p style={{ fontSize: '11px', color: '#7a8a9e', marginTop: '4px' }}>until it unlocks</p>
         </div>
       </div>
     )
@@ -113,7 +113,7 @@ export default function NightlyAudit() {
 
   const field = (label: string, key: keyof typeof form, placeholder: string) => (
     <div className="flex flex-col gap-2">
-      <label style={{ fontSize: '12px', fontWeight: 500, color: '#37352f' }}>{label}</label>
+      <label style={{ fontSize: '12px', fontWeight: 500, color: '#e8edf3' }}>{label}</label>
       <textarea
         value={form[key] as string}
         onChange={e => setForm(prev => ({ ...prev, [key]: e.target.value }))}
@@ -121,8 +121,8 @@ export default function NightlyAudit() {
         rows={2}
         className="w-full resize-none outline-none rounded-lg px-3 py-2.5 placeholder-gray-600"
         style={{
-          backgroundColor: '#ffffff',
-          border: '1px solid #e3e3e0',
+          backgroundColor: '#0d1f35',
+          border: '1px solid #1a2a40',
           fontSize: '12px',
           lineHeight: '1.5',
         }}
@@ -132,28 +132,28 @@ export default function NightlyAudit() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="font-bold" style={{ fontSize: '18px', color: '#37352f' }}>Nightly Audit</h1>
+      <h1 className="font-bold" style={{ fontSize: '18px', color: '#e8edf3' }}>Nightly Audit</h1>
 
-      <div className="rounded-xl p-4 flex flex-col gap-4" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
-        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#787774', letterSpacing: '0.06em' }}>3 Wins Today</p>
+      <div className="rounded-xl p-4 flex flex-col gap-4" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#7a8a9e', letterSpacing: '0.06em' }}>3 Wins Today</p>
         {field('Win 1', 'win1', 'Something that went well today...')}
         {field('Win 2', 'win2', 'Something that went well today...')}
         {field('Win 3', 'win3', 'Something that went well today...')}
       </div>
 
-      <div className="rounded-xl p-4 flex flex-col gap-4" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
-        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#787774', letterSpacing: '0.06em' }}>Reflection</p>
+      <div className="rounded-xl p-4 flex flex-col gap-4" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#7a8a9e', letterSpacing: '0.06em' }}>Reflection</p>
         {field('1 Thing to Improve', 'improvement', 'One honest thing to do better...')}
         {field('Gratitude', 'gratitude', 'One thing I\'m grateful for today...')}
       </div>
 
-      <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
-        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#787774', letterSpacing: '0.06em' }}>Tomorrow's 6 AM Session</p>
+      <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#7a8a9e', letterSpacing: '0.06em' }}>Tomorrow's 6 AM Session</p>
         {field("Tomorrow's TapWork Task", 'tapwork_task', 'At 6:00 AM I will...')}
       </div>
 
-      <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#f7f7f5', border: '1px solid #e3e3e0' }}>
-        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#787774', letterSpacing: '0.06em' }}>How was today?</p>
+      <div className="rounded-xl p-4 flex flex-col gap-3" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+        <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#7a8a9e', letterSpacing: '0.06em' }}>How was today?</p>
         <div className="flex flex-wrap gap-2">
           {EMOTIONS.map(e => (
             <button
@@ -164,8 +164,8 @@ export default function NightlyAudit() {
                 fontSize: '12px',
                 borderRadius: '20px',
                 backgroundColor: form.emotion_tag === e ? '#1D9E75' : '#ffffff',
-                color: form.emotion_tag === e ? '#ffffff' : '#8a8a8a',
-                border: `1px solid ${form.emotion_tag === e ? '#1D9E75' : '#e3e3e0'}`,
+                color: form.emotion_tag === e ? '#ffffff' : '#5a6a7e',
+                border: `1px solid ${form.emotion_tag === e ? '#1D9E75' : '#1a2a40'}`,
               }}
             >
               {e}

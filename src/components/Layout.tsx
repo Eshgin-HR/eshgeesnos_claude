@@ -4,7 +4,7 @@ import BottomTabBar from './BottomTabBar'
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen flex" style={{ backgroundColor: '#ffffff' }}>
+    <div className="min-h-screen flex" style={{ backgroundColor: '#0A1628' }}>
       <div className="hidden md:flex flex-shrink-0">
         <Sidebar />
       </div>

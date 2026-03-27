@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import { Plus, Check, Trash2, Clock } from 'lucide-react'
+import { Plus, Check, Trash2, X } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 
@@ -22,7 +22,14 @@ const CAT_COLORS: Record<Category, string> = {
   PASHA: '#1D9E75',
   Personal: '#EF9F27',
   Startup: '#7F77DD',
-  Other: '#8a8a8a',
+  Other: '#5a6a7e',
+}
+
+const CAT_EMOJI: Record<Category, string> = {
+  PASHA: '🏢',
+  Personal: '🌱',
+  Startup: '🚀',
+  Other: '📋',
 }
 
 const TIME_OPTIONS = [
@@ -40,8 +47,8 @@ export default function DailyTasks() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  // Per-category add form state
-  const [adding, setAdding] = useState<Category | null>(null)
+  const [showModal, setShowModal] = useState(false)
+  const [modalCat, setModalCat] = useState<Category>('PASHA')
   const [newTitle, setNewTitle] = useState('')
   const [newTime, setNewTime] = useState('')
   const [saving, setSaving] = useState(false)
@@ -59,11 +66,7 @@ export default function DailyTasks() {
       .order('sort_order', { ascending: true })
       .order('created_at', { ascending: true })
 
-    if (err) {
-      setError(err.message)
-      setLoading(false)
-      return
-    }
+    if (err) { setError(err.message); setLoading(false); return }
     setTasks((data as Task[]) ?? [])
     setLoading(false)
   }, [user, today])
@@ -81,29 +84,24 @@ export default function DailyTasks() {
     await supabase.from('daily_tasks').delete().eq('id', id)
   }
 
-  const openAdd = (cat: Category) => {
-    setAdding(cat)
+  const openAddModal = (cat: Category) => {
+    setModalCat(cat)
     setNewTitle('')
     setNewTime('')
+    setShowModal(true)
   }
 
-  const cancelAdd = () => {
-    setAdding(null)
-    setNewTitle('')
-    setNewTime('')
-  }
-
-  const saveTask = async (cat: Category) => {
+  const saveTask = async () => {
     if (!user || !newTitle.trim()) return
     setSaving(true)
-    const catTasks = tasks.filter(t => t.category === cat)
+    const catTasks = tasks.filter(t => t.category === modalCat)
     const { data, error: err } = await supabase
       .from('daily_tasks')
       .insert({
         user_id: user.id,
         date: today,
         title: newTitle.trim(),
-        category: cat,
+        category: modalCat,
         completed: false,
         time_block: newTime || null,
         sort_order: catTasks.length,
@@ -114,9 +112,7 @@ export default function DailyTasks() {
     setSaving(false)
     if (err) { setError(err.message); return }
     setTasks(prev => [...prev, data as Task])
-    setAdding(null)
-    setNewTitle('')
-    setNewTime('')
+    setShowModal(false)
   }
 
   const totalDone = tasks.filter(t => t.completed).length
@@ -131,205 +127,206 @@ export default function DailyTasks() {
   if (error) return (
     <div className="flex flex-col gap-3 py-10 text-center px-4">
       <p className="font-semibold" style={{ color: '#ef4444' }}>Could not load tasks</p>
-      <p className="text-xs" style={{ color: '#787774' }}>{error}</p>
-      <p className="text-xs" style={{ color: '#787774' }}>Make sure the <code>daily_tasks</code> table exists in Supabase.</p>
+      <p className="text-xs" style={{ color: '#7a8a9e' }}>{error}</p>
     </div>
   )
 
   return (
     <div className="flex flex-col gap-5">
       {/* Header */}
-      <div className="flex items-end justify-between">
-        <div>
-          <p className="text-xs mb-0.5" style={{ color: '#787774' }}>{dateLabel}</p>
-          <h1 className="font-bold" style={{ fontSize: '20px', color: '#37352f' }}>Daily Tasks</h1>
+      <div>
+        <p style={{ fontSize: '12px', color: '#7a8a9e', marginBottom: '4px' }}>{dateLabel}</p>
+        <div className="flex items-end justify-between">
+          <h1 className="font-bold" style={{ fontSize: '22px', color: '#e8edf3' }}>Daily Tasks</h1>
+          {totalTasks > 0 && (
+            <div className="text-right">
+              <p className="font-bold" style={{ fontSize: '18px', color: totalDone === totalTasks ? '#1D9E75' : '#e8edf3' }}>
+                {totalDone}
+                <span style={{ color: '#7a8a9e', fontWeight: 400, fontSize: '14px' }}>/{totalTasks}</span>
+              </p>
+              <p style={{ fontSize: '10px', color: '#7a8a9e' }}>completed</p>
+            </div>
+          )}
         </div>
         {totalTasks > 0 && (
-          <div className="text-right">
-            <p className="font-bold" style={{ fontSize: '22px', color: totalDone === totalTasks ? '#1D9E75' : '#ffffff' }}>
-              {totalDone}<span style={{ color: '#787774', fontWeight: 400, fontSize: '16px' }}>/{totalTasks}</span>
-            </p>
-            <p style={{ fontSize: '10px', color: '#787774' }}>completed</p>
+          <div className="mt-3 rounded-full overflow-hidden" style={{ height: '3px', backgroundColor: '#1a2a40' }}>
+            <div
+              className="h-full rounded-full transition-all duration-500"
+              style={{ width: `${(totalDone / totalTasks) * 100}%`, backgroundColor: '#1D9E75' }}
+            />
           </div>
         )}
       </div>
 
-      {/* Progress bar */}
-      {totalTasks > 0 && (
-        <div className="rounded-full overflow-hidden" style={{ height: '3px', backgroundColor: '#e3e3e0' }}>
-          <div
-            className="h-full rounded-full transition-all duration-500"
-            style={{ width: `${(totalDone / totalTasks) * 100}%`, backgroundColor: '#1D9E75' }}
-          />
-        </div>
-      )}
-
-      {/* Category sections */}
+      {/* Category cards */}
       {CATEGORIES.map(cat => {
         const catTasks = tasks.filter(t => t.category === cat)
         const catDone = catTasks.filter(t => t.completed).length
         const color = CAT_COLORS[cat]
-        const isAdding = adding === cat
 
         return (
-          <div key={cat} className="flex flex-col gap-0">
-            {/* Category header — HBR style */}
+          <div
+            key={cat}
+            className="rounded-2xl overflow-hidden"
+            style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40', borderLeft: `3px solid ${color}` }}
+          >
+            {/* Category header */}
             <div
-              className="flex items-center justify-between py-2 mb-1"
-              style={{ borderBottom: `2px solid ${color}` }}
+              className="flex items-center justify-between px-4 py-3"
+              style={{ borderBottom: '1px solid #1a2a4060' }}
             >
               <div className="flex items-center gap-2">
-                <span className="font-bold tracking-widest uppercase" style={{ fontSize: '11px', color, letterSpacing: '0.1em' }}>
+                <span style={{ fontSize: '15px' }}>{CAT_EMOJI[cat]}</span>
+                <span className="font-bold uppercase tracking-wide" style={{ fontSize: '11px', color, letterSpacing: '0.08em' }}>
                   {cat}
                 </span>
                 {catTasks.length > 0 && (
-                  <span style={{ fontSize: '10px', color: '#787774' }}>
+                  <span
+                    className="px-2 py-0.5 rounded-full font-medium"
+                    style={{
+                      fontSize: '10px',
+                      backgroundColor: catDone === catTasks.length && catTasks.length > 0 ? color + '30' : '#1a2a40',
+                      color: catDone === catTasks.length && catTasks.length > 0 ? color : '#7a8a9e',
+                    }}
+                  >
                     {catDone}/{catTasks.length}
                   </span>
                 )}
               </div>
               <button
-                onClick={() => isAdding ? cancelAdd() : openAdd(cat)}
-                className="flex items-center gap-1 rounded-lg px-2 py-1 transition-all"
-                style={{ backgroundColor: isAdding ? '#e3e3e0' : 'transparent', color: isAdding ? '#8a8a8a' : color, fontSize: '11px' }}
+                onClick={() => openAddModal(cat)}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg font-medium transition-all"
+                style={{ backgroundColor: color + '20', color, fontSize: '11px' }}
               >
-                <Plus size={12} />
-                <span>{isAdding ? 'Cancel' : 'Add'}</span>
+                <Plus size={11} />
+                Add
               </button>
             </div>
 
-            {/* Tasks */}
+            {/* Task list */}
             <div className="flex flex-col">
-              {catTasks.length === 0 && !isAdding && (
-                <p className="py-3 text-xs" style={{ color: '#787774' }}>
-                  No tasks — tap Add to plan your {cat} work
+              {catTasks.length === 0 ? (
+                <p className="px-4 py-4" style={{ fontSize: '12px', color: '#4a5568' }}>
+                  No {cat.toLowerCase()} tasks — tap Add to plan your day
                 </p>
-              )}
-
-              {catTasks.map(task => (
-                <div
-                  key={task.id}
-                  className="flex items-start gap-3 py-2.5 group"
-                  style={{ borderBottom: '1px solid #e3e3e033' }}
-                >
-                  {/* Time block */}
-                  <div className="flex-shrink-0 w-12 pt-0.5">
-                    {task.time_block ? (
-                      <span
-                        className="font-mono"
-                        style={{ fontSize: '10px', color: task.completed ? '#8a8a8a' : '#8a8a8a', letterSpacing: '0.02em' }}
-                      >
-                        {task.time_block}
-                      </span>
-                    ) : (
-                      <span style={{ fontSize: '10px', color: '#e3e3e0' }}>——</span>
-                    )}
-                  </div>
-
-                  {/* Checkbox */}
-                  <button
-                    onClick={() => toggleTask(task)}
-                    className="flex-shrink-0 mt-0.5 rounded transition-all"
-                    style={{
-                      width: '18px',
-                      height: '18px',
-                      border: `2px solid ${task.completed ? color : '#e3e3e0'}`,
-                      backgroundColor: task.completed ? color : 'transparent',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {task.completed && <Check size={11} color="#ffffff" strokeWidth={3} />}
-                  </button>
-
-                  {/* Title */}
-                  <p
-                    className="flex-1 leading-snug"
-                    style={{
-                      fontSize: '13px',
-                      color: task.completed ? '#8a8a8a' : '#ffffff',
-                      textDecoration: task.completed ? 'line-through' : 'none',
-                      fontWeight: task.completed ? 400 : 500,
-                    }}
-                  >
-                    {task.title}
-                  </p>
-
-                  {/* Delete */}
-                  <button
-                    onClick={() => deleteTask(task.id)}
-                    className="flex-shrink-0 opacity-30 hover:opacity-100 active:opacity-100 transition-opacity"
-                    style={{ color: '#787774' }}
-                  >
-                    <Trash2 size={14} />
-                  </button>
-                </div>
-              ))}
-
-              {/* Inline add form */}
-              {isAdding && (
-                <div
-                  className="flex items-center gap-2 py-2.5 mt-1"
-                  style={{ borderBottom: `1px solid ${color}33` }}
-                >
-                  {/* Time picker */}
-                  <div className="flex-shrink-0 flex items-center gap-1" style={{ width: '72px' }}>
-                    <Clock size={10} color="#8a8a8a" />
-                    <select
-                      value={newTime}
-                      onChange={e => setNewTime(e.target.value)}
-                      className="bg-transparent outline-none font-mono"
-                      style={{ fontSize: '10px', color: newTime ? '#ffffff' : '#8a8a8a', width: '52px' }}
-                    >
-                      {TIME_OPTIONS.map(t => (
-                        <option key={t} value={t} style={{ backgroundColor: '#f7f7f5' }}>
-                          {t || '——'}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Unchecked box placeholder */}
+              ) : (
+                catTasks.map((task, i) => (
                   <div
-                    className="flex-shrink-0"
-                    style={{
-                      width: '18px', height: '18px',
-                      border: `2px solid ${color}55`,
-                      borderRadius: '3px',
-                    }}
-                  />
-
-                  {/* Task input */}
-                  <input
-                    autoFocus
-                    type="text"
-                    placeholder="Task description..."
-                    value={newTitle}
-                    onChange={e => setNewTitle(e.target.value)}
-                    onKeyDown={e => {
-                      if (e.key === 'Enter') saveTask(cat)
-                      if (e.key === 'Escape') cancelAdd()
-                    }}
-                    className="flex-1 bg-transparent outline-none placeholder-gray-600"
-                    style={{ fontSize: '13px' }}
-                  />
-
-                  {/* Save */}
-                  <button
-                    onClick={() => saveTask(cat)}
-                    disabled={saving || !newTitle.trim()}
-                    className="flex-shrink-0 px-2.5 py-1 rounded-lg font-medium disabled:opacity-40 transition-all"
-                    style={{ backgroundColor: color, color: '#37352f', fontSize: '11px' }}
+                    key={task.id}
+                    className="flex items-center gap-3 px-4 py-3 group"
+                    style={{ borderTop: i === 0 ? 'none' : '1px solid #1a2a4040' }}
                   >
-                    {saving ? '...' : 'Save'}
-                  </button>
-                </div>
+                    <span className="flex-shrink-0 font-mono" style={{ fontSize: '10px', color: '#4a5568', width: '36px' }}>
+                      {task.time_block ?? '——'}
+                    </span>
+                    <button
+                      onClick={() => toggleTask(task)}
+                      className="flex-shrink-0 transition-all"
+                      style={{
+                        width: '20px', height: '20px',
+                        border: `2px solid ${task.completed ? color : '#1a2a40'}`,
+                        backgroundColor: task.completed ? color : 'transparent',
+                        borderRadius: '6px',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}
+                    >
+                      {task.completed && <Check size={12} color="#ffffff" strokeWidth={3} />}
+                    </button>
+                    <p
+                      className="flex-1 leading-snug"
+                      style={{
+                        fontSize: '14px',
+                        color: task.completed ? '#4a5568' : '#e8edf3',
+                        textDecoration: task.completed ? 'line-through' : 'none',
+                        fontWeight: task.completed ? 400 : 500,
+                      }}
+                    >
+                      {task.title}
+                    </p>
+                    <button
+                      onClick={() => deleteTask(task.id)}
+                      className="flex-shrink-0 opacity-0 group-hover:opacity-100 active:opacity-100 transition-opacity"
+                      style={{ color: '#5a6a7e' }}
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  </div>
+                ))
               )}
             </div>
           </div>
         )
       })}
+
+      {/* Add Task Modal */}
+      {showModal && (
+        <div
+          className="fixed inset-0 flex items-end justify-center z-[60]"
+          style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}
+          onClick={e => { if (e.target === e.currentTarget) setShowModal(false) }}
+        >
+          <div
+            className="w-full max-w-lg rounded-t-2xl flex flex-col"
+            style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40', borderBottom: 'none', maxHeight: '85dvh' }}
+          >
+            <div className="flex justify-center pt-3 pb-1">
+              <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#1a2a40' }} />
+            </div>
+            <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid #1a2a40' }}>
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: CAT_COLORS[modalCat] }} />
+                <p className="font-bold" style={{ fontSize: '15px', color: '#e8edf3' }}>New {modalCat} Task</p>
+              </div>
+              <button onClick={() => setShowModal(false)}><X size={18} color="#5a6a7e" /></button>
+            </div>
+            <div className="flex flex-col gap-5 px-5 py-5 overflow-y-auto">
+              <input
+                autoFocus
+                type="text"
+                placeholder="What needs to get done?"
+                value={newTitle}
+                onChange={e => setNewTitle(e.target.value)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && newTitle.trim()) saveTask()
+                  if (e.key === 'Escape') setShowModal(false)
+                }}
+                className="w-full rounded-xl px-4 py-3 outline-none"
+                style={{ backgroundColor: '#112240', border: '1px solid #1a2a40', color: '#e8edf3', fontSize: '15px' }}
+              />
+              <div>
+                <p style={{ fontSize: '11px', color: '#7a8a9e', marginBottom: '10px', fontWeight: 500 }}>Time block (optional)</p>
+                <div className="flex flex-wrap gap-2">
+                  {TIME_OPTIONS.map(t => (
+                    <button
+                      key={t}
+                      onClick={() => setNewTime(t)}
+                      className="px-2.5 py-1.5 rounded-lg font-mono transition-all"
+                      style={{
+                        fontSize: '11px',
+                        backgroundColor: newTime === t ? CAT_COLORS[modalCat] : '#112240',
+                        color: newTime === t ? '#ffffff' : '#7a8a9e',
+                        border: `1px solid ${newTime === t ? CAT_COLORS[modalCat] : '#1a2a40'}`,
+                      }}
+                    >
+                      {t || 'No time'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="px-5 pb-8 pt-2">
+              <button
+                onClick={saveTask}
+                disabled={saving || !newTitle.trim()}
+                className="w-full py-4 rounded-xl font-semibold disabled:opacity-40 transition-all"
+                style={{ backgroundColor: CAT_COLORS[modalCat], color: '#ffffff', fontSize: '15px' }}
+              >
+                {saving ? 'Adding...' : 'Add Task'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

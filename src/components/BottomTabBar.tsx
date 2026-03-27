@@ -18,28 +18,37 @@ export default function BottomTabBar() {
     <div
       className="fixed bottom-0 left-0 right-0 flex items-center justify-around z-50"
       style={{
-        backgroundColor: '#ffffff',
-        borderTop: '1px solid #e3e3e0',
+        backgroundColor: '#0d1f35',
+        borderTop: '1px solid #1a2a40',
         paddingBottom: 'env(safe-area-inset-bottom)',
-        height: '56px',
+        height: '68px',
       }}
     >
       {TABS.map(({ to, icon: Icon, label }) => (
         <NavLink
           key={to}
           to={to}
-          className="flex flex-col items-center justify-center flex-1 h-full gap-0.5"
+          className="flex flex-col items-center justify-center flex-1 h-full gap-1"
         >
           {({ isActive }) => (
             <>
-              <Icon
-                size={18}
-                strokeWidth={isActive ? 2.5 : 1.5}
-                style={{ color: isActive ? '#1D9E75' : '#acacac' }}
-              />
+              <div
+                style={{
+                  width: '36px', height: '28px',
+                  backgroundColor: isActive ? '#1D9E7520' : 'transparent',
+                  borderRadius: '10px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}
+              >
+                <Icon
+                  size={22}
+                  strokeWidth={isActive ? 2.5 : 1.5}
+                  style={{ color: isActive ? '#1D9E75' : '#4a5568' }}
+                />
+              </div>
               <span style={{
                 fontSize: '9px',
-                color: isActive ? '#1D9E75' : '#acacac',
+                color: isActive ? '#1D9E75' : '#4a5568',
                 fontWeight: isActive ? 600 : 400,
                 lineHeight: 1,
               }}>
