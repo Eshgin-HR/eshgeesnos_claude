@@ -1,321 +1,342 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Sun, Flame, Moon, BarChart2, Wallet, FileText, ArrowRight, CheckCircle2, CheckSquare, Check } from 'lucide-react'
+import { CheckSquare, Inbox, Flame, Wallet, ChevronRight, Check, ChevronDown } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
-
-interface Stats {
-  habitsTotal: number
-  habitsDone: number
-  streak: number
-  todaySpend: number
-  lastEmotion: string | null
-  nightlyDone: boolean
-}
+import {
+  GTDContext, CONTEXTS, CONTEXT_LABELS, CONTEXT_COLORS,
+  getAutoContext, todayStr, getMondayOfWeek,
+} from '../lib/supabase'
 
 interface Task {
   id: string
   title: string
-  category: 'PASHA' | 'Personal' | 'Startup' | 'Other'
+  category: string
   completed: boolean
   time_block: string | null
-}
-
-const CAT_COLORS: Record<string, string> = {
-  PASHA: '#1D9E75',
-  Personal: '#EF9F27',
-  Startup: '#7F77DD',
-  Other: '#5a6a7e',
-}
-
-function greeting() {
-  const h = new Date().getHours()
-  if (h < 12) return 'Good morning'
-  if (h < 17) return 'Good afternoon'
-  return 'Good evening'
-}
-
-function todayStr() {
-  return new Date().toISOString().slice(0, 10)
-}
-
-const CARDS = [
-  { to: '/today', icon: Sun, label: 'Daily Check-in', color: '#1D9E75', desc: 'Log your habits' },
-  { to: '/streaks', icon: Flame, label: 'Streaks', color: '#EF9F27', desc: 'Track consistency' },
-  { to: '/nightly', icon: Moon, label: 'Nightly Audit', color: '#7F77DD', desc: 'Reflect on the day' },
-  { to: '/weekly', icon: BarChart2, label: 'Weekly Review', color: '#1D9E75', desc: 'Big picture view' },
-  { to: '/budget', icon: Wallet, label: 'Budget', color: '#EF9F27', desc: 'Track spending' },
-  { to: '/notes', icon: FileText, label: 'Notes', color: '#7F77DD', desc: 'Quick capture' },
-]
-
-const EMOTION_COLORS: Record<string, string> = {
-  Good: '#1D9E75',
-  Energized: '#EF9F27',
-  Neutral: '#5a6a7e',
-  Hard: '#EF4444',
-  Tired: '#7F77DD',
+  context_tag: GTDContext | null
 }
 
 export default function Home() {
   const { user } = useAuth()
   const navigate = useNavigate()
-  const [stats, setStats] = useState<Stats>({
-    habitsTotal: 0, habitsDone: 0, streak: 0,
-    todaySpend: 0, lastEmotion: null, nightlyDone: false,
-  })
+  const [context, setContext] = useState<GTDContext>(getAutoContext())
+  const [showContextPicker, setShowContextPicker] = useState(false)
   const [tasks, setTasks] = useState<Task[]>([])
+  const [inboxCount, setInboxCount] = useState(0)
+  const [openTaskCount, setOpenTaskCount] = useState(0)
+  const [todaySpend, setTodaySpend] = useState(0)
+  const [eveningStreak, setEveningStreak] = useState(0)
+  const [energyToday, setEnergyToday] = useState<number>(0)
+  const [tapworkTask, setTapworkTask] = useState<string | null>(null)
+  const [weeklyReviewDone, setWeeklyReviewDone] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [savingEnergy, setSavingEnergy] = useState(false)
 
-  useEffect(() => {
+  const today = todayStr()
+  const isSaturday = new Date().getDay() === 6
+  const hour = new Date().getHours()
+
+  const load = useCallback(async () => {
     if (!user) return
-    loadStats()
-  }, [user])
 
-  async function loadStats() {
-    const today = todayStr()
-    const [habitsRes, checkinRes, spendRes, nightlyRes, tasksRes] = await Promise.all([
-      supabase.from('habits').select('id').eq('user_id', user!.id).eq('active', true),
-      supabase.from('daily_checkins').select('habit_id, completed').eq('user_id', user!.id).eq('date', today),
-      supabase.from('expenses').select('amount').eq('user_id', user!.id).eq('date', today),
-      supabase.from('nightly_audits').select('emotion_tag').eq('user_id', user!.id).eq('date', today).maybeSingle(),
-      supabase.from('daily_tasks').select('id, title, category, completed, time_block')
-        .eq('user_id', user!.id).eq('date', today).eq('completed', false).order('sort_order'),
+    const [
+      inboxRes,
+      taskCountRes,
+      spendRes,
+      tasksRes,
+      streakRes,
+      reflectionRes,
+      tapworkRes,
+      weeklyRes,
+    ] = await Promise.all([
+      supabase.from('inbox').select('id', { count: 'exact', head: true }).eq('user_id', user.id).eq('processed', false),
+      supabase.from('daily_tasks').select('id', { count: 'exact', head: true }).eq('user_id', user.id).eq('date', today).eq('completed', false),
+      supabase.from('expenses').select('amount').eq('user_id', user.id).eq('date', today),
+      supabase.from('daily_tasks').select('id, title, category, completed, time_block, context_tag')
+        .eq('user_id', user.id).eq('date', today).eq('completed', false)
+        .eq('context_tag', context).order('sort_order').limit(3),
+      supabase.from('daily_rituals').select('date, completed').eq('user_id', user.id).eq('ritual_type', 'evening').eq('completed', true).order('date', { ascending: false }).limit(60),
+      supabase.from('daily_rituals').select('tapwork_next_task').eq('user_id', user.id).eq('date', today).eq('ritual_type', 'evening').maybeSingle(),
+      supabase.from('daily_rituals').select('tapwork_next_task').eq('user_id', user.id).neq('date', today).eq('ritual_type', 'evening').not('tapwork_next_task', 'is', null).order('date', { ascending: false }).limit(1).maybeSingle(),
+      supabase.from('weekly_reviews').select('completed_at').eq('user_id', user.id).eq('week_start', getMondayOfWeek()).maybeSingle(),
     ])
 
-    const habitsTotal = habitsRes.data?.length ?? 0
-    const habitsDone = checkinRes.data?.filter(c => c.completed).length ?? 0
-    const todaySpend = spendRes.data?.reduce((s, e) => s + Number(e.amount), 0) ?? 0
-    const lastEmotion = nightlyRes.data?.emotion_tag ?? null
-    const nightlyDone = !!nightlyRes.data
-    const streak = await calcStreak(user!.id)
+    setInboxCount(inboxRes.count ?? 0)
+    setOpenTaskCount(taskCountRes.count ?? 0)
+    setTodaySpend(spendRes.data?.reduce((s, e) => s + Number(e.amount), 0) ?? 0)
+    setTasks((tasksRes.data as Task[]) ?? [])
 
-    setStats({ habitsTotal, habitsDone, streak, todaySpend, lastEmotion, nightlyDone })
-
-    // Sort: PASHA first, then Startup, then by time_block
-    const catOrder = { PASHA: 0, Startup: 1, Personal: 2, Other: 3 }
-    const sorted = ((tasksRes.data ?? []) as Task[]).sort((a, b) => {
-      const co = (catOrder[a.category] ?? 3) - (catOrder[b.category] ?? 3)
-      if (co !== 0) return co
-      if (a.time_block && !b.time_block) return -1
-      if (!a.time_block && b.time_block) return 1
-      return 0
-    })
-    setTasks(sorted.slice(0, 3))
-    setLoading(false)
-  }
-
-  async function calcStreak(userId: string): Promise<number> {
-    const { data } = await supabase
-      .from('daily_checkins')
-      .select('date, completed')
-      .eq('user_id', userId)
-      .eq('completed', true)
-      .order('date', { ascending: false })
-      .limit(100)
-
-    if (!data || data.length === 0) return 0
-    const days = [...new Set(data.map(r => r.date))].sort().reverse()
+    // Evening streak
+    const days = [...new Set((streakRes.data ?? []).map((r: { date: string }) => r.date))].sort().reverse()
     let streak = 0
-    let cursor = new Date()
-    cursor.setHours(0, 0, 0, 0)
+    let cursor = new Date(); cursor.setHours(0, 0, 0, 0)
     for (const day of days) {
       const d = new Date(day + 'T00:00:00')
       const diff = Math.round((cursor.getTime() - d.getTime()) / 86400000)
       if (diff > 1) break
-      streak++
-      cursor = d
+      streak++; cursor = d
     }
-    return streak
+    setEveningStreak(streak)
+
+    // TapWork task for tomorrow morning (from last evening reflection or tonight's)
+    const tapwork = reflectionRes.data?.tapwork_next_task ?? tapworkRes.data?.tapwork_next_task ?? null
+    setTapworkTask(tapwork)
+
+    setWeeklyReviewDone(!!weeklyRes.data?.completed_at)
+    setLoading(false)
+  }, [user, today, context])
+
+  const loadEnergy = useCallback(async () => {
+    if (!user) return
+    const { data } = await supabase
+      .from('daily_rituals')
+      .select('checklist_state')
+      .eq('user_id', user.id)
+      .eq('date', today)
+      .eq('ritual_type', 'morning')
+      .maybeSingle()
+    const energy = (data?.checklist_state as Record<string, unknown>)?.energy_level
+    if (typeof energy === 'number') setEnergyToday(energy)
+  }, [user, today])
+
+  useEffect(() => { load(); loadEnergy() }, [load, loadEnergy])
+
+  const saveEnergy = async (level: number) => {
+    if (!user || savingEnergy) return
+    const newLevel = energyToday === level ? 0 : level
+    setEnergyToday(newLevel)
+    setSavingEnergy(true)
+    const { data: existing } = await supabase
+      .from('daily_rituals')
+      .select('checklist_state')
+      .eq('user_id', user.id)
+      .eq('date', today)
+      .eq('ritual_type', 'morning')
+      .maybeSingle()
+    const state = { ...(existing?.checklist_state as Record<string, unknown> ?? {}), energy_level: newLevel }
+    await supabase.from('daily_rituals').upsert({
+      user_id: user.id, date: today, ritual_type: 'morning',
+      checklist_state: state,
+    }, { onConflict: 'user_id,date,ritual_type' })
+    setSavingEnergy(false)
   }
 
   const toggleTask = async (task: Task) => {
     setTasks(prev => prev.filter(t => t.id !== task.id))
     await supabase.from('daily_tasks').update({ completed: true }).eq('id', task.id)
+    setOpenTaskCount(c => Math.max(0, c - 1))
   }
 
-  const progress = stats.habitsTotal > 0 ? stats.habitsDone / stats.habitsTotal : 0
-  const circumference = 2 * Math.PI * 28
-  const strokeDash = circumference * progress
+  const greeting = () => {
+    const h = new Date().getHours()
+    if (h < 12) return 'Good morning'
+    if (h < 17) return 'Good afternoon'
+    return 'Good evening'
+  }
+
   const dateLabel = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-5">
       {/* Header */}
       <div>
-        <p className="text-sm mb-1" style={{ color: '#7a8a9e' }}>{dateLabel}</p>
-        <h1 className="text-2xl font-bold" style={{ color: '#e8edf3' }}>{greeting()}, Eshgin</h1>
+        <p style={{ fontSize: '12px', color: '#888780', marginBottom: '4px' }}>{dateLabel}</p>
+        <h1 style={{ fontSize: '20px', fontWeight: 500, color: '#F5F5F5' }}>{greeting()}, Eshgeen</h1>
       </div>
 
-      {/* Top stats row */}
-      {loading ? (
-        <div className="grid grid-cols-3 gap-3">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="h-24 rounded-xl animate-pulse" style={{ backgroundColor: '#0d1f35' }} />
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-3 gap-3">
-          <div
-            className="rounded-xl p-4 flex flex-col items-center gap-2 cursor-pointer hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
-            onClick={() => navigate('/today')}
-          >
-            <svg width="64" height="64" viewBox="0 0 64 64">
-              <circle cx="32" cy="32" r="28" fill="none" stroke="#1a2a40" strokeWidth="5" />
-              <circle
-                cx="32" cy="32" r="28" fill="none"
-                stroke="#1D9E75" strokeWidth="5"
-                strokeDasharray={`${strokeDash} ${circumference}`}
-                strokeLinecap="round"
-                transform="rotate(-90 32 32)"
-              />
-              <text x="32" y="37" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#e8edf3">
-                {stats.habitsDone}/{stats.habitsTotal}
-              </text>
-            </svg>
-            <span className="text-xs" style={{ color: '#7a8a9e' }}>Habits</span>
-          </div>
-
-          <div
-            className="rounded-xl p-4 flex flex-col items-center justify-center gap-1 cursor-pointer hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
-            onClick={() => navigate('/streaks')}
-          >
-            <Flame size={24} color="#EF9F27" />
-            <span className="text-2xl font-bold" style={{ color: '#e8edf3' }}>{stats.streak}</span>
-            <span className="text-xs" style={{ color: '#7a8a9e' }}>Day streak</span>
-          </div>
-
-          <div
-            className="rounded-xl p-4 flex flex-col items-center justify-center gap-1 cursor-pointer hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
-            onClick={() => navigate('/budget')}
-          >
-            <Wallet size={24} color="#7F77DD" />
-            <span className="text-2xl font-bold" style={{ color: '#e8edf3' }}>
-              {stats.todaySpend === 0 ? '—' : `₼${stats.todaySpend.toFixed(0)}`}
-            </span>
-            <span className="text-xs" style={{ color: '#7a8a9e' }}>Spent today</span>
+      {/* TapWork task for this morning */}
+      {tapworkTask && (
+        <div
+          style={{ backgroundColor: '#0F6E5615', border: '0.5px solid #0F6E5630', borderRadius: '12px', padding: '14px 16px' }}
+          className="flex items-start gap-3"
+        >
+          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#0F6E56', flexShrink: 0, marginTop: '5px' }} />
+          <div>
+            <p style={{ fontSize: '11px', color: '#0F6E56', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '3px' }}>
+              TapWork 06:00
+            </p>
+            <p style={{ fontSize: '14px', color: '#F5F5F5' }}>{tapworkTask}</p>
           </div>
         </div>
       )}
 
-      {/* Today's Focus — top 3 incomplete tasks */}
-      {!loading && (
-        <div className="rounded-xl overflow-hidden" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
+      {/* Context switcher */}
+      <div>
+        <p style={{ fontSize: '11px', color: '#888780', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>Active Context</p>
+        <div className="relative">
           <button
-            className="w-full flex items-center justify-between px-4 py-3"
-            style={{ borderBottom: '1px solid #1a2a40' }}
-            onClick={() => navigate('/tasks')}
+            onClick={() => setShowContextPicker(v => !v)}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-full"
+            style={{
+              backgroundColor: CONTEXT_COLORS[context] + '20',
+              border: `0.5px solid ${CONTEXT_COLORS[context] + '50'}`,
+            }}
           >
-            <div className="flex items-center gap-2">
-              <CheckSquare size={15} color="#1D9E75" />
-              <span className="font-semibold" style={{ fontSize: '13px', color: '#e8edf3' }}>Today's Focus</span>
-            </div>
-            <ArrowRight size={14} color="#4a5568" />
+            <span style={{ fontSize: '12px', fontWeight: 500, color: CONTEXT_COLORS[context] }}>{CONTEXT_LABELS[context]}</span>
+            <ChevronDown size={12} color={CONTEXT_COLORS[context]} />
           </button>
-
-          {tasks.length === 0 ? (
-            <p className="px-4 py-4 text-xs" style={{ color: '#4a5568' }}>
-              All tasks done or none added yet — tap to plan your day
-            </p>
-          ) : (
-            tasks.map((task, i) => (
+          {showContextPicker && (
+            <>
+              <div className="fixed inset-0 z-10" onClick={() => setShowContextPicker(false)} />
               <div
-                key={task.id}
-                className="flex items-center gap-3 px-4 py-3"
-                style={{ borderTop: i === 0 ? 'none' : '1px solid #1a2a4040' }}
+                className="absolute top-full mt-2 left-0 z-20 flex flex-col"
+                style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '6px', minWidth: '180px' }}
               >
-                <div
-                  className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                  style={{ backgroundColor: CAT_COLORS[task.category] }}
-                />
-                {task.time_block && (
-                  <span className="font-mono flex-shrink-0" style={{ fontSize: '10px', color: '#4a5568' }}>
-                    {task.time_block}
-                  </span>
-                )}
-                <p className="flex-1 text-sm" style={{ color: '#e8edf3', fontWeight: 500 }}>{task.title}</p>
-                <button
-                  onClick={e => { e.stopPropagation(); toggleTask(task) }}
-                  className="flex-shrink-0 transition-all"
-                  style={{
-                    width: '20px', height: '20px',
-                    border: `2px solid #1a2a40`,
-                    backgroundColor: 'transparent',
-                    borderRadius: '6px',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}
-                >
-                  <Check size={11} color="#1D9E75" strokeWidth={3} />
-                </button>
+                {CONTEXTS.map(c => (
+                  <button
+                    key={c}
+                    onClick={() => { setContext(c); setShowContextPicker(false) }}
+                    className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-left"
+                    style={{ backgroundColor: context === c ? CONTEXT_COLORS[c] + '15' : 'transparent' }}
+                  >
+                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: CONTEXT_COLORS[c] }} />
+                    <span style={{ fontSize: '13px', color: context === c ? CONTEXT_COLORS[c] : '#F5F5F5' }}>{CONTEXT_LABELS[c]}</span>
+                  </button>
+                ))}
               </div>
-            ))
+            </>
           )}
         </div>
-      )}
+      </div>
 
-      {/* Nightly audit status */}
+      {/* Metric cards */}
       {!loading && (
-        <button
-          onClick={() => navigate('/nightly')}
-          className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-opacity hover:opacity-90"
-          style={{
-            backgroundColor: stats.nightlyDone ? '#0d2b1f' : '#0d1f35',
-            border: `1px solid ${stats.nightlyDone ? '#1D9E75' : '#1a2a40'}`,
-          }}
-        >
-          <div className="flex items-center gap-3">
-            {stats.nightlyDone ? (
-              <CheckCircle2 size={18} color="#1D9E75" />
-            ) : (
-              <Moon size={18} color="#7F77DD" />
-            )}
-            <div className="text-left">
-              <p className="text-sm font-medium" style={{ color: '#e8edf3' }}>
-                {stats.nightlyDone ? 'Nightly audit done' : 'Nightly audit pending'}
-              </p>
-              {stats.lastEmotion && (
-                <p className="text-xs" style={{ color: EMOTION_COLORS[stats.lastEmotion] ?? '#5a6a7e' }}>
-                  Feeling: {stats.lastEmotion}
-                </p>
-              )}
-              {!stats.nightlyDone && (
-                <p className="text-xs" style={{ color: '#7a8a9e' }}>Tap to reflect on today</p>
-              )}
-            </div>
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            onClick={() => navigate('/inbox')}
+            className="flex flex-col gap-1 p-3 rounded-xl text-left"
+            style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A' }}
+          >
+            <Inbox size={16} color="#E24B4A" />
+            <p style={{ fontSize: '22px', fontWeight: 500, color: inboxCount > 0 ? '#E24B4A' : '#F5F5F5' }}>{inboxCount}</p>
+            <p style={{ fontSize: '11px', color: '#888780', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 500 }}>Inbox</p>
+          </button>
+          <button
+            onClick={() => navigate('/tasks')}
+            className="flex flex-col gap-1 p-3 rounded-xl text-left"
+            style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A' }}
+          >
+            <CheckSquare size={16} color="#378ADD" />
+            <p style={{ fontSize: '22px', fontWeight: 500, color: '#F5F5F5' }}>{openTaskCount}</p>
+            <p style={{ fontSize: '11px', color: '#888780', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 500 }}>Open tasks</p>
+          </button>
+          <button
+            onClick={() => navigate('/budget')}
+            className="flex flex-col gap-1 p-3 rounded-xl text-left"
+            style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A' }}
+          >
+            <Wallet size={16} color="#1D9E75" />
+            <p style={{ fontSize: '22px', fontWeight: 500, color: '#F5F5F5' }}>
+              {todaySpend === 0 ? '₼0' : `₼${todaySpend.toFixed(0)}`}
+            </p>
+            <p style={{ fontSize: '11px', color: '#888780', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 500 }}>Spent today</p>
+          </button>
+          <div
+            className="flex flex-col gap-1 p-3 rounded-xl"
+            style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A' }}
+          >
+            <Flame size={16} color="#EF9F27" />
+            <p style={{ fontSize: '22px', fontWeight: 500, color: '#F5F5F5' }}>{eveningStreak}</p>
+            <p style={{ fontSize: '11px', color: '#888780', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 500 }}>Evening streak</p>
           </div>
-          <ArrowRight size={16} color="#4a5568" />
-        </button>
+        </div>
       )}
 
-      {/* Module cards */}
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: '#4a5568' }}>
-          Modules
-        </p>
-        <div className="grid grid-cols-2 gap-3">
-          {CARDS.map(({ to, icon: Icon, label, color, desc }) => (
+      {/* Energy check-in */}
+      <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '16px' }}>
+        <p style={{ fontSize: '11px', color: '#888780', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '12px' }}>Energy today</p>
+        <div className="flex gap-3">
+          {[1, 2, 3, 4, 5].map(n => (
             <button
-              key={to}
-              onClick={() => navigate(to)}
-              className="flex flex-col gap-3 p-4 rounded-xl text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
-              style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
+              key={n}
+              onClick={() => saveEnergy(n)}
+              style={{
+                width: '36px', height: '36px',
+                borderRadius: '50%',
+                backgroundColor: energyToday === n
+                  ? n <= 2 ? '#E24B4A' : n === 3 ? '#EF9F27' : '#1D9E75'
+                  : '#222222',
+                border: `1.5px solid ${energyToday === n ? '#fff' : '#2A2A2A'}`,
+                color: energyToday > 0 && energyToday !== n ? '#3A3A3A' : '#F5F5F5',
+                fontSize: '13px',
+                fontWeight: 600,
+                opacity: energyToday > 0 && energyToday !== n ? 0.35 : 1,
+                transition: 'all 150ms ease',
+              }}
             >
-              <div
-                className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: color + '22' }}
-              >
-                <Icon size={18} color={color} />
-              </div>
-              <div>
-                <p className="text-sm font-semibold" style={{ color: '#e8edf3' }}>{label}</p>
-                <p className="text-xs mt-0.5" style={{ color: '#7a8a9e' }}>{desc}</p>
-              </div>
+              {n}
             </button>
           ))}
         </div>
       </div>
+
+      {/* Top 3 tasks for active context */}
+      <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
+        <button
+          className="w-full flex items-center justify-between px-4 py-3"
+          style={{ borderBottom: '0.5px solid #2A2A2A' }}
+          onClick={() => navigate('/context')}
+        >
+          <div className="flex items-center gap-2">
+            <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: CONTEXT_COLORS[context] }} />
+            <span style={{ fontSize: '13px', fontWeight: 500, color: '#F5F5F5' }}>
+              {CONTEXT_LABELS[context]} — Next Actions
+            </span>
+          </div>
+          <ChevronRight size={14} color="#555550" />
+        </button>
+        {loading ? (
+          <div className="px-4 py-4">
+            <div className="h-4 rounded animate-pulse" style={{ backgroundColor: '#2A2A2A', width: '60%' }} />
+          </div>
+        ) : tasks.length === 0 ? (
+          <p className="px-4 py-4" style={{ fontSize: '13px', color: '#555550' }}>
+            No open tasks for this context
+          </p>
+        ) : (
+          tasks.map((task, i) => (
+            <div
+              key={task.id}
+              className="flex items-center gap-3 px-4 py-3"
+              style={{ borderTop: i === 0 ? 'none' : '0.5px solid #2A2A2A' }}
+            >
+              <button
+                onClick={() => toggleTask(task)}
+                className="flex-shrink-0"
+                style={{
+                  width: '18px', height: '18px',
+                  border: '1.5px solid #3A3A3A',
+                  backgroundColor: 'transparent',
+                  borderRadius: '4px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}
+              >
+                <Check size={10} color="#378ADD" strokeWidth={3} />
+              </button>
+              <p style={{ flex: 1, fontSize: '14px', color: '#F5F5F5' }}>{task.title}</p>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Saturday: weekly review reminder */}
+      {isSaturday && hour >= 14 && !weeklyReviewDone && (
+        <button
+          onClick={() => navigate('/weekly')}
+          className="w-full flex items-center justify-between px-4 py-3 rounded-xl"
+          style={{ backgroundColor: '#EF9F2715', border: '0.5px solid #EF9F2740' }}
+        >
+          <div className="flex items-center gap-3">
+            <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#EF9F27' }} />
+            <div className="text-left">
+              <p style={{ fontSize: '13px', fontWeight: 500, color: '#F5F5F5' }}>Weekly review pending</p>
+              <p style={{ fontSize: '12px', color: '#888780' }}>Saturday afternoon — time to review</p>
+            </div>
+          </div>
+          <ChevronRight size={14} color="#EF9F27" />
+        </button>
+      )}
     </div>
   )
 }
