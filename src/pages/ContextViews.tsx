@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import {
   GTDContext, Task, CONTEXTS, CONTEXT_LABELS, CONTEXT_COLORS,
-  getAutoContext, todayStr,
+  todayStr,
 } from '../lib/supabase'
 
 const MORNING_RITUAL_ITEMS = [
@@ -19,7 +19,7 @@ const MORNING_RITUAL_ITEMS = [
 
 export default function ContextViews() {
   const { user } = useAuth()
-  const [activeContext, setActiveContext] = useState<GTDContext>(getAutoContext())
+  const [activeContext, setActiveContext] = useState<GTDContext>('@office')
   const [tasks, setTasks] = useState<Task[]>([])
   const [loading, setLoading] = useState(true)
   const [ritualState, setRitualState] = useState<Record<string, boolean>>({})

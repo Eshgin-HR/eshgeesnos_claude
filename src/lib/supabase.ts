@@ -5,16 +5,27 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY ?? 'eyJhbGciOiJIU
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-// --- Legacy types (preserved for existing pages) ---
+// --- Legacy types (preserved for NightlyAudit) ---
 export type EmotionTag = 'Good' | 'Neutral' | 'Hard' | 'Energized' | 'Tired'
 export type NoteTag = 'TapWork' | 'PASHA' | 'Personal' | 'Family' | 'Health' | 'Finance' | 'Learning' | 'Startup' | 'Other'
 export type HabitCategory = 'Morning' | 'Startup' | 'Body' | 'Self-dev' | 'Evening'
 
-// --- v2 GTD types ---
+// --- v3 GTD types ---
 export type GTDContext = '@morning-ritual' | '@home-morning' | '@office' | '@home-evening' | '@transit'
 export type GTDItemType = 'next_action' | 'waiting_for' | 'someday_maybe' | 'reference' | 'trash'
 export type AreaTag = 'PASHA' | 'TapWork' | 'himate.az' | 'Personal'
 export type ExpenseCategory = 'loan' | 'lunch' | 'coffee' | 'entertainment' | 'clothing' | 'family_support' | 'transport' | 'subscriptions' | 'other'
+export type TaskStatus = 'open' | 'in_progress' | 'done' | 'deferred'
+export type TaskPriority = 'p1' | 'p2' | 'p3'
+export type TimeBlock =
+  | 'morning_ritual'
+  | 'home_morning'
+  | 'office_am'
+  | 'office_pm'
+  | 'home_evening'
+  | 'transit'
+  | 'weekend'
+  | 'unassigned'
 
 export const CONTEXTS: GTDContext[] = [
   '@morning-ritual', '@home-morning', '@office', '@home-evening', '@transit',
@@ -28,20 +39,39 @@ export const CONTEXT_LABELS: Record<GTDContext, string> = {
   '@transit': 'Transit',
 }
 
+// v3 authoritative colors from CLAUDE.md
 export const CONTEXT_COLORS: Record<GTDContext, string> = {
   '@morning-ritual': '#534AB7',
-  '@home-morning': '#0F6E56',
-  '@office': '#185FA5',
-  '@home-evening': '#854F0B',
-  '@transit': '#5F5E5A',
+  '@home-morning': '#1D9E75',
+  '@office': '#378ADD',
+  '@home-evening': '#EF9F27',
+  '@transit': '#888780',
 }
 
 export const AREA_COLORS: Record<AreaTag, string> = {
-  'PASHA': '#185FA5',
-  'TapWork': '#0F6E56',
+  'PASHA': '#378ADD',
+  'TapWork': '#1D9E75',
   'himate.az': '#534AB7',
-  'Personal': '#5F5E5A',
+  'Personal': '#888780',
 }
+
+export const AREAS: AreaTag[] = ['PASHA', 'TapWork', 'himate.az', 'Personal']
+
+export const TIME_BLOCK_LABELS: Record<TimeBlock, string> = {
+  morning_ritual: 'Morning ritual (05:30–06:00)',
+  home_morning: 'Home morning (06:00–07:00)',
+  office_am: 'Office AM (09:00–12:00)',
+  office_pm: 'Office PM (15:00–17:30)',
+  home_evening: 'Home evening (21:00–22:00)',
+  transit: 'Transit',
+  weekend: 'Weekend',
+  unassigned: 'Unassigned',
+}
+
+export const TIME_BLOCKS: TimeBlock[] = [
+  'morning_ritual', 'home_morning', 'office_am', 'office_pm',
+  'home_evening', 'transit', 'weekend', 'unassigned',
+]
 
 export const EXPENSE_CATEGORIES: ExpenseCategory[] = [
   'loan', 'lunch', 'coffee', 'entertainment', 'clothing', 'family_support', 'transport', 'subscriptions', 'other',
@@ -64,7 +94,7 @@ export const EXPENSE_COLORS: Record<ExpenseCategory, string> = {
   lunch: '#EF9F27',
   coffee: '#8B5E3C',
   entertainment: '#534AB7',
-  clothing: '#D46FAB',
+  clothing: '#D4537E',
   family_support: '#1D9E75',
   transport: '#378ADD',
   subscriptions: '#888780',
@@ -111,12 +141,16 @@ export interface WeeklyReview {
   id: string
   user_id: string
   week_start: string
-  tapwork_hours: number
-  top_win: string
-  next_focus: string
-  checklist_state?: Record<string, boolean>
-  notes?: string
-  completed_at?: string
+  step1_state: Record<string, boolean> | null
+  step2_state: Record<string, boolean> | null
+  step3_state: Record<string, boolean> | null
+  pasha_outcome: string | null
+  tapwork_outcome: string | null
+  personal_outcome: string | null
+  tapwork_monday_task: string | null
+  at_risk: string | null
+  completed_at: string | null
+  created_at: string
 }
 
 export interface Expense {
@@ -125,7 +159,7 @@ export interface Expense {
   amount: number
   category: ExpenseCategory
   note: string
-  date: string
+  expense_date: string
   created_at: string
 }
 
@@ -137,8 +171,10 @@ export interface Note {
   tag: NoteTag
   pinned: boolean
   created_at: string
+  updated_at?: string
 }
 
+// v3 Task interface — full GTD task with status, priority, due_date, time_block
 export interface Task {
   id: string
   user_id: string
@@ -146,12 +182,17 @@ export interface Task {
   title: string
   category: 'PASHA' | 'Personal' | 'Startup' | 'Other'
   completed: boolean
-  time_block: string | null
   sort_order: number
   context_tag: GTDContext | null
   area_tag: AreaTag | null
   activated_at: string | null
   created_at: string
+  // v3 fields
+  status: TaskStatus
+  priority: TaskPriority | null
+  time_block: TimeBlock | null
+  notes: string | null
+  due_date: string | null
 }
 
 export interface InboxItem {
@@ -161,6 +202,22 @@ export interface InboxItem {
   item_type: GTDItemType | null
   context: GTDContext | null
   processed: boolean
+  created_at: string
+}
+
+export interface WaitingForItem {
+  id: string
+  user_id: string
+  title: string
+  waiting_on: string | null
+  created_at: string
+  resolved: boolean
+}
+
+export interface SomedayItem {
+  id: string
+  user_id: string
+  title: string
   created_at: string
 }
 
@@ -195,20 +252,7 @@ export interface WeeklyReflection {
   created_at: string
 }
 
-// --- Auto-context by time ---
-export function getAutoContext(): GTDContext {
-  const h = new Date().getHours()
-  const m = new Date().getMinutes()
-  const t = h * 60 + m
-  if (t >= 5 * 60 + 30 && t < 6 * 60) return '@morning-ritual'
-  if (t >= 6 * 60 && t < 7 * 60) return '@home-morning'
-  if (t >= 7 * 60 + 30 && t < 8 * 60 + 30) return '@transit'
-  if (t >= 8 * 60 + 30 && t < 17 * 60 + 30) return '@office'
-  if (t >= 18 * 60 + 30 && t < 20 * 60) return '@transit'
-  if (t >= 21 * 60 && t < 22 * 60) return '@home-evening'
-  return '@office'
-}
-
+// --- Utility functions ---
 export function todayStr() {
   return new Date().toISOString().slice(0, 10)
 }
@@ -225,4 +269,14 @@ export function isStalled(activatedAt: string | null): boolean {
   if (!activatedAt) return false
   const diff = Date.now() - new Date(activatedAt).getTime()
   return diff > 7 * 24 * 60 * 60 * 1000
+}
+
+export function isOverdue(dueDate: string | null): boolean {
+  if (!dueDate) return false
+  return dueDate < todayStr()
+}
+
+export function formatDate(dateStr: string): string {
+  const d = new Date(dateStr + 'T00:00:00')
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
 }

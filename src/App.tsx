@@ -4,17 +4,15 @@ import Layout from './components/Layout'
 import Home from './pages/Home'
 import DailyTasks from './pages/DailyTasks'
 import Inbox from './pages/Inbox'
-import ContextViews from './pages/ContextViews'
+import Calendar from './pages/Calendar'
 import DailyRituals from './pages/DailyRituals'
 import NightlyAudit from './pages/NightlyAudit'
 import WeeklyReview from './pages/WeeklyReview'
 import WeeklyReflection from './pages/WeeklyReflection'
 import Budget from './pages/Budget'
 import QuickNotes from './pages/QuickNotes'
-import StreakTracker from './pages/StreakTracker'
+import Progress from './pages/StreakTracker'
 import Settings from './pages/Settings'
-import HabitManager from './pages/HabitManager'
-import EditHabit from './pages/EditHabit'
 
 function AppRoutes() {
   const { session, loading } = useAuth()
@@ -65,17 +63,18 @@ function AppRoutes() {
         <Route path="/home" element={<Home />} />
         <Route path="/inbox" element={<Inbox />} />
         <Route path="/tasks" element={<DailyTasks />} />
-        <Route path="/context" element={<ContextViews />} />
+        <Route path="/calendar" element={<Calendar />} />
         <Route path="/rituals" element={<DailyRituals />} />
         <Route path="/nightly" element={<NightlyAudit />} />
         <Route path="/weekly" element={<WeeklyReview />} />
         <Route path="/reflection" element={<WeeklyReflection />} />
         <Route path="/budget" element={<Budget />} />
         <Route path="/notes" element={<QuickNotes />} />
-        <Route path="/streaks" element={<StreakTracker />} />
+        <Route path="/progress" element={<Progress />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/settings/habits" element={<HabitManager />} />
-        <Route path="/settings/habits/:id" element={<EditHabit />} />
+        {/* Legacy redirects */}
+        <Route path="/streaks" element={<Navigate to="/progress" replace />} />
+        <Route path="/context" element={<Navigate to="/tasks" replace />} />
         <Route path="/*" element={<Navigate to="/home" replace />} />
       </Routes>
     </Layout>

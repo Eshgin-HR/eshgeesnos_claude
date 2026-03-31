@@ -36,8 +36,8 @@ function formatDate(dateStr: string): string {
 function groupByDay(expenses: Expense[]) {
   const groups: Record<string, Expense[]> = {}
   expenses.forEach(e => {
-    if (!groups[e.date]) groups[e.date] = []
-    groups[e.date].push(e)
+    if (!groups[e.expense_date]) groups[e.expense_date] = []
+    groups[e.expense_date].push(e)
   })
   return Object.entries(groups).sort((a, b) => b[0].localeCompare(a[0]))
 }
@@ -78,7 +78,7 @@ export default function Budget() {
       .from('expenses')
       .select('*')
       .eq('user_id', user.id)
-      .order('date', { ascending: false })
+      .order('expense_date', { ascending: false })
       .order('created_at', { ascending: false })
 
     const { data } = await query
@@ -102,9 +102,9 @@ export default function Budget() {
 
   // Filter expenses by date
   const filteredByDate = expenses.filter(e => {
-    if (dateFilter === 'today') return e.date === today
-    if (dateFilter === 'week') return e.date >= getWeekStart()
-    if (dateFilter === 'month') return e.date >= monthStart
+    if (dateFilter === 'today') return e.expense_date === today
+    if (dateFilter === 'week') return e.expense_date >= getWeekStart()
+    if (dateFilter === 'month') return e.expense_date >= monthStart
     return true
   })
 
@@ -148,7 +148,7 @@ export default function Budget() {
   const undoDelete = () => {
     if (undoTimer) clearTimeout(undoTimer)
     if (undoExpense) {
-      setExpenses(prev => [undoExpense, ...prev].sort((a, b) => b.date.localeCompare(a.date) || b.created_at.localeCompare(a.created_at)))
+      setExpenses(prev => [undoExpense, ...prev].sort((a, b) => b.expense_date.localeCompare(a.expense_date) || b.created_at.localeCompare(a.created_at)))
     }
     setUndoExpense(null)
   }
@@ -158,13 +158,13 @@ export default function Budget() {
     setEditAmount(e.amount.toString())
     setEditCategory(e.category)
     setEditNote(e.note ?? '')
-    setEditDate(e.date)
+    setEditDate(e.expense_date)
   }
 
   const saveEdit = async () => {
     if (!editExpense) return
     setEditSaving(true)
-    const updates = { amount: Number(editAmount), category: editCategory, note: editNote, date: editDate }
+    const updates = { amount: Number(editAmount), category: editCategory, note: editNote, expense_date: editDate }
     await supabase.from('expenses').update(updates).eq('id', editExpense.id)
     setExpenses(prev => prev.map(e => e.id === editExpense.id ? { ...e, ...updates } : e))
     setEditSaving(false)
