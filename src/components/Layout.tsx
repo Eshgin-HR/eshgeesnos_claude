@@ -3,21 +3,22 @@ import { createPortal } from 'react-dom'
 import { useLocation } from 'react-router-dom'
 import { Plus, Menu } from 'lucide-react'
 import Sidebar from './Sidebar'
+import AddTaskSheet from './AddTaskSheet'
+import AddExpenseSheet from './AddExpenseSheet'
+import AddNoteModal from './AddNoteModal'
 
 // --- FAB Context (lets pages know when FAB fires) ---
 interface FABContextValue {
   openAddTask: (prefillDate?: string) => void
   openAddExpense: () => void
+  openAddNote: () => void
 }
 const FABContext = createContext<FABContextValue>({
   openAddTask: () => {},
   openAddExpense: () => {},
+  openAddNote: () => {},
 })
 export const useFAB = () => useContext(FABContext)
-
-// --- AddTask Sheet ---
-import AddTaskSheet from './AddTaskSheet'
-import AddExpenseSheet from './AddExpenseSheet'
 
 // Page title mapping
 const PAGE_TITLES: Record<string, string> = {
@@ -51,22 +52,21 @@ export default function Layout({ children }: { children: ReactNode }) {
   })
   const [mobileOpen, setMobileOpen] = useState(false)
 
-  // FAB choice sheet
+  // FAB modals
   const [fabOpen, setFabOpen] = useState(false)
   const [addTaskOpen, setAddTaskOpen] = useState(false)
   const [addExpenseOpen, setAddExpenseOpen] = useState(false)
+  const [addNoteOpen, setAddNoteOpen] = useState(false)
   const [prefillDate, setPrefillDate] = useState<string | undefined>()
 
   // Compute sidebar width CSS var
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
   const sidebarWidth = isMobile ? 0 : collapsed ? 56 : 220
 
-  // Update CSS var on change
   useEffect(() => {
     document.documentElement.style.setProperty('--sidebar-width', `${sidebarWidth}px`)
   }, [sidebarWidth])
 
-  // Persist collapse state
   const handleToggleCollapse = useCallback(() => {
     setCollapsed(prev => {
       const next = !prev
@@ -75,7 +75,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     })
   }, [])
 
-  // Close FAB choice sheet when nav changes
+  // Close FAB when navigating
   useEffect(() => {
     setFabOpen(false)
     setMobileOpen(false)
@@ -94,8 +94,13 @@ export default function Layout({ children }: { children: ReactNode }) {
     setAddExpenseOpen(true)
   }, [])
 
+  const openAddNote = useCallback(() => {
+    setFabOpen(false)
+    setAddNoteOpen(true)
+  }, [])
+
   return (
-    <FABContext.Provider value={{ openAddTask, openAddExpense }}>
+    <FABContext.Provider value={{ openAddTask, openAddExpense, openAddNote }}>
       <div className="min-h-screen" style={{ backgroundColor: '#0F0F0F' }}>
         {/* Sidebar */}
         <Sidebar
@@ -141,7 +146,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           </main>
         </div>
 
-        {/* FAB */}
+        {/* FAB button */}
         <button
           className="fixed rounded-full flex items-center justify-center shadow-lg transition-transform active:scale-95 z-[100]"
           style={{
@@ -178,6 +183,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 Quick Add
               </div>
               <div className="flex flex-col gap-2">
+                {/* Add Task */}
                 <button
                   className="flex items-center gap-3 p-4 rounded-xl transition-colors text-left active:scale-[0.98]"
                   style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A' }}
@@ -191,6 +197,8 @@ export default function Layout({ children }: { children: ReactNode }) {
                     <div className="text-[12px]" style={{ color: '#888780' }}>New action or next step</div>
                   </div>
                 </button>
+
+                {/* Add Expense */}
                 <button
                   className="flex items-center gap-3 p-4 rounded-xl transition-colors text-left active:scale-[0.98]"
                   style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A' }}
@@ -204,23 +212,39 @@ export default function Layout({ children }: { children: ReactNode }) {
                     <div className="text-[12px]" style={{ color: '#888780' }}>Log a payment or purchase</div>
                   </div>
                 </button>
+
+                {/* Add Note */}
+                <button
+                  className="flex items-center gap-3 p-4 rounded-xl transition-colors text-left active:scale-[0.98]"
+                  style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A' }}
+                  onClick={() => openAddNote()}
+                >
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#EF9F2720', border: '0.5px solid #EF9F2740' }}>
+                    <Plus size={18} color="#EF9F27" strokeWidth={2.5} />
+                  </div>
+                  <div>
+                    <div className="text-[14px] font-medium" style={{ color: '#F5F5F5' }}>Add Note</div>
+                    <div className="text-[12px]" style={{ color: '#888780' }}>Quick capture an idea or thought</div>
+                  </div>
+                </button>
               </div>
             </div>
           </div>,
           document.body
         )}
 
-        {/* Add Task Sheet */}
+        {/* Modals */}
         {addTaskOpen && (
           <AddTaskSheet
             prefillDate={prefillDate}
             onClose={() => { setAddTaskOpen(false); setPrefillDate(undefined) }}
           />
         )}
-
-        {/* Add Expense Sheet */}
         {addExpenseOpen && (
           <AddExpenseSheet onClose={() => setAddExpenseOpen(false)} />
+        )}
+        {addNoteOpen && (
+          <AddNoteModal onClose={() => setAddNoteOpen(false)} />
         )}
       </div>
     </FABContext.Provider>

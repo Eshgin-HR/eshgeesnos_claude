@@ -146,7 +146,7 @@ export default function QuickNotes() {
       .from('notes')
       .select('*')
       .eq('user_id', user.id)
-      .order('updated_at', { ascending: false })
+      .order('updated_at', { ascending: false, nullsFirst: false })
     setNotes((data ?? []) as Note[])
     setLoading(false)
   }, [user])
