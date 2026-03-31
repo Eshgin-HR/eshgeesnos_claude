@@ -38,13 +38,12 @@ export default function AddExpenseSheet({ onClose, onCreated }: Props) {
   }
 
   return createPortal(
-    <div className="fixed inset-0 z-[200] flex flex-col justify-end" onClick={onClose}>
+    <div className="fixed inset-0 z-[200] flex items-center justify-center px-4" style={{ backgroundColor: 'rgba(0,0,0,0.65)' }} onClick={onClose}>
       <div
-        className="relative rounded-t-2xl px-4 pt-4 pb-8"
-        style={{ backgroundColor: '#1A1A1A', borderTop: '0.5px solid #2A2A2A', maxHeight: '85vh', overflowY: 'auto' }}
+        className="relative w-full max-w-md rounded-2xl px-5 pt-5 pb-6"
+        style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', maxHeight: '90vh', overflowY: 'auto' }}
         onClick={e => e.stopPropagation()}
       >
-        <div className="mx-auto mb-4 h-[3px] w-8 rounded-full" style={{ backgroundColor: '#3A3A3A' }} />
 
         <div className="flex items-center justify-between mb-4">
           <span className="text-[16px] font-medium" style={{ color: '#F5F5F5' }}>Add Expense</span>

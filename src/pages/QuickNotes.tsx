@@ -1,22 +1,136 @@
 import { useEffect, useState, useCallback, useRef } from 'react'
-import { Search, Plus, X, Trash2, ArrowLeft } from 'lucide-react'
+import { createPortal } from 'react-dom'
+import { Search, Plus, X, Trash2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import type { Note } from '../lib/supabase'
-import { cn } from '../lib/utils'
 
-function formatNoteDate(dateStr: string): string {
+function formatDate(dateStr: string): string {
   const d = new Date(dateStr)
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
 }
 
-function formatNoteTime(dateStr: string): string {
+function formatDateTime(dateStr: string): string {
   const d = new Date(dateStr)
   const h = String(d.getHours()).padStart(2, '0')
   const m = String(d.getMinutes()).padStart(2, '0')
-  return `${formatNoteDate(dateStr)} at ${h}:${m}`
+  return `${formatDate(dateStr)} at ${h}:${m}`
 }
 
+// ─── Note Editor Modal ──────────────────────────────────────────────
+interface EditorModalProps {
+  note: Note
+  onClose: () => void
+  onSave: (id: string, title: string, body: string) => void
+  onDelete: (id: string) => void
+}
+
+function NoteEditorModal({ note, onClose, onSave, onDelete }: EditorModalProps) {
+  const [title, setTitle] = useState(note.title ?? '')
+  const [body, setBody] = useState(note.body ?? '')
+  const [lastSaved, setLastSaved] = useState<string | null>(note.updated_at ?? note.created_at)
+  const [saving, setSaving] = useState(false)
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const titleRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    setTimeout(() => titleRef.current?.focus(), 80)
+  }, [])
+
+  const scheduleSave = useCallback((t: string, b: string) => {
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
+    saveTimerRef.current = setTimeout(async () => {
+      setSaving(true)
+      const now = new Date().toISOString()
+      await onSave(note.id, t, b)
+      setLastSaved(now)
+      setSaving(false)
+    }, 500)
+  }, [note.id, onSave])
+
+  const handleTitleChange = (val: string) => {
+    setTitle(val)
+    scheduleSave(val, body)
+  }
+
+  const handleBodyChange = (val: string) => {
+    setBody(val)
+    scheduleSave(title, val)
+  }
+
+  const handleDelete = () => {
+    if (!window.confirm('Delete this note?')) return
+    onDelete(note.id)
+    onClose()
+  }
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center px-4"
+      style={{ backgroundColor: 'rgba(0,0,0,0.65)' }}
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-lg rounded-2xl flex flex-col"
+        style={{
+          backgroundColor: '#1A1A1A',
+          border: '0.5px solid #2A2A2A',
+          height: '75vh',
+          maxHeight: '640px',
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Modal header */}
+        <div
+          className="flex items-center justify-between px-5 py-3 flex-shrink-0"
+          style={{ borderBottom: '0.5px solid #2A2A2A' }}
+        >
+          <span className="text-[11px] uppercase tracking-wide font-medium" style={{ color: '#555550' }}>
+            {saving ? 'Saving…' : lastSaved ? `Saved ${formatDateTime(lastSaved)}` : 'New note'}
+          </span>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleDelete}
+              className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#E24B4A15] transition-colors"
+              title="Delete note"
+            >
+              <Trash2 size={14} style={{ color: '#E24B4A' }} />
+            </button>
+            <button
+              onClick={onClose}
+              className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#222222] transition-colors"
+            >
+              <X size={16} style={{ color: '#888780' }} />
+            </button>
+          </div>
+        </div>
+
+        {/* Editor */}
+        <div className="flex flex-col flex-1 overflow-hidden px-5 py-4">
+          <input
+            ref={titleRef}
+            type="text"
+            value={title}
+            onChange={e => handleTitleChange(e.target.value)}
+            placeholder="Untitled"
+            className="w-full bg-transparent border-none focus:outline-none text-[20px] font-medium mb-3 flex-shrink-0"
+            style={{ color: '#F5F5F5' }}
+          />
+          <textarea
+            value={body}
+            onChange={e => handleBodyChange(e.target.value)}
+            placeholder="Start writing…"
+            className="flex-1 w-full bg-transparent border-none focus:outline-none resize-none text-[14px]"
+            style={{ color: '#F5F5F5', lineHeight: '1.75' }}
+          />
+        </div>
+      </div>
+    </div>,
+    document.body
+  )
+}
+
+// ─── Main Notes Page ─────────────────────────────────────────────────
 export default function QuickNotes() {
   const { session } = useAuth()
   const user = session?.user
@@ -24,16 +138,7 @@ export default function QuickNotes() {
   const [notes, setNotes] = useState<Note[]>([])
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
-  const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [mobileView, setMobileView] = useState<'list' | 'editor'>('list')
-
-  // Editor state
-  const [editorTitle, setEditorTitle] = useState('')
-  const [editorBody, setEditorBody] = useState('')
-  const [lastSaved, setLastSaved] = useState<string | null>(null)
-  const [saving, setSaving] = useState(false)
-  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const selectedIdRef = useRef<string | null>(null)
+  const [editingNote, setEditingNote] = useState<Note | null>(null)
 
   const fetchNotes = useCallback(async () => {
     if (!user) return
@@ -41,91 +146,49 @@ export default function QuickNotes() {
       .from('notes')
       .select('*')
       .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
+      .order('updated_at', { ascending: false })
     setNotes((data ?? []) as Note[])
     setLoading(false)
   }, [user])
 
   useEffect(() => { fetchNotes() }, [fetchNotes])
 
-  // Sync editor when selected note changes
-  useEffect(() => {
-    selectedIdRef.current = selectedId
-    if (!selectedId) {
-      setEditorTitle('')
-      setEditorBody('')
-      setLastSaved(null)
-      return
-    }
-    const note = notes.find(n => n.id === selectedId)
-    if (note) {
-      setEditorTitle(note.title ?? '')
-      setEditorBody(note.body ?? '')
-      setLastSaved(note.updated_at ?? note.created_at)
-    }
-  }, [selectedId])
-
-  const persistSave = useCallback(async (id: string, title: string, body: string) => {
-    if (!user || id !== selectedIdRef.current) return
-    setSaving(true)
-    const now = new Date().toISOString()
-    const { error } = await supabase
-      .from('notes')
-      .update({ title: title || 'Untitled', body, updated_at: now })
-      .eq('id', id)
-      .eq('user_id', user.id)
-    if (!error) {
-      setLastSaved(now)
-      setNotes(prev => prev.map(n =>
-        n.id === id ? { ...n, title: title || 'Untitled', body, updated_at: now } : n
-      ))
-    }
-    setSaving(false)
-  }, [user])
-
-  const scheduleSave = useCallback((title: string, body: string) => {
-    if (!selectedId) return
-    if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
-    saveTimerRef.current = setTimeout(() => {
-      persistSave(selectedId, title, body)
-    }, 500)
-  }, [selectedId, persistSave])
-
-  const handleTitleChange = (val: string) => {
-    setEditorTitle(val)
-    scheduleSave(val, editorBody)
-  }
-
-  const handleBodyChange = (val: string) => {
-    setEditorBody(val)
-    scheduleSave(editorTitle, val)
-  }
-
   const createNote = async () => {
     if (!user) return
     const now = new Date().toISOString()
     const { data } = await supabase
       .from('notes')
-      .insert({ user_id: user.id, title: 'Untitled', body: '', tag: 'Personal', pinned: false, created_at: now, updated_at: now })
+      .insert({ user_id: user.id, title: '', body: '', tag: 'Personal', pinned: false, created_at: now, updated_at: now })
       .select('*')
       .single()
     if (data) {
       const note = data as Note
       setNotes(prev => [note, ...prev])
-      setSelectedId(note.id)
-      setMobileView('editor')
+      setEditingNote(note)
     }
   }
 
-  const deleteNote = async (id: string) => {
-    if (!window.confirm('Delete this note?')) return
+  const handleSave = useCallback(async (id: string, title: string, body: string) => {
+    if (!user) return
+    const now = new Date().toISOString()
+    const savedTitle = title.trim() || 'Untitled'
+    await supabase
+      .from('notes')
+      .update({ title: savedTitle, body, updated_at: now })
+      .eq('id', id)
+      .eq('user_id', user.id)
+    setNotes(prev => prev.map(n =>
+      n.id === id ? { ...n, title: savedTitle, body, updated_at: now } : n
+    ))
+    // Also update editingNote if still open
+    setEditingNote(prev => prev?.id === id ? { ...prev, title: savedTitle, body, updated_at: now } : prev)
+  }, [user])
+
+  const handleDelete = useCallback(async (id: string) => {
     await supabase.from('notes').delete().eq('id', id)
     setNotes(prev => prev.filter(n => n.id !== id))
-    if (selectedId === id) {
-      setSelectedId(null)
-      setMobileView('list')
-    }
-  }
+    setEditingNote(null)
+  }, [])
 
   const filteredNotes = notes.filter(n => {
     if (!search) return true
@@ -133,20 +196,14 @@ export default function QuickNotes() {
     return (n.title ?? '').toLowerCase().includes(q) || (n.body ?? '').toLowerCase().includes(q)
   })
 
-  const isWeb = typeof window !== 'undefined' && window.innerWidth >= 768
-
-  // Note list panel
-  const listPanel = (
-    <div
-      className={cn(
-        'flex flex-col h-full overflow-hidden',
-        isWeb ? 'w-[280px] flex-shrink-0 border-r' : 'w-full'
-      )}
-      style={{ borderColor: '#2A2A2A', backgroundColor: '#0F0F0F' }}
-    >
-      {/* Search + new */}
-      <div className="flex items-center gap-2 px-4 py-3" style={{ borderBottom: '0.5px solid #2A2A2A' }}>
-        <div className="flex items-center gap-2 flex-1 rounded-lg px-3 py-2" style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A' }}>
+  return (
+    <div className="flex flex-col gap-4">
+      {/* Header row */}
+      <div className="flex items-center gap-3">
+        <div
+          className="flex items-center gap-2 flex-1 rounded-lg px-3 py-2"
+          style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A' }}
+        >
           <Search size={13} style={{ color: '#555550', flexShrink: 0 }} />
           <input
             type="text"
@@ -164,153 +221,84 @@ export default function QuickNotes() {
         </div>
         <button
           onClick={createNote}
-          className="flex items-center justify-center rounded-lg transition-all active:scale-95 flex-shrink-0"
-          style={{ width: '32px', height: '32px', backgroundColor: '#378ADD' }}
-          aria-label="New note"
+          className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-[13px] font-medium transition-all active:scale-[0.98] flex-shrink-0"
+          style={{ backgroundColor: '#378ADD', color: '#fff' }}
         >
-          <Plus size={15} color="#fff" strokeWidth={2.5} />
+          <Plus size={14} strokeWidth={2.5} />
+          New note
         </button>
       </div>
 
-      {/* Note cards */}
-      <div className="flex-1 overflow-y-auto px-3 py-2">
-        {loading ? (
-          <div className="flex flex-col gap-1.5">
-            {[1, 2, 3, 4].map(i => (
-              <div key={i} className="h-16 rounded-[10px] animate-pulse" style={{ backgroundColor: '#1A1A1A' }} />
-            ))}
-          </div>
-        ) : filteredNotes.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16">
-            <p className="text-[13px]" style={{ color: '#555550' }}>
-              {search ? 'No notes found' : 'No notes yet — create one'}
-            </p>
-          </div>
-        ) : (
-          filteredNotes.map(note => {
-            const isSelected = note.id === selectedId
-            const preview = (note.body ?? '').split('\n').find(l => l.trim()) ?? ''
-            return (
-              <button
-                key={note.id}
-                onClick={() => { setSelectedId(note.id); setMobileView('editor') }}
-                className="w-full text-left rounded-[10px] px-3.5 py-3 mb-1.5 transition-colors"
-                style={{
-                  backgroundColor: isSelected ? '#1A2E45' : '#1A1A1A',
-                  border: `0.5px solid ${isSelected ? '#378ADD' : '#2A2A2A'}`,
-                }}
-              >
-                <div className="flex items-start justify-between gap-2 mb-0.5">
-                  <p className="text-[14px] font-medium truncate" style={{ color: '#F5F5F5' }}>
-                    {note.title || 'Untitled'}
-                  </p>
-                  <span className="text-[11px] flex-shrink-0" style={{ color: '#555550' }}>
-                    {formatNoteDate(note.updated_at ?? note.created_at)}
-                  </span>
-                </div>
-                <p className="text-[12px] truncate" style={{ color: '#888780' }}>
-                  {preview || 'Empty note'}
-                </p>
-              </button>
-            )
-          })
-        )}
-      </div>
-    </div>
-  )
+      {/* Notes count */}
+      {!loading && notes.length > 0 && (
+        <p className="text-[12px]" style={{ color: '#555550' }}>
+          {filteredNotes.length} {filteredNotes.length === 1 ? 'note' : 'notes'}
+          {search ? ` matching "${search}"` : ''}
+        </p>
+      )}
 
-  // Note editor panel
-  const editorPanel = (
-    <div className="flex flex-col flex-1 h-full overflow-hidden" style={{ backgroundColor: '#0F0F0F' }}>
-      {!isWeb && (
-        <div className="flex items-center gap-2 px-4 py-3" style={{ borderBottom: '0.5px solid #2A2A2A' }}>
-          <button
-            onClick={() => setMobileView('list')}
-            className="flex items-center gap-1.5 p-1.5 rounded-lg hover:bg-[#1A1A1A]"
-          >
-            <ArrowLeft size={16} style={{ color: '#888780' }} />
-            <span className="text-[13px]" style={{ color: '#888780' }}>Notes</span>
-          </button>
-          {selectedId && (
+      {/* Note cards grid */}
+      {loading ? (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {[1, 2, 3, 4, 5, 6].map(i => (
+            <div key={i} className="h-28 rounded-xl animate-pulse" style={{ backgroundColor: '#1A1A1A' }} />
+          ))}
+        </div>
+      ) : filteredNotes.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 gap-3">
+          <p className="text-[14px]" style={{ color: '#555550' }}>
+            {search ? 'No notes match your search' : 'No notes yet'}
+          </p>
+          {!search && (
             <button
-              onClick={() => deleteNote(selectedId)}
-              className="ml-auto p-1.5 rounded-lg hover:bg-[#1A1A1A]"
+              onClick={createNote}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-[13px] font-medium transition-all active:scale-[0.98]"
+              style={{ backgroundColor: '#378ADD', color: '#fff' }}
             >
-              <Trash2 size={15} style={{ color: '#E24B4A' }} />
+              <Plus size={14} strokeWidth={2.5} />
+              Create first note
             </button>
           )}
         </div>
-      )}
-
-      {!selectedId ? (
-        <div className="flex-1 flex flex-col items-center justify-center gap-3">
-          <p className="text-[14px]" style={{ color: '#555550' }}>Select a note or create a new one</p>
-          <button
-            onClick={createNote}
-            className="px-4 py-2 rounded-lg text-[13px] font-medium transition-all active:scale-[0.98]"
-            style={{ backgroundColor: '#378ADD', color: '#fff' }}
-          >
-            + New note
-          </button>
-        </div>
       ) : (
-        <div className="flex-1 flex flex-col overflow-hidden px-5 py-4">
-          {isWeb && (
-            <div className="flex items-center justify-end mb-2">
-              <button onClick={() => deleteNote(selectedId)} className="p-1.5 rounded-lg hover:bg-[#1A1A1A]">
-                <Trash2 size={15} style={{ color: '#555550' }} />
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+          {filteredNotes.map(note => {
+            const preview = (note.body ?? '').trim().split('\n').find(l => l.trim()) ?? ''
+            return (
+              <button
+                key={note.id}
+                onClick={() => setEditingNote(note)}
+                className="text-left rounded-xl p-3.5 transition-colors hover:border-[#3A3A3A] active:scale-[0.98] flex flex-col"
+                style={{
+                  backgroundColor: '#1A1A1A',
+                  border: '0.5px solid #2A2A2A',
+                  minHeight: '110px',
+                }}
+              >
+                <p className="text-[13px] font-medium mb-1.5 line-clamp-2 leading-snug" style={{ color: '#F5F5F5' }}>
+                  {note.title?.trim() || 'Untitled'}
+                </p>
+                <p className="text-[11px] leading-relaxed flex-1 overflow-hidden" style={{ color: '#888780', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  {preview || 'Empty note'}
+                </p>
+                <p className="text-[10px] mt-2 flex-shrink-0" style={{ color: '#555550' }}>
+                  {formatDate(note.updated_at ?? note.created_at)}
+                </p>
               </button>
-            </div>
-          )}
-
-          {/* Title */}
-          <input
-            type="text"
-            value={editorTitle}
-            onChange={e => handleTitleChange(e.target.value)}
-            placeholder="Untitled"
-            className="w-full bg-transparent border-none focus:outline-none text-[20px] font-medium mb-4"
-            style={{ color: '#F5F5F5' }}
-          />
-
-          {/* Body */}
-          <textarea
-            value={editorBody}
-            onChange={e => handleBodyChange(e.target.value)}
-            placeholder="Start writing…"
-            className="flex-1 w-full bg-transparent border-none focus:outline-none resize-none text-[14px]"
-            style={{ color: '#F5F5F5', lineHeight: '1.7', minHeight: '200px' }}
-          />
-
-          {/* Timestamp */}
-          {lastSaved && (
-            <p className="text-[11px] mt-3 flex-shrink-0" style={{ color: '#555550' }}>
-              {saving ? 'Saving…' : `Last edited ${formatNoteTime(lastSaved)}`}
-            </p>
-          )}
+            )
+          })}
         </div>
       )}
-    </div>
-  )
 
-  if (isWeb) {
-    return (
-      <div
-        className="flex"
-        style={{
-          height: 'calc(100vh - 56px)',
-          margin: '-20px -16px',
-        }}
-      >
-        {listPanel}
-        {editorPanel}
-      </div>
-    )
-  }
-
-  return (
-    <div style={{ height: 'calc(100vh - 56px)', margin: '-20px -16px', overflow: 'hidden' }}>
-      {mobileView === 'list' ? listPanel : editorPanel}
+      {/* Editor modal */}
+      {editingNote && (
+        <NoteEditorModal
+          note={editingNote}
+          onClose={() => setEditingNote(null)}
+          onSave={handleSave}
+          onDelete={handleDelete}
+        />
+      )}
     </div>
   )
 }

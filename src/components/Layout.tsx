@@ -162,35 +162,29 @@ export default function Layout({ children }: { children: ReactNode }) {
           />
         </button>
 
-        {/* FAB choice sheet */}
+        {/* FAB choice modal — centered */}
         {fabOpen && createPortal(
           <div
-            className="fixed inset-0 z-[99]"
+            className="fixed inset-0 z-[99] flex items-center justify-center px-6"
+            style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}
             onClick={() => setFabOpen(false)}
           >
             <div
-              className="absolute rounded-t-2xl px-4 pb-8 pt-4"
-              style={{
-                bottom: 0,
-                left: 0,
-                right: 0,
-                backgroundColor: '#1A1A1A',
-                borderTop: '0.5px solid #2A2A2A',
-              }}
+              className="w-full max-w-sm rounded-2xl px-4 py-5"
+              style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A' }}
               onClick={e => e.stopPropagation()}
             >
-              <div className="mx-auto mb-4 h-[3px] w-8 rounded-full" style={{ backgroundColor: '#3A3A3A' }} />
               <div className="text-[13px] font-medium mb-3 uppercase tracking-wide" style={{ color: '#888780' }}>
                 Quick Add
               </div>
               <div className="flex flex-col gap-2">
                 <button
-                  className="flex items-center gap-3 p-4 rounded-xl transition-colors text-left"
+                  className="flex items-center gap-3 p-4 rounded-xl transition-colors text-left active:scale-[0.98]"
                   style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A' }}
                   onClick={() => openAddTask()}
                 >
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#1D9E75' }}>
-                    <Plus size={16} color="#fff" strokeWidth={2.5} />
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#1D9E7520', border: '0.5px solid #1D9E7540' }}>
+                    <Plus size={18} color="#1D9E75" strokeWidth={2.5} />
                   </div>
                   <div>
                     <div className="text-[14px] font-medium" style={{ color: '#F5F5F5' }}>Add Task</div>
@@ -198,12 +192,12 @@ export default function Layout({ children }: { children: ReactNode }) {
                   </div>
                 </button>
                 <button
-                  className="flex items-center gap-3 p-4 rounded-xl transition-colors text-left"
+                  className="flex items-center gap-3 p-4 rounded-xl transition-colors text-left active:scale-[0.98]"
                   style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A' }}
                   onClick={() => openAddExpense()}
                 >
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#378ADD' }}>
-                    <Plus size={16} color="#fff" strokeWidth={2.5} />
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#378ADD20', border: '0.5px solid #378ADD40' }}>
+                    <Plus size={18} color="#378ADD" strokeWidth={2.5} />
                   </div>
                   <div>
                     <div className="text-[14px] font-medium" style={{ color: '#F5F5F5' }}>Add Expense</div>
