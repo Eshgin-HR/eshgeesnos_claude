@@ -1,14 +1,16 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Download, LogOut, Trash2, ChevronDown, ChevronUp, Plus } from 'lucide-react'
+import { Download, LogOut, Trash2, ChevronDown, ChevronUp, Plus, Calendar } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { supabase, todayStr } from '../lib/supabase'
 import type { Habit, HabitCategory } from '../lib/supabase'
+import { useGoogleCalendar } from '../context/GoogleCalendarContext'
 
 const HABIT_CATEGORIES: HabitCategory[] = ['Morning', 'Startup', 'Body', 'Self-dev', 'Evening']
 
 export default function Settings() {
   const { session, signOut } = useAuth()
   const user = session?.user
+  const gcal = useGoogleCalendar()
 
   // Monthly budget target
   const [monthlyTarget, setMonthlyTarget] = useState('')
@@ -166,6 +168,45 @@ export default function Settings() {
           <p className="text-[14px] font-medium" style={{ color: '#0F0F1A' }}>Eshgeen Jafarov</p>
           <p className="text-[12px]" style={{ color: '#6B6B7B' }}>Lead, People Analytics · TapWork Founder</p>
           <p className="text-[11px]" style={{ color: '#6B6B7B' }}>{user?.email}</p>
+        </div>
+      </div>
+
+      {/* ── Google Calendar ── */}
+      <div className="p-4 rounded-xl" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0' }}>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#FFF6D8' }}>
+              <Calendar size={15} style={{ color: '#A07000' }} />
+            </div>
+            <div>
+              <p className="text-[14px] font-medium" style={{ color: '#0F0F1A' }}>Google Calendar</p>
+              <p className="text-[12px]" style={{ color: '#6B6B7B' }}>
+                {gcal.connected && !gcal.tokenExpired
+                  ? 'Connected — primary calendar'
+                  : gcal.tokenExpired
+                    ? 'Session expired — reconnect to sync'
+                    : 'Not connected'}
+              </p>
+            </div>
+          </div>
+          {gcal.connected && !gcal.tokenExpired ? (
+            <button
+              onClick={gcal.logout}
+              className="text-[12px] font-medium px-3 py-1.5 rounded-lg transition-colors"
+              style={{ backgroundColor: '#FFF0F0', border: '1px solid #FCCFCF', color: '#B23333' }}
+            >
+              Disconnect
+            </button>
+          ) : (
+            <button
+              onClick={gcal.login}
+              disabled={gcal.connecting}
+              className="text-[12px] font-medium px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50"
+              style={{ backgroundColor: '#4C4DDC', color: '#fff' }}
+            >
+              {gcal.connecting ? 'Connecting…' : gcal.tokenExpired ? 'Reconnect' : 'Connect'}
+            </button>
+          )}
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import { GoogleCalendarProvider } from './context/GoogleCalendarContext'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import DailyTasks from './pages/DailyTasks'
@@ -85,7 +86,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AppRoutes />
+        <GoogleCalendarProvider>
+          <AppRoutes />
+        </GoogleCalendarProvider>
       </AuthProvider>
     </BrowserRouter>
   )
