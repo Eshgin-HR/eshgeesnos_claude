@@ -229,6 +229,154 @@ function EventFormModal({ initialDate, event, onClose, onSave, onDelete }: Event
   )
 }
 
+// ─── Day Detail Modal ───────────────────────────────────────────────────────
+interface DayDetailModalProps {
+  date: string
+  tasks: Task[]
+  events: GoogleCalendarEvent[]
+  onClose: () => void
+  onToggleTask: (task: Task) => void
+  onNewTask: (date: string) => void
+  onNewEvent: (date: string) => void
+  onEditEvent: (event: GoogleCalendarEvent) => void
+  gcalConnected: boolean
+}
+
+function DayDetailModal({ date, tasks, events, onClose, onToggleTask, onNewTask, onNewEvent, onEditEvent, gcalConnected }: DayDetailModalProps) {
+  const label = new Date(date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center px-4"
+      style={{ backgroundColor: 'rgba(0,0,0,0.55)' }}
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-sm rounded-2xl flex flex-col"
+        style={{
+          backgroundColor: '#FFFFFF',
+          border: '1px solid #E8E8F0',
+          boxShadow: '0 20px 60px -10px rgb(15 15 26 / 0.18)',
+          maxHeight: '80vh',
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid #E8E8F0' }}>
+          <span className="text-[14px] font-medium" style={{ color: '#0F0F1A' }}>{label}</span>
+          <div className="flex items-center gap-2">
+            {gcalConnected && (
+              <button
+                onClick={() => { onNewEvent(date); onClose() }}
+                className="px-2.5 py-1 rounded-lg text-[11px] font-medium"
+                style={{ backgroundColor: '#FFF6D8', border: '1px solid #FFD33C', color: '#A07000' }}
+              >
+                + Event
+              </button>
+            )}
+            <button
+              onClick={() => { onNewTask(date); onClose() }}
+              className="px-2.5 py-1 rounded-lg text-[11px] font-medium"
+              style={{ backgroundColor: '#4C4DDC', color: '#fff' }}
+            >
+              + Task
+            </button>
+            <button onClick={onClose} className="p-1 rounded-lg hover:bg-[#F5F5FA]">
+              <X size={15} style={{ color: '#6B6B7B' }} />
+            </button>
+          </div>
+        </div>
+
+        {/* Scrollable content */}
+        <div className="overflow-y-auto flex-1">
+          {/* Tasks */}
+          {tasks.length > 0 && (
+            <>
+              <div className="px-4 pt-3 pb-1">
+                <span className="text-[11px] font-medium uppercase tracking-wide" style={{ color: '#6B6B7B' }}>Tasks · {tasks.length}</span>
+              </div>
+              {tasks.map((task, i) => {
+                const done = task.status === 'done' || task.status === 'deferred'
+                return (
+                  <div
+                    key={task.id}
+                    className="flex items-start gap-3 px-4 py-2.5"
+                    style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
+                  >
+                    <button
+                      onClick={() => onToggleTask(task)}
+                      className="flex-shrink-0 flex items-center justify-center rounded mt-0.5"
+                      style={{
+                        width: '16px', height: '16px',
+                        border: done ? 'none' : '1.5px solid #D1D1E0',
+                        backgroundColor: done ? '#50CD89' : 'transparent',
+                        borderRadius: '4px',
+                      }}
+                    >
+                      {done && <Check size={9} color="#fff" strokeWidth={3} />}
+                    </button>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[13px]" style={{ color: done ? '#6B6B7B' : '#0F0F1A', textDecoration: done ? 'line-through' : 'none' }}>
+                        {task.title}
+                      </p>
+                      <div className="flex items-center gap-1 mt-0.5 flex-wrap">
+                        {task.area_tag && (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded font-medium uppercase tracking-wide"
+                            style={{ backgroundColor: AREA_COLORS[task.area_tag as AreaTag] + '20', color: AREA_COLORS[task.area_tag as AreaTag] }}>
+                            {task.area_tag}
+                          </span>
+                        )}
+                        {task.context_tag && (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded font-medium"
+                            style={{ backgroundColor: CONTEXT_COLORS[task.context_tag as GTDContext] + '20', color: CONTEXT_COLORS[task.context_tag as GTDContext] }}>
+                            {task.context_tag}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </>
+          )}
+
+          {/* Events */}
+          {events.length > 0 && (
+            <>
+              <div className="px-4 pt-3 pb-1" style={{ borderTop: tasks.length > 0 ? '1px solid #E8E8F0' : 'none' }}>
+                <span className="text-[11px] font-medium uppercase tracking-wide" style={{ color: '#6B6B7B' }}>Calendar Events · {events.length}</span>
+              </div>
+              {events.map((event, i) => (
+                <div
+                  key={event.id}
+                  className="flex items-center gap-3 px-4 py-2.5"
+                  style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
+                >
+                  <div className="w-0.5 self-stretch rounded-full flex-shrink-0" style={{ backgroundColor: '#FFD33C', minHeight: '28px' }} />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px]" style={{ color: '#0F0F1A' }}>{event.summary}</p>
+                    <p className="text-[11px]" style={{ color: '#6B6B7B' }}>{formatEventTime(event)}</p>
+                  </div>
+                  <button onClick={() => { onEditEvent(event); onClose() }} className="text-[11px] px-2 py-0.5 rounded hover:bg-[#F5F5FA]" style={{ color: '#6B6B7B' }}>
+                    Edit
+                  </button>
+                </div>
+              ))}
+            </>
+          )}
+
+          {tasks.length === 0 && events.length === 0 && (
+            <div className="flex items-center justify-center py-10">
+              <p className="text-[13px]" style={{ color: '#6B6B7B' }}>Nothing on this day</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>,
+    document.body
+  )
+}
+
 // ─── Main Calendar ──────────────────────────────────────────────────────────
 export default function Calendar() {
   const { session } = useAuth()
@@ -242,6 +390,7 @@ export default function Calendar() {
   const [view, setView] = useState<'month' | 'week'>('month')
   const [tasks, setTasks] = useState<Task[]>([])
   const [selectedDate, setSelectedDate] = useState<string>(todayStr())
+  const [dayModalDate, setDayModalDate] = useState<string | null>(null)
   const [newEventDate, setNewEventDate] = useState<string | null>(null)
   const [editingEvent, setEditingEvent] = useState<GoogleCalendarEvent | null>(null)
 
@@ -459,11 +608,15 @@ export default function Calendar() {
                 const taskChips = dayTasks.slice(0, maxChips)
                 const eventChips = dayEvents.slice(0, Math.max(0, maxChips - taskChips.length))
                 const overflow = Math.max(0, totalItems - maxChips)
+                const hasOverflow = overflow > 0
 
                 return (
                   <button
                     key={di}
-                    onClick={() => setSelectedDate(ds)}
+                    onClick={() => {
+                      setSelectedDate(ds)
+                      if (hasOverflow) setDayModalDate(ds)
+                    }}
                     className="min-h-[72px] p-1.5 text-left transition-colors hover:bg-[#F5F5FA] flex flex-col"
                     style={{
                       borderLeft: di > 0 ? '0.5px solid #E8E8F0' : 'none',
@@ -502,7 +655,7 @@ export default function Calendar() {
                         </div>
                       ))}
                       {overflow > 0 && (
-                        <div className="text-[10px] px-1" style={{ color: '#6B6B7B' }}>
+                        <div className="text-[10px] px-1 font-medium" style={{ color: '#4C4DDC' }}>
                           +{overflow} more
                         </div>
                       )}
@@ -727,6 +880,21 @@ export default function Calendar() {
           </div>
         )}
       </div>
+
+      {/* Day detail modal (shown when day has overflow items) */}
+      {dayModalDate && (
+        <DayDetailModal
+          date={dayModalDate}
+          tasks={tasksByDate[dayModalDate] ?? []}
+          events={eventsByDate[dayModalDate] ?? []}
+          onClose={() => setDayModalDate(null)}
+          onToggleTask={toggleTask}
+          onNewTask={(date) => openAddTask(date)}
+          onNewEvent={(date) => setNewEventDate(date)}
+          onEditEvent={(event) => setEditingEvent(event)}
+          gcalConnected={gcal.connected && !gcal.tokenExpired}
+        />
+      )}
 
       {/* New event modal */}
       {newEventDate && (

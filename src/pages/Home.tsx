@@ -1,14 +1,17 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { CheckSquare, Inbox, Flame, Wallet, ChevronRight, Check } from 'lucide-react'
+import { CheckSquare, Inbox, Flame, Wallet, ChevronRight, Check, Calendar, ExternalLink } from 'lucide-react'
 import { supabase, CONTEXT_COLORS, AREA_COLORS, todayStr, getMondayOfWeek, formatDate, isOverdue } from '../lib/supabase'
 import type { Task, GTDContext, AreaTag } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
+import { useGoogleCalendar } from '../context/GoogleCalendarContext'
+import { eventDateStr, formatEventTime } from '../lib/googleCalendar'
 
 export default function Home() {
   const { session } = useAuth()
   const user = session?.user
   const navigate = useNavigate()
+  const gcal = useGoogleCalendar()
 
   const [tasks, setTasks] = useState<Task[]>([])
   const [inboxCount, setInboxCount] = useState(0)
@@ -75,6 +78,16 @@ export default function Home() {
   }, [user, today])
 
   useEffect(() => { load() }, [load])
+
+  // Fetch today's Google Calendar events when connected
+  useEffect(() => {
+    if (!gcal.connected || gcal.tokenExpired) return
+    const start = new Date(); start.setHours(0, 0, 0, 0)
+    const end = new Date(); end.setHours(23, 59, 59, 999)
+    gcal.fetchEventsForRange(start, end)
+  }, [gcal.connected, gcal.tokenExpired]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const todayEvents = gcal.events.filter(e => eventDateStr(e) === today).slice(0, 5)
 
   const toggleTask = async (task: Task) => {
     if (completingId) return
@@ -280,6 +293,69 @@ export default function Home() {
               </div>
             )
           })
+        )}
+      </div>
+
+      {/* Today's Google Calendar Events */}
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
+        <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid #E8E8F0' }}>
+          <div className="flex items-center gap-2">
+            <Calendar size={14} style={{ color: '#A07000' }} />
+            <span className="text-[14px] font-medium" style={{ color: '#0F0F1A' }}>Today's events</span>
+            {gcal.connected && !gcal.tokenExpired && todayEvents.length > 0 && (
+              <span className="text-[11px] font-medium px-1.5 py-0.5 rounded" style={{ backgroundColor: '#FFF6D8', color: '#A07000' }}>
+                {todayEvents.length}
+              </span>
+            )}
+          </div>
+          <button onClick={() => navigate('/calendar')} className="flex items-center gap-1 text-[12px]" style={{ color: '#4C4DDC' }}>
+            Calendar <ChevronRight size={12} />
+          </button>
+        </div>
+
+        {!gcal.connected || gcal.tokenExpired ? (
+          <div className="flex items-center justify-between px-4 py-4">
+            <span className="text-[13px]" style={{ color: '#6B6B7B' }}>
+              {gcal.tokenExpired ? 'Session expired' : 'Connect Google Calendar to see your events here'}
+            </span>
+            <button
+              onClick={gcal.login}
+              disabled={gcal.connecting}
+              className="text-[12px] font-medium px-3 py-1.5 rounded-lg"
+              style={{ backgroundColor: '#4C4DDC', color: '#fff' }}
+            >
+              {gcal.tokenExpired ? 'Reconnect' : 'Connect'}
+            </button>
+          </div>
+        ) : gcal.loadingEvents ? (
+          <div className="px-4 py-4 flex flex-col gap-2">
+            {[1, 2].map(i => (
+              <div key={i} className="h-10 rounded-lg animate-pulse" style={{ backgroundColor: '#F5F5FA' }} />
+            ))}
+          </div>
+        ) : todayEvents.length === 0 ? (
+          <div className="flex items-center justify-center py-8">
+            <p className="text-[13px]" style={{ color: '#6B6B7B' }}>No events today</p>
+          </div>
+        ) : (
+          todayEvents.map((event, i) => (
+            <div
+              key={event.id}
+              className="flex items-center gap-3 px-4 py-3"
+              style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
+            >
+              <div className="w-0.5 self-stretch rounded-full flex-shrink-0" style={{ backgroundColor: '#FFD33C', minHeight: '32px' }} />
+              <div className="flex-1 min-w-0">
+                <p className="text-[14px] truncate" style={{ color: '#0F0F1A' }}>{event.summary}</p>
+                <p className="text-[11px] mt-0.5" style={{ color: '#6B6B7B' }}>{formatEventTime(event)}</p>
+              </div>
+              {event.htmlLink && (
+                <a href={event.htmlLink} target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-lg hover:bg-[#F5F5FA]">
+                  <ExternalLink size={12} style={{ color: '#6B6B7B' }} />
+                </a>
+              )}
+            </div>
+          ))
         )}
       </div>
     </div>
