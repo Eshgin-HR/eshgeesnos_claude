@@ -42,17 +42,17 @@ export default function HabitManager() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <div className="w-6 h-6 rounded-full border-2 animate-spin" style={{ borderColor: '#1D9E75', borderTopColor: 'transparent' }} />
+      <div className="w-6 h-6 rounded-full border-2 animate-spin" style={{ borderColor: '#50CD89', borderTopColor: 'transparent' }} />
     </div>
   )
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
-        <button onClick={() => navigate('/settings')} className="p-1.5 rounded-lg" style={{ backgroundColor: '#0d1f35', color: '#7a8a9e' }}>
+        <button onClick={() => navigate('/settings')} className="p-1.5 rounded-lg" style={{ backgroundColor: '#FFFFFF', color: '#6B6B7B' }}>
           <ArrowLeft size={14} />
         </button>
-        <h1 className="font-bold" style={{ fontSize: '18px', color: '#e8edf3' }}>Manage Habits</h1>
+        <h1 className="font-bold" style={{ fontSize: '18px', color: '#0F0F1A' }}>Manage Habits</h1>
       </div>
 
       <DragDropContext onDragEnd={onDragEnd}>
@@ -60,12 +60,12 @@ export default function HabitManager() {
           {(provided) => (
             <div
               className="rounded-xl overflow-hidden"
-              style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}
+              style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0' }}
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              <div className="px-4 py-2.5" style={{ borderBottom: '1px solid #1a2a40' }}>
-                <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#7a8a9e', letterSpacing: '0.06em' }}>Active ({activeHabits.length})</p>
+              <div className="px-4 py-2.5" style={{ borderBottom: '1px solid #E8E8F0' }}>
+                <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#6B6B7B', letterSpacing: '0.06em' }}>Active ({activeHabits.length})</p>
               </div>
               {activeHabits.map((habit, index) => (
                 <Draggable key={habit.id} draggableId={habit.id} index={index}>
@@ -76,11 +76,11 @@ export default function HabitManager() {
                       className="flex items-center gap-3 px-4 py-3"
                       style={{
                         ...prov.draggableProps.style,
-                        borderBottom: '1px solid #1a2a40',
-                        backgroundColor: snap.isDragging ? '#1a2a40' : 'transparent',
+                        borderBottom: '1px solid #E8E8F0',
+                        backgroundColor: snap.isDragging ? '#E8E8F0' : 'transparent',
                       }}
                     >
-                      <div {...prov.dragHandleProps} style={{ color: '#7a8a9e', cursor: 'grab' }}>
+                      <div {...prov.dragHandleProps} style={{ color: '#6B6B7B', cursor: 'grab' }}>
                         <GripVertical size={14} />
                       </div>
                       <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>{habit.icon}</span>
@@ -88,14 +88,14 @@ export default function HabitManager() {
                       <button
                         onClick={() => navigate(`/settings/habits/${habit.id}`)}
                         className="p-1.5 rounded-lg mr-1"
-                        style={{ backgroundColor: '#0d1f35', color: '#7a8a9e' }}
+                        style={{ backgroundColor: '#FFFFFF', color: '#6B6B7B' }}
                       >
                         <Edit2 size={12} />
                       </button>
                       <button
                         onClick={() => toggleActive(habit)}
                         className="w-8 h-5 rounded-full transition-colors flex items-center"
-                        style={{ backgroundColor: '#1D9E75', padding: '2px' }}
+                        style={{ backgroundColor: '#50CD89', padding: '2px' }}
                       >
                         <div className="w-4 h-4 rounded-full bg-white ml-auto" />
                       </button>
@@ -110,15 +110,15 @@ export default function HabitManager() {
       </DragDropContext>
 
       {pausedHabits.length > 0 && (
-        <div className="rounded-xl overflow-hidden" style={{ backgroundColor: '#0d1f35', border: '1px solid #1a2a40' }}>
-          <div className="px-4 py-2.5" style={{ borderBottom: '1px solid #1a2a40' }}>
-            <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#7a8a9e', letterSpacing: '0.06em' }}>Paused ({pausedHabits.length})</p>
+        <div className="rounded-xl overflow-hidden" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0' }}>
+          <div className="px-4 py-2.5" style={{ borderBottom: '1px solid #E8E8F0' }}>
+            <p className="font-bold uppercase tracking-widest" style={{ fontSize: '10px', color: '#6B6B7B', letterSpacing: '0.06em' }}>Paused ({pausedHabits.length})</p>
           </div>
           {pausedHabits.map((habit, i) => (
             <div
               key={habit.id}
               className="flex items-center gap-3 px-4 py-3 opacity-40"
-              style={{ borderBottom: i < pausedHabits.length - 1 ? '1px solid #1a2a40' : 'none' }}
+              style={{ borderBottom: i < pausedHabits.length - 1 ? '1px solid #E8E8F0' : 'none' }}
             >
               <div style={{ width: '14px' }} />
               <span style={{ fontSize: '16px', width: '20px', textAlign: 'center' }}>{habit.icon}</span>
@@ -126,14 +126,14 @@ export default function HabitManager() {
               <button
                 onClick={() => navigate(`/settings/habits/${habit.id}`)}
                 className="p-1.5 rounded-lg mr-1"
-                style={{ backgroundColor: '#0d1f35', color: '#7a8a9e' }}
+                style={{ backgroundColor: '#FFFFFF', color: '#6B6B7B' }}
               >
                 <Edit2 size={12} />
               </button>
               <button
                 onClick={() => toggleActive(habit)}
                 className="w-8 h-5 rounded-full transition-colors flex items-center"
-                style={{ backgroundColor: '#1a2a40', padding: '2px' }}
+                style={{ backgroundColor: '#E8E8F0', padding: '2px' }}
               >
                 <div className="w-4 h-4 rounded-full bg-white" />
               </button>
@@ -145,7 +145,7 @@ export default function HabitManager() {
       <button
         onClick={() => navigate('/settings/habits/new')}
         className="w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 transition-opacity hover:opacity-80"
-        style={{ border: '2px dashed #1a2a40', color: '#7a8a9e', fontSize: '13px', backgroundColor: 'transparent' }}
+        style={{ border: '2px dashed #E8E8F0', color: '#6B6B7B', fontSize: '13px', backgroundColor: 'transparent' }}
       >
         <Plus size={14} /> Add new habit
       </button>

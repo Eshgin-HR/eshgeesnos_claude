@@ -101,7 +101,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   return (
     <FABContext.Provider value={{ openAddTask, openAddExpense, openAddNote }}>
-      <div className="min-h-screen" style={{ backgroundColor: '#0F0F0F' }}>
+      <div className="min-h-screen" style={{ backgroundColor: '#F8F8FC' }}>
         {/* Sidebar */}
         <Sidebar
           collapsed={collapsed}
@@ -118,10 +118,10 @@ export default function Layout({ children }: { children: ReactNode }) {
           {/* Page header */}
           <header
             className="flex items-center h-14 px-4 flex-shrink-0 sticky top-0 z-20"
-            style={{ backgroundColor: '#0F0F0F', borderBottom: '0.5px solid #2A2A2A' }}
+            style={{ backgroundColor: '#F8F8FC', borderBottom: '1px solid #E8E8F0' }}
           >
             <button
-              className="flex items-center justify-center w-9 h-9 rounded-lg transition-colors hover:bg-[#1A1A1A] mr-3 flex-shrink-0"
+              className="flex items-center justify-center w-9 h-9 rounded-lg transition-colors hover:bg-[#FFFFFF] mr-3 flex-shrink-0"
               onClick={() => {
                 if (window.innerWidth < 768) {
                   setMobileOpen(v => !v)
@@ -131,9 +131,9 @@ export default function Layout({ children }: { children: ReactNode }) {
               }}
               aria-label="Toggle navigation"
             >
-              <Menu size={18} style={{ color: '#888780' }} />
+              <Menu size={18} style={{ color: '#6B6B7B' }} />
             </button>
-            <h1 className="text-[16px] font-medium" style={{ color: '#F5F5F5' }}>
+            <h1 className="text-[16px] font-medium" style={{ color: '#0F0F1A' }}>
               {pageTitle}
             </h1>
           </header>
@@ -154,7 +154,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             right: '24px',
             width: '52px',
             height: '52px',
-            backgroundColor: '#378ADD',
+            backgroundColor: '#4C4DDC',
           }}
           onClick={() => setFabOpen(v => !v)}
           aria-label="Quick add"
@@ -176,55 +176,55 @@ export default function Layout({ children }: { children: ReactNode }) {
           >
             <div
               className="w-full max-w-sm rounded-2xl px-4 py-5"
-              style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A' }}
+              style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0' }}
               onClick={e => e.stopPropagation()}
             >
-              <div className="text-[13px] font-medium mb-3 uppercase tracking-wide" style={{ color: '#888780' }}>
+              <div className="text-[13px] font-medium mb-3 uppercase tracking-wide" style={{ color: '#6B6B7B' }}>
                 Quick Add
               </div>
               <div className="flex flex-col gap-2">
                 {/* Add Task */}
                 <button
                   className="flex items-center gap-3 p-4 rounded-xl transition-colors text-left active:scale-[0.98]"
-                  style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A' }}
+                  style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0' }}
                   onClick={() => openAddTask()}
                 >
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#1D9E7520', border: '0.5px solid #1D9E7540' }}>
-                    <Plus size={18} color="#1D9E75" strokeWidth={2.5} />
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#50CD8920', border: '1px solid #50CD8940' }}>
+                    <Plus size={18} color="#50CD89" strokeWidth={2.5} />
                   </div>
                   <div>
-                    <div className="text-[14px] font-medium" style={{ color: '#F5F5F5' }}>Add Task</div>
-                    <div className="text-[12px]" style={{ color: '#888780' }}>New action or next step</div>
+                    <div className="text-[14px] font-medium" style={{ color: '#0F0F1A' }}>Add Task</div>
+                    <div className="text-[12px]" style={{ color: '#6B6B7B' }}>New action or next step</div>
                   </div>
                 </button>
 
                 {/* Add Expense */}
                 <button
                   className="flex items-center gap-3 p-4 rounded-xl transition-colors text-left active:scale-[0.98]"
-                  style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A' }}
+                  style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0' }}
                   onClick={() => openAddExpense()}
                 >
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#378ADD20', border: '0.5px solid #378ADD40' }}>
-                    <Plus size={18} color="#378ADD" strokeWidth={2.5} />
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#4C4DDC20', border: '1px solid #4C4DDC40' }}>
+                    <Plus size={18} color="#4C4DDC" strokeWidth={2.5} />
                   </div>
                   <div>
-                    <div className="text-[14px] font-medium" style={{ color: '#F5F5F5' }}>Add Expense</div>
-                    <div className="text-[12px]" style={{ color: '#888780' }}>Log a payment or purchase</div>
+                    <div className="text-[14px] font-medium" style={{ color: '#0F0F1A' }}>Add Expense</div>
+                    <div className="text-[12px]" style={{ color: '#6B6B7B' }}>Log a payment or purchase</div>
                   </div>
                 </button>
 
                 {/* Add Note */}
                 <button
                   className="flex items-center gap-3 p-4 rounded-xl transition-colors text-left active:scale-[0.98]"
-                  style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A' }}
+                  style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0' }}
                   onClick={() => openAddNote()}
                 >
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#EF9F2720', border: '0.5px solid #EF9F2740' }}>
-                    <Plus size={18} color="#EF9F27" strokeWidth={2.5} />
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#FFD33C20', border: '1px solid #FFD33C40' }}>
+                    <Plus size={18} color="#FFD33C" strokeWidth={2.5} />
                   </div>
                   <div>
-                    <div className="text-[14px] font-medium" style={{ color: '#F5F5F5' }}>Add Note</div>
-                    <div className="text-[12px]" style={{ color: '#888780' }}>Quick capture an idea or thought</div>
+                    <div className="text-[14px] font-medium" style={{ color: '#0F0F1A' }}>Add Note</div>
+                    <div className="text-[12px]" style={{ color: '#6B6B7B' }}>Quick capture an idea or thought</div>
                   </div>
                 </button>
               </div>

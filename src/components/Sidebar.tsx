@@ -52,33 +52,33 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
         'flex flex-col h-full overflow-hidden transition-all duration-200',
         isMobile ? 'w-[260px]' : collapsed ? 'w-14' : 'w-[220px]'
       )}
-      style={{ backgroundColor: '#111111', borderRight: '0.5px solid #2A2A2A' }}
+      style={{ backgroundColor: '#F5F5FA', borderRight: '1px solid #E8E8F0' }}
     >
       {/* Header */}
       <div className={cn(
         'flex items-center h-14 flex-shrink-0 px-3',
         collapsed && !isMobile ? 'justify-center' : 'justify-between'
-      )} style={{ borderBottom: '0.5px solid #2A2A2A' }}>
+      )} style={{ borderBottom: '1px solid #E8E8F0' }}>
         {(!collapsed || isMobile) && (
           <div className="flex items-center gap-2.5 min-w-0">
             <div
               className="w-7 h-7 rounded-lg flex items-center justify-center text-sm font-semibold flex-shrink-0"
-              style={{ backgroundColor: '#378ADD', color: '#fff' }}
+              style={{ backgroundColor: '#4C4DDC', color: '#fff' }}
             >
               E
             </div>
             <div className="min-w-0">
-              <div className="text-[13px] font-medium truncate" style={{ color: '#F5F5F5' }}>
+              <div className="text-[13px] font-medium truncate" style={{ color: '#0F0F1A' }}>
                 EshgeenOS
               </div>
-              <div className="text-[11px] truncate" style={{ color: '#888780' }}>Eshgeen</div>
+              <div className="text-[11px] truncate" style={{ color: '#6B6B7B' }}>Eshgeen</div>
             </div>
           </div>
         )}
         {collapsed && !isMobile && (
           <div
             className="w-7 h-7 rounded-lg flex items-center justify-center text-sm font-semibold"
-            style={{ backgroundColor: '#378ADD', color: '#fff' }}
+            style={{ backgroundColor: '#4C4DDC', color: '#fff' }}
           >
             E
           </div>
@@ -86,10 +86,10 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
         {isMobile && (
           <button
             onClick={onCloseMobile}
-            className="p-1.5 rounded-lg transition-colors hover:bg-[#1A1A1A]"
+            className="p-1.5 rounded-lg transition-colors hover:bg-[#FFFFFF]"
             aria-label="Close menu"
           >
-            <X size={16} style={{ color: '#888780' }} />
+            <X size={16} style={{ color: '#6B6B7B' }} />
           </button>
         )}
       </div>
@@ -107,8 +107,8 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                 'relative flex items-center gap-2.5 rounded-lg transition-colors duration-150 mb-0.5',
                 collapsed && !isMobile ? 'h-10 w-10 justify-center mx-auto' : 'h-10 px-3',
                 isActive
-                  ? 'bg-[#1A2E45] text-[#378ADD] border-l-2 border-[#378ADD]'
-                  : 'text-[#888780] hover:bg-[#1A1A1A]'
+                  ? 'bg-[#F5F5FF] text-[#4C4DDC] border-l-2 border-[#4C4DDC]'
+                  : 'text-[#6B6B7B] hover:bg-[#FFFFFF]'
               )
             }
           >
@@ -118,7 +118,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                   size={16}
                   strokeWidth={isActive ? 2 : 1.5}
                   className="flex-shrink-0"
-                  style={{ color: isActive ? '#378ADD' : '#888780' }}
+                  style={{ color: isActive ? '#4C4DDC' : '#6B6B7B' }}
                 />
                 {(!collapsed || isMobile) && (
                   <span className="text-[13px] truncate">{label}</span>
@@ -131,7 +131,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                         ? 'absolute -top-1 -right-1 w-4 h-4'
                         : 'ml-auto w-5 h-5'
                     )}
-                    style={{ backgroundColor: '#E24B4A', color: '#fff' }}
+                    style={{ backgroundColor: '#E55353', color: '#fff' }}
                   >
                     {inboxCount > 99 ? '99+' : inboxCount}
                   </span>
@@ -143,7 +143,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
       </nav>
 
       {/* Bottom section */}
-      <div className="flex-shrink-0 px-2 py-2" style={{ borderTop: '0.5px solid #2A2A2A' }}>
+      <div className="flex-shrink-0 px-2 py-2" style={{ borderTop: '1px solid #E8E8F0' }}>
         <NavLink
           to="/settings"
           onClick={handleNavClick}
@@ -153,8 +153,8 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
               'flex items-center gap-2.5 rounded-lg transition-colors duration-150',
               collapsed && !isMobile ? 'h-10 w-10 justify-center mx-auto' : 'h-10 px-3',
               isActive
-                ? 'bg-[#1A2E45] text-[#378ADD]'
-                : 'text-[#888780] hover:bg-[#1A1A1A]'
+                ? 'bg-[#F5F5FF] text-[#4C4DDC]'
+                : 'text-[#6B6B7B] hover:bg-[#FFFFFF]'
             )
           }
         >
@@ -163,7 +163,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
               <Settings
                 size={16}
                 strokeWidth={isActive ? 2 : 1.5}
-                style={{ color: isActive ? '#378ADD' : '#888780' }}
+                style={{ color: isActive ? '#4C4DDC' : '#6B6B7B' }}
               />
               {(!collapsed || isMobile) && (
                 <span className="text-[13px]">Settings</span>
@@ -175,7 +175,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
         {!isMobile && (
           <button
             onClick={onToggleCollapse}
-            className="flex items-center gap-2.5 rounded-lg transition-colors duration-150 hover:bg-[#1A1A1A] mt-1"
+            className="flex items-center gap-2.5 rounded-lg transition-colors duration-150 hover:bg-[#FFFFFF] mt-1"
             style={{
               height: '32px',
               width: collapsed ? '40px' : '100%',
@@ -185,8 +185,8 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
             }}
             title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
-            <Menu size={14} style={{ color: '#555550', flexShrink: 0 }} />
-            {!collapsed && <span className="text-[11px]" style={{ color: '#555550' }}>Collapse</span>}
+            <Menu size={14} style={{ color: '#6B6B7B', flexShrink: 0 }} />
+            {!collapsed && <span className="text-[11px]" style={{ color: '#6B6B7B' }}>Collapse</span>}
           </button>
         )}
       </div>

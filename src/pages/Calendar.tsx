@@ -141,33 +141,33 @@ export default function Calendar() {
         <div className="flex items-center gap-2">
           <button
             onClick={view === 'month' ? prevMonth : undefined}
-            className="p-1.5 rounded-lg hover:bg-[#1A1A1A] transition-colors"
+            className="p-1.5 rounded-lg hover:bg-[#FFFFFF] transition-colors"
             disabled={view === 'week'}
           >
-            <ChevronLeft size={16} style={{ color: '#888780' }} />
+            <ChevronLeft size={16} style={{ color: '#6B6B7B' }} />
           </button>
-          <h2 className="text-[16px] font-medium" style={{ color: '#F5F5F5' }}>
+          <h2 className="text-[16px] font-medium" style={{ color: '#0F0F1A' }}>
             {view === 'month' ? monthLabel : 'This week'}
           </h2>
           <button
             onClick={view === 'month' ? nextMonth : undefined}
-            className="p-1.5 rounded-lg hover:bg-[#1A1A1A] transition-colors"
+            className="p-1.5 rounded-lg hover:bg-[#FFFFFF] transition-colors"
             disabled={view === 'week'}
           >
-            <ChevronRight size={16} style={{ color: '#888780' }} />
+            <ChevronRight size={16} style={{ color: '#6B6B7B' }} />
           </button>
         </div>
 
         {/* Month | Week toggle */}
-        <div className="flex items-center rounded-lg overflow-hidden" style={{ border: '0.5px solid #2A2A2A' }}>
+        <div className="flex items-center rounded-lg overflow-hidden" style={{ border: '1px solid #E8E8F0' }}>
           {(['month', 'week'] as const).map(v => (
             <button
               key={v}
               onClick={() => setView(v)}
               className="px-3 py-1.5 text-[12px] font-medium transition-colors capitalize"
               style={{
-                backgroundColor: view === v ? '#222222' : 'transparent',
-                color: view === v ? '#F5F5F5' : '#888780',
+                backgroundColor: view === v ? '#F5F5FA' : 'transparent',
+                color: view === v ? '#0F0F1A' : '#6B6B7B',
               }}
             >
               {v}
@@ -178,11 +178,11 @@ export default function Calendar() {
 
       {/* Month grid */}
       {view === 'month' && (
-        <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
+        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
           {/* Day headers */}
           <div className="grid grid-cols-7">
             {DAYS.map(d => (
-              <div key={d} className="text-center py-2 text-[11px] font-medium uppercase tracking-wide" style={{ color: '#555550' }}>
+              <div key={d} className="text-center py-2 text-[11px] font-medium uppercase tracking-wide" style={{ color: '#6B6B7B' }}>
                 {d}
               </div>
             ))}
@@ -190,10 +190,10 @@ export default function Calendar() {
 
           {/* Weeks */}
           {weeks.map((week, wi) => (
-            <div key={wi} className="grid grid-cols-7" style={{ borderTop: '0.5px solid #2A2A2A' }}>
+            <div key={wi} className="grid grid-cols-7" style={{ borderTop: '1px solid #E8E8F0' }}>
               {week.map((day, di) => {
                 if (!day) {
-                  return <div key={di} className="min-h-[72px] p-1.5" style={{ borderLeft: di > 0 ? '0.5px solid #2A2A2A' : 'none' }} />
+                  return <div key={di} className="min-h-[72px] p-1.5" style={{ borderLeft: di > 0 ? '0.5px solid #E8E8F0' : 'none' }} />
                 }
                 const ds = dateToStr(day)
                 const dayTasks = tasksByDate[ds] ?? []
@@ -205,17 +205,17 @@ export default function Calendar() {
                   <button
                     key={di}
                     onClick={() => setSelectedDate(ds)}
-                    className="min-h-[72px] p-1.5 text-left transition-colors hover:bg-[#222222] flex flex-col"
+                    className="min-h-[72px] p-1.5 text-left transition-colors hover:bg-[#F5F5FA] flex flex-col"
                     style={{
-                      borderLeft: di > 0 ? '0.5px solid #2A2A2A' : 'none',
-                      backgroundColor: isSelected ? '#1A2E45' : isToday ? '#1A2E4580' : 'transparent',
+                      borderLeft: di > 0 ? '0.5px solid #E8E8F0' : 'none',
+                      backgroundColor: isSelected ? '#F5F5FF' : isToday ? '#F5F5FF80' : 'transparent',
                     }}
                   >
                     <span
                       className="text-[13px] font-medium mb-1 self-start leading-none w-6 h-6 flex items-center justify-center rounded-full"
                       style={{
-                        color: isToday ? '#378ADD' : isPast && !isSelected ? '#555550' : '#F5F5F5',
-                        backgroundColor: isToday ? '#378ADD20' : 'transparent',
+                        color: isToday ? '#4C4DDC' : isPast && !isSelected ? '#6B6B7B' : '#0F0F1A',
+                        backgroundColor: isToday ? '#4C4DDC20' : 'transparent',
                       }}
                     >
                       {day.getDate()}
@@ -226,15 +226,15 @@ export default function Calendar() {
                           key={t.id}
                           className="text-[10px] px-1 py-0.5 rounded truncate leading-tight"
                           style={{
-                            backgroundColor: t.area_tag ? AREA_COLORS[t.area_tag as AreaTag] + '25' : '#2A2A2A',
-                            color: t.area_tag ? AREA_COLORS[t.area_tag as AreaTag] : '#888780',
+                            backgroundColor: t.area_tag ? AREA_COLORS[t.area_tag as AreaTag] + '25' : '#E8E8F0',
+                            color: t.area_tag ? AREA_COLORS[t.area_tag as AreaTag] : '#6B6B7B',
                           }}
                         >
                           {t.title}
                         </div>
                       ))}
                       {dayTasks.length > 3 && (
-                        <div className="text-[10px] px-1" style={{ color: '#555550' }}>
+                        <div className="text-[10px] px-1" style={{ color: '#6B6B7B' }}>
                           +{dayTasks.length - 3} more
                         </div>
                       )}
@@ -249,7 +249,7 @@ export default function Calendar() {
 
       {/* Week view */}
       {view === 'week' && (
-        <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
+        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
           {/* Day headers */}
           <div className="grid" style={{ gridTemplateColumns: '48px repeat(7, 1fr)' }}>
             <div />
@@ -257,23 +257,23 @@ export default function Calendar() {
               const ds = dateToStr(d)
               const isToday = ds === todayStr2
               return (
-                <div key={i} className="text-center py-2 text-[11px]" style={{ color: isToday ? '#378ADD' : '#555550' }}>
+                <div key={i} className="text-center py-2 text-[11px]" style={{ color: isToday ? '#4C4DDC' : '#6B6B7B' }}>
                   <div className="font-medium">{DAYS[i]}</div>
-                  <div style={{ fontWeight: isToday ? 600 : 400, color: isToday ? '#378ADD' : '#888780' }}>{d.getDate()}</div>
+                  <div style={{ fontWeight: isToday ? 600 : 400, color: isToday ? '#4C4DDC' : '#6B6B7B' }}>{d.getDate()}</div>
                 </div>
               )
             })}
           </div>
 
           {/* Hour rows */}
-          <div style={{ maxHeight: '400px', overflowY: 'auto', borderTop: '0.5px solid #2A2A2A' }}>
+          <div style={{ maxHeight: '400px', overflowY: 'auto', borderTop: '1px solid #E8E8F0' }}>
             {HOURS.map(h => (
               <div
                 key={h}
                 className="grid"
-                style={{ gridTemplateColumns: '48px repeat(7, 1fr)', borderTop: '0.5px solid #2A2A2A', minHeight: '40px' }}
+                style={{ gridTemplateColumns: '48px repeat(7, 1fr)', borderTop: '1px solid #E8E8F0', minHeight: '40px' }}
               >
-                <div className="text-[10px] px-2 pt-1 flex-shrink-0" style={{ color: '#555550' }}>
+                <div className="text-[10px] px-2 pt-1 flex-shrink-0" style={{ color: '#6B6B7B' }}>
                   {String(h).padStart(2, '0')}:00
                 </div>
                 {weekDays.map((day, di) => {
@@ -284,14 +284,14 @@ export default function Calendar() {
                     return blockHour === h
                   })
                   return (
-                    <div key={di} className="p-0.5" style={{ borderLeft: '0.5px solid #2A2A2A' }}>
+                    <div key={di} className="p-0.5" style={{ borderLeft: '1px solid #E8E8F0' }}>
                       {hourTasks.map(t => (
                         <div
                           key={t.id}
                           className="text-[9px] px-1 py-0.5 rounded mb-0.5 truncate"
                           style={{
-                            backgroundColor: AREA_COLORS[t.area_tag as AreaTag] + '25' || '#2A2A2A',
-                            color: AREA_COLORS[t.area_tag as AreaTag] || '#888780',
+                            backgroundColor: AREA_COLORS[t.area_tag as AreaTag] + '25' || '#E8E8F0',
+                            color: AREA_COLORS[t.area_tag as AreaTag] || '#6B6B7B',
                           }}
                         >
                           {t.title}
@@ -307,23 +307,23 @@ export default function Calendar() {
       )}
 
       {/* Selected day panel */}
-      <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
         <div
           className="flex items-center justify-between px-4 py-3"
-          style={{ borderBottom: selectedTasks.length > 0 ? '0.5px solid #2A2A2A' : 'none' }}
+          style={{ borderBottom: selectedTasks.length > 0 ? '0.5px solid #E8E8F0' : 'none' }}
         >
           <div>
-            <span className="text-[14px] font-medium" style={{ color: '#F5F5F5' }}>
+            <span className="text-[14px] font-medium" style={{ color: '#0F0F1A' }}>
               {new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
             </span>
             {selectedTasks.length > 0 && (
-              <span className="ml-2 text-[12px]" style={{ color: '#888780' }}>{selectedTasks.length} tasks</span>
+              <span className="ml-2 text-[12px]" style={{ color: '#6B6B7B' }}>{selectedTasks.length} tasks</span>
             )}
           </div>
           <button
             onClick={() => openAddTask(selectedDate)}
             className="px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all active:scale-[0.98]"
-            style={{ backgroundColor: '#378ADD', color: '#fff' }}
+            style={{ backgroundColor: '#4C4DDC', color: '#fff' }}
           >
             + Add task
           </button>
@@ -331,7 +331,7 @@ export default function Calendar() {
 
         {selectedTasks.length === 0 ? (
           <div className="flex items-center justify-center py-10">
-            <p className="text-[13px]" style={{ color: '#555550' }}>No tasks due this day</p>
+            <p className="text-[13px]" style={{ color: '#6B6B7B' }}>No tasks due this day</p>
           </div>
         ) : (
           selectedTasks.map((task, i) => {
@@ -340,15 +340,15 @@ export default function Calendar() {
               <div
                 key={task.id}
                 className="flex items-start gap-3 px-4 py-3"
-                style={{ borderTop: i === 0 ? 'none' : '0.5px solid #2A2A2A' }}
+                style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
               >
                 <button
                   onClick={() => toggleTask(task)}
                   className="flex-shrink-0 flex items-center justify-center rounded mt-0.5"
                   style={{
                     width: '18px', height: '18px',
-                    border: done ? 'none' : '1.5px solid #3A3A3A',
-                    backgroundColor: done ? '#1D9E75' : 'transparent',
+                    border: done ? 'none' : '1.5px solid #D1D1E0',
+                    backgroundColor: done ? '#50CD89' : 'transparent',
                     borderRadius: '4px',
                   }}
                 >
@@ -357,7 +357,7 @@ export default function Calendar() {
                 <div className="flex-1 min-w-0">
                   <p
                     className="text-[14px] truncate"
-                    style={{ color: done ? '#555550' : '#F5F5F5', textDecoration: done ? 'line-through' : 'none' }}
+                    style={{ color: done ? '#6B6B7B' : '#0F0F1A', textDecoration: done ? 'line-through' : 'none' }}
                   >
                     {task.title}
                   </p>

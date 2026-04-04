@@ -11,9 +11,9 @@ type SortKey = 'due_date' | 'created' | 'priority'
 type StatusFilter = 'open' | 'completed' | 'all'
 
 const PRIORITY_COLORS: Record<TaskPriority, string> = {
-  p1: '#E24B4A',
-  p2: '#EF9F27',
-  p3: '#888780',
+  p1: '#E55353',
+  p2: '#FFD33C',
+  p3: '#6B6B7B',
 }
 
 const STATUS_OPTS: { value: TaskStatus; label: string }[] = [
@@ -59,12 +59,12 @@ function TaskDetailPanel({ task, onClose, onUpdated, onDeleted }: {
   const isWeb = typeof window !== 'undefined' && window.innerWidth >= 768
 
   const panelContent = (
-    <div className="flex flex-col h-full overflow-hidden" style={{ backgroundColor: '#1A1A1A' }}>
+    <div className="flex flex-col h-full overflow-hidden" style={{ backgroundColor: '#FFFFFF' }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 flex-shrink-0" style={{ borderBottom: '0.5px solid #2A2A2A' }}>
-        <span className="text-[13px] font-medium" style={{ color: '#888780' }}>Task detail</span>
-        <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-[#222222]">
-          <X size={15} style={{ color: '#888780' }} />
+      <div className="flex items-center justify-between px-4 py-3 flex-shrink-0" style={{ borderBottom: '1px solid #E8E8F0' }}>
+        <span className="text-[13px] font-medium" style={{ color: '#6B6B7B' }}>Task detail</span>
+        <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-[#F5F5FA]">
+          <X size={15} style={{ color: '#6B6B7B' }} />
         </button>
       </div>
 
@@ -76,13 +76,13 @@ function TaskDetailPanel({ task, onClose, onUpdated, onDeleted }: {
           onChange={e => setTitle(e.target.value)}
           onBlur={() => title !== task.title && saveField({ title })}
           className="w-full text-[16px] font-medium bg-transparent border-none focus:outline-none"
-          style={{ color: '#F5F5F5' }}
+          style={{ color: '#0F0F1A' }}
           placeholder="Task title"
         />
 
         {/* Status */}
         <div>
-          <div className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: '#888780' }}>Status</div>
+          <div className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: '#6B6B7B' }}>Status</div>
           <div className="flex flex-wrap gap-1.5">
             {STATUS_OPTS.map(opt => (
               <button
@@ -90,9 +90,9 @@ function TaskDetailPanel({ task, onClose, onUpdated, onDeleted }: {
                 onClick={() => { setStatus(opt.value); saveField({ status: opt.value }) }}
                 className="px-3 py-1 rounded-md text-[12px] font-medium transition-colors"
                 style={{
-                  backgroundColor: status === opt.value ? '#378ADD20' : '#222222',
-                  border: `0.5px solid ${status === opt.value ? '#378ADD' : '#2A2A2A'}`,
-                  color: status === opt.value ? '#378ADD' : '#888780',
+                  backgroundColor: status === opt.value ? '#4C4DDC20' : '#F5F5FA',
+                  border: `1px solid ${status === opt.value ? '#4C4DDC' : '#E8E8F0'}`,
+                  color: status === opt.value ? '#4C4DDC' : '#6B6B7B',
                 }}
               >
                 {opt.label}
@@ -103,7 +103,7 @@ function TaskDetailPanel({ task, onClose, onUpdated, onDeleted }: {
 
         {/* Priority */}
         <div>
-          <div className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: '#888780' }}>Priority</div>
+          <div className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: '#6B6B7B' }}>Priority</div>
           <div className="flex gap-1.5">
             {(['p1', 'p2', 'p3'] as TaskPriority[]).map(p => (
               <button
@@ -111,9 +111,9 @@ function TaskDetailPanel({ task, onClose, onUpdated, onDeleted }: {
                 onClick={() => { const next = priority === p ? null : p; setPriority(next); saveField({ priority: next }) }}
                 className="flex items-center gap-1.5 px-3 py-1 rounded-md text-[12px] font-medium transition-colors"
                 style={{
-                  backgroundColor: priority === p ? PRIORITY_COLORS[p] + '20' : '#222222',
-                  border: `0.5px solid ${priority === p ? PRIORITY_COLORS[p] : '#2A2A2A'}`,
-                  color: priority === p ? PRIORITY_COLORS[p] : '#888780',
+                  backgroundColor: priority === p ? PRIORITY_COLORS[p] + '20' : '#F5F5FA',
+                  border: `1px solid ${priority === p ? PRIORITY_COLORS[p] : '#E8E8F0'}`,
+                  color: priority === p ? PRIORITY_COLORS[p] : '#6B6B7B',
                 }}
               >
                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: PRIORITY_COLORS[p] }} />
@@ -125,7 +125,7 @@ function TaskDetailPanel({ task, onClose, onUpdated, onDeleted }: {
 
         {/* Area */}
         <div>
-          <div className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: '#888780' }}>Area</div>
+          <div className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: '#6B6B7B' }}>Area</div>
           <div className="flex flex-wrap gap-1.5">
             {AREAS.map(a => (
               <button
@@ -133,9 +133,9 @@ function TaskDetailPanel({ task, onClose, onUpdated, onDeleted }: {
                 onClick={() => { const next = area === a ? null : a; setArea(next); saveField({ area_tag: next }) }}
                 className="px-3 py-1 rounded-md text-[12px] font-medium transition-colors"
                 style={{
-                  backgroundColor: area === a ? AREA_COLORS[a] + '20' : '#222222',
-                  border: `0.5px solid ${area === a ? AREA_COLORS[a] : '#2A2A2A'}`,
-                  color: area === a ? AREA_COLORS[a] : '#888780',
+                  backgroundColor: area === a ? AREA_COLORS[a] + '20' : '#F5F5FA',
+                  border: `1px solid ${area === a ? AREA_COLORS[a] : '#E8E8F0'}`,
+                  color: area === a ? AREA_COLORS[a] : '#6B6B7B',
                 }}
               >
                 {a}
@@ -146,7 +146,7 @@ function TaskDetailPanel({ task, onClose, onUpdated, onDeleted }: {
 
         {/* Context */}
         <div>
-          <div className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: '#888780' }}>Context</div>
+          <div className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: '#6B6B7B' }}>Context</div>
           <div className="flex flex-wrap gap-1.5">
             {CONTEXTS.map(c => (
               <button
@@ -154,9 +154,9 @@ function TaskDetailPanel({ task, onClose, onUpdated, onDeleted }: {
                 onClick={() => { const next = context === c ? null : c; setContext(next); saveField({ context_tag: next }) }}
                 className="px-3 py-1 rounded-md text-[12px] font-medium transition-colors"
                 style={{
-                  backgroundColor: context === c ? CONTEXT_COLORS[c] + '20' : '#222222',
-                  border: `0.5px solid ${context === c ? CONTEXT_COLORS[c] : '#2A2A2A'}`,
-                  color: context === c ? CONTEXT_COLORS[c] : '#888780',
+                  backgroundColor: context === c ? CONTEXT_COLORS[c] + '20' : '#F5F5FA',
+                  border: `1px solid ${context === c ? CONTEXT_COLORS[c] : '#E8E8F0'}`,
+                  color: context === c ? CONTEXT_COLORS[c] : '#6B6B7B',
                 }}
               >
                 {CONTEXT_LABELS[c]}
@@ -167,12 +167,12 @@ function TaskDetailPanel({ task, onClose, onUpdated, onDeleted }: {
 
         {/* Time block */}
         <div>
-          <div className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: '#888780' }}>Time block</div>
+          <div className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: '#6B6B7B' }}>Time block</div>
           <select
             value={timeBlock ?? ''}
             onChange={e => { const val = (e.target.value as TimeBlock) || null; setTimeBlock(val); saveField({ time_block: val }) }}
             className="rounded-lg px-3 py-2 text-[13px] w-full focus:outline-none"
-            style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: timeBlock ? '#F5F5F5' : '#555550' }}
+            style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: timeBlock ? '#0F0F1A' : '#6B6B7B' }}
           >
             <option value="">Unassigned</option>
             {TIME_BLOCKS.filter(b => b !== 'unassigned').map(b => (
@@ -183,19 +183,19 @@ function TaskDetailPanel({ task, onClose, onUpdated, onDeleted }: {
 
         {/* Due date */}
         <div>
-          <div className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: '#888780' }}>Due date</div>
+          <div className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: '#6B6B7B' }}>Due date</div>
           <input
             type="date"
             value={dueDate}
             onChange={e => { setDueDate(e.target.value); saveField({ due_date: e.target.value || null }) }}
             className="rounded-lg px-3 py-2 text-[13px] focus:outline-none"
-            style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: dueDate ? '#F5F5F5' : '#555550' }}
+            style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: dueDate ? '#0F0F1A' : '#6B6B7B' }}
           />
         </div>
 
         {/* Notes */}
         <div>
-          <div className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: '#888780' }}>Notes</div>
+          <div className="text-[11px] font-medium uppercase tracking-wide mb-2" style={{ color: '#6B6B7B' }}>Notes</div>
           <textarea
             value={notes}
             onChange={e => setNotes(e.target.value)}
@@ -203,22 +203,22 @@ function TaskDetailPanel({ task, onClose, onUpdated, onDeleted }: {
             placeholder="Add notes…"
             rows={4}
             className="w-full rounded-lg px-3 py-2.5 text-[13px] focus:outline-none resize-none"
-            style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', lineHeight: '1.6' }}
+            style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', lineHeight: '1.6' }}
           />
         </div>
 
-        <p className="text-[11px]" style={{ color: '#555550' }}>
+        <p className="text-[11px]" style={{ color: '#6B6B7B' }}>
           Created {new Date(task.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
         </p>
       </div>
 
       {/* Delete */}
-      <div className="flex-shrink-0 px-4 py-3" style={{ borderTop: '0.5px solid #2A2A2A' }}>
+      <div className="flex-shrink-0 px-4 py-3" style={{ borderTop: '1px solid #E8E8F0' }}>
         <button
           onClick={handleDelete}
           disabled={deleting}
           className="w-full py-2.5 rounded-lg text-[13px] font-medium transition-all active:scale-[0.98] disabled:opacity-40"
-          style={{ border: '0.5px solid #E24B4A', color: '#E24B4A', backgroundColor: 'transparent' }}
+          style={{ border: '1px solid #E55353', color: '#E55353', backgroundColor: 'transparent' }}
         >
           {deleting ? 'Deleting…' : 'Delete task'}
         </button>
@@ -230,7 +230,7 @@ function TaskDetailPanel({ task, onClose, onUpdated, onDeleted }: {
     return (
       <div
         className="fixed top-0 right-0 h-full z-50 shadow-xl"
-        style={{ width: '360px', borderLeft: '0.5px solid #2A2A2A' }}
+        style={{ width: '360px', borderLeft: '1px solid #E8E8F0' }}
       >
         {panelContent}
       </div>
@@ -244,8 +244,8 @@ function TaskDetailPanel({ task, onClose, onUpdated, onDeleted }: {
         style={{ height: '85vh' }}
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex justify-center pt-3 pb-1" style={{ backgroundColor: '#1A1A1A' }}>
-          <div className="h-[3px] w-8 rounded-full" style={{ backgroundColor: '#3A3A3A' }} />
+        <div className="flex justify-center pt-3 pb-1" style={{ backgroundColor: '#FFFFFF' }}>
+          <div className="h-[3px] w-8 rounded-full" style={{ backgroundColor: '#D1D1E0' }} />
         </div>
         {panelContent}
       </div>
@@ -350,16 +350,16 @@ export default function DailyTasks() {
           onClick={() => { setStatusFilter('open'); setOverdueOnly(false) }}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium"
           style={{
-            backgroundColor: statusFilter === 'open' && !overdueOnly ? '#378ADD20' : '#1A1A1A',
-            border: '0.5px solid #2A2A2A',
-            color: statusFilter === 'open' && !overdueOnly ? '#378ADD' : '#888780',
+            backgroundColor: statusFilter === 'open' && !overdueOnly ? '#4C4DDC20' : '#FFFFFF',
+            border: '1px solid #E8E8F0',
+            color: statusFilter === 'open' && !overdueOnly ? '#4C4DDC' : '#6B6B7B',
           }}
         >
           {openCount} open
         </button>
         <span
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium"
-          style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', color: '#888780' }}
+          style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', color: '#6B6B7B' }}
         >
           {completedThisWeek} completed this week
         </span>
@@ -367,9 +367,9 @@ export default function DailyTasks() {
           onClick={() => { setOverdueOnly(v => !v); setStatusFilter('open') }}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium"
           style={{
-            backgroundColor: overdueOnly ? '#E24B4A20' : '#1A1A1A',
-            border: `0.5px solid ${overdueOnly ? '#E24B4A' : '#2A2A2A'}`,
-            color: overdueCount > 0 || overdueOnly ? '#E24B4A' : '#888780',
+            backgroundColor: overdueOnly ? '#E5535320' : '#FFFFFF',
+            border: `1px solid ${overdueOnly ? '#E55353' : '#E8E8F0'}`,
+            color: overdueCount > 0 || overdueOnly ? '#E55353' : '#6B6B7B',
           }}
         >
           {overdueCount} overdue
@@ -384,9 +384,9 @@ export default function DailyTasks() {
             onClick={() => setAreaFilter(a)}
             className="flex-shrink-0 px-3 py-1.5 rounded-full text-[12px] font-medium transition-colors"
             style={{
-              backgroundColor: areaFilter === a ? '#378ADD' : '#1A1A1A',
-              border: '0.5px solid #2A2A2A',
-              color: areaFilter === a ? '#fff' : '#888780',
+              backgroundColor: areaFilter === a ? '#4C4DDC' : '#FFFFFF',
+              border: '1px solid #E8E8F0',
+              color: areaFilter === a ? '#fff' : '#6B6B7B',
             }}
           >
             {a === 'all' ? 'All areas' : a}
@@ -402,9 +402,9 @@ export default function DailyTasks() {
             onClick={() => setContextFilter(c)}
             className="flex-shrink-0 px-3 py-1.5 rounded-full text-[12px] font-medium transition-colors"
             style={{
-              backgroundColor: contextFilter === c ? (c === 'all' ? '#378ADD' : CONTEXT_COLORS[c]) : '#1A1A1A',
-              border: '0.5px solid #2A2A2A',
-              color: contextFilter === c ? '#fff' : '#888780',
+              backgroundColor: contextFilter === c ? (c === 'all' ? '#4C4DDC' : CONTEXT_COLORS[c]) : '#FFFFFF',
+              border: '1px solid #E8E8F0',
+              color: contextFilter === c ? '#fff' : '#6B6B7B',
             }}
           >
             {c === 'all' ? 'All contexts' : CONTEXT_LABELS[c]}
@@ -414,15 +414,15 @@ export default function DailyTasks() {
 
       {/* Sort + status toggle */}
       <div className="flex items-center gap-2 flex-wrap">
-        <div className="flex items-center rounded-lg overflow-hidden" style={{ border: '0.5px solid #2A2A2A' }}>
+        <div className="flex items-center rounded-lg overflow-hidden" style={{ border: '1px solid #E8E8F0' }}>
           {(['open', 'completed', 'all'] as StatusFilter[]).map(s => (
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
               className="px-3 py-1.5 text-[12px] font-medium transition-colors capitalize"
               style={{
-                backgroundColor: statusFilter === s ? '#222222' : 'transparent',
-                color: statusFilter === s ? '#F5F5F5' : '#888780',
+                backgroundColor: statusFilter === s ? '#F5F5FA' : 'transparent',
+                color: statusFilter === s ? '#0F0F1A' : '#6B6B7B',
               }}
             >
               {s}
@@ -433,7 +433,7 @@ export default function DailyTasks() {
           value={sortKey}
           onChange={e => setSortKey(e.target.value as SortKey)}
           className="px-3 py-1.5 rounded-lg text-[12px] focus:outline-none"
-          style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', color: '#888780' }}
+          style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', color: '#6B6B7B' }}
         >
           <option value="due_date">Due date</option>
           <option value="created">Created</option>
@@ -442,16 +442,16 @@ export default function DailyTasks() {
       </div>
 
       {/* Task list */}
-      <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
         {loading ? (
           <div className="p-4 flex flex-col gap-3">
             {[1, 2, 3, 4].map(i => (
-              <div key={i} className="h-14 rounded-lg animate-pulse" style={{ backgroundColor: '#2A2A2A' }} />
+              <div key={i} className="h-14 rounded-lg animate-pulse" style={{ backgroundColor: '#E8E8F0' }} />
             ))}
           </div>
         ) : tasks.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16">
-            <p className="text-[13px]" style={{ color: '#555550' }}>No tasks match this filter</p>
+            <p className="text-[13px]" style={{ color: '#6B6B7B' }}>No tasks match this filter</p>
           </div>
         ) : (
           tasks.map((task, i) => {
@@ -462,8 +462,8 @@ export default function DailyTasks() {
             return (
               <div
                 key={task.id}
-                className="flex items-start gap-3 px-4 py-3 cursor-pointer hover:bg-[#222222] transition-colors"
-                style={{ borderTop: i === 0 ? 'none' : '0.5px solid #2A2A2A' }}
+                className="flex items-start gap-3 px-4 py-3 cursor-pointer hover:bg-[#F5F5FA] transition-colors"
+                style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
                 onClick={() => setSelectedTask(task)}
               >
                 <button
@@ -472,8 +472,8 @@ export default function DailyTasks() {
                   style={{
                     width: '18px',
                     height: '18px',
-                    border: done ? 'none' : '1.5px solid #3A3A3A',
-                    backgroundColor: done ? '#1D9E75' : 'transparent',
+                    border: done ? 'none' : '1.5px solid #D1D1E0',
+                    backgroundColor: done ? '#50CD89' : 'transparent',
                     borderRadius: '4px',
                   }}
                 >
@@ -483,7 +483,7 @@ export default function DailyTasks() {
                 <div className="flex-1 min-w-0">
                   <p
                     className="text-[14px] leading-snug mb-1 truncate"
-                    style={{ color: done ? '#555550' : '#F5F5F5', textDecoration: done ? 'line-through' : 'none' }}
+                    style={{ color: done ? '#6B6B7B' : '#0F0F1A', textDecoration: done ? 'line-through' : 'none' }}
                   >
                     {task.title}
                   </p>
@@ -507,7 +507,7 @@ export default function DailyTasks() {
                     {task.due_date && (
                       <span
                         className="text-[11px] px-2 py-0.5 rounded-md"
-                        style={{ border: `0.5px solid ${overdue ? '#E24B4A' : '#2A2A2A'}`, color: overdue ? '#E24B4A' : '#888780' }}
+                        style={{ border: `1px solid ${overdue ? '#E55353' : '#E8E8F0'}`, color: overdue ? '#E55353' : '#6B6B7B' }}
                       >
                         {formatDate(task.due_date)}
                       </span>
@@ -522,7 +522,7 @@ export default function DailyTasks() {
                 </div>
 
                 {stalled && (
-                  <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full mt-2" style={{ backgroundColor: '#EF9F27' }} title="Stalled 7+ days" />
+                  <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full mt-2" style={{ backgroundColor: '#FFD33C' }} title="Stalled 7+ days" />
                 )}
               </div>
             )

@@ -172,11 +172,11 @@ export default function Budget() {
   }
 
   const budgetPct = monthTarget > 0 ? (totalSpent / monthTarget) * 100 : 0
-  const barColor = budgetPct >= 90 ? '#E24B4A' : budgetPct >= 70 ? '#EF9F27' : '#1D9E75'
+  const barColor = budgetPct >= 90 ? '#E55353' : budgetPct >= 70 ? '#FFD33C' : '#50CD89'
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <div className="w-6 h-6 rounded-full border-2 animate-spin" style={{ borderColor: '#378ADD', borderTopColor: 'transparent' }} />
+      <div className="w-6 h-6 rounded-full border-2 animate-spin" style={{ borderColor: '#4C4DDC', borderTopColor: 'transparent' }} />
     </div>
   )
 
@@ -184,25 +184,25 @@ export default function Budget() {
     <div className="flex flex-col gap-5">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="font-medium" style={{ fontSize: '20px', color: '#F5F5F5' }}>Budget</h1>
-        <button onClick={() => setShowSettings(true)} style={{ color: '#888780' }}>
+        <h1 className="font-medium" style={{ fontSize: '20px', color: '#0F0F1A' }}>Budget</h1>
+        <button onClick={() => setShowSettings(true)} style={{ color: '#6B6B7B' }}>
           <Settings size={18} />
         </button>
       </div>
 
       {/* Tabs */}
-      <div className="flex" style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '10px', padding: '3px' }}>
+      <div className="flex" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '10px', padding: '3px' }}>
         {(['overview', 'transactions'] as const).map(t => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className="flex-1 py-2 rounded-lg transition-all"
             style={{
-              backgroundColor: tab === t ? '#222222' : 'transparent',
-              border: tab === t ? '0.5px solid #2A2A2A' : 'none',
+              backgroundColor: tab === t ? '#F5F5FA' : 'transparent',
+              border: tab === t ? '0.5px solid #E8E8F0' : 'none',
               fontSize: '13px',
               fontWeight: 500,
-              color: tab === t ? '#F5F5F5' : '#888780',
+              color: tab === t ? '#0F0F1A' : '#6B6B7B',
             }}
           >
             {t === 'overview' ? 'Overview' : 'Transactions'}
@@ -224,9 +224,9 @@ export default function Budget() {
                   fontWeight: 500,
                   padding: '5px 12px',
                   borderRadius: '20px',
-                  backgroundColor: dateFilter === v ? '#378ADD20' : '#1A1A1A',
-                  color: dateFilter === v ? '#378ADD' : '#888780',
-                  border: `0.5px solid ${dateFilter === v ? '#378ADD40' : '#2A2A2A'}`,
+                  backgroundColor: dateFilter === v ? '#4C4DDC20' : '#FFFFFF',
+                  color: dateFilter === v ? '#4C4DDC' : '#6B6B7B',
+                  border: `1px solid ${dateFilter === v ? '#4C4DDC40' : '#E8E8F0'}`,
                   flexShrink: 0,
                   transition: 'all 150ms ease',
                 }}
@@ -237,18 +237,18 @@ export default function Budget() {
           </div>
 
           {/* Total spent card */}
-          <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '20px' }}>
-            <p style={{ fontSize: '11px', color: '#888780', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 500 }}>Total Spent</p>
-            <p style={{ fontSize: '32px', fontWeight: 500, color: '#F5F5F5', marginTop: '4px' }}>
+          <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', padding: '20px' }}>
+            <p style={{ fontSize: '11px', color: '#6B6B7B', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 500 }}>Total Spent</p>
+            <p style={{ fontSize: '32px', fontWeight: 500, color: '#0F0F1A', marginTop: '4px' }}>
               ₼{totalSpent.toFixed(2)}
             </p>
             {dateFilter === 'month' && monthTarget > 0 && (
               <div className="mt-3">
                 <div className="flex justify-between mb-1.5">
-                  <span style={{ fontSize: '12px', color: '#888780' }}>₼{totalSpent.toFixed(0)} / ₼{monthTarget.toFixed(0)}</span>
+                  <span style={{ fontSize: '12px', color: '#6B6B7B' }}>₼{totalSpent.toFixed(0)} / ₼{monthTarget.toFixed(0)}</span>
                   <span style={{ fontSize: '12px', color: barColor, fontWeight: 500 }}>{budgetPct.toFixed(0)}% of budget</span>
                 </div>
-                <div style={{ height: '4px', backgroundColor: '#2A2A2A', borderRadius: '2px', overflow: 'hidden' }}>
+                <div style={{ height: '4px', backgroundColor: '#E8E8F0', borderRadius: '2px', overflow: 'hidden' }}>
                   <div style={{ height: '100%', width: `${Math.min(budgetPct, 100)}%`, backgroundColor: barColor, borderRadius: '2px', transition: 'all 300ms ease' }} />
                 </div>
               </div>
@@ -257,8 +257,8 @@ export default function Budget() {
 
           {/* Category breakdown */}
           {catTotals.length > 0 && (
-            <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '16px' }}>
-              <p style={{ fontSize: '11px', color: '#888780', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 500, marginBottom: '14px' }}>By Category</p>
+            <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', padding: '16px' }}>
+              <p style={{ fontSize: '11px', color: '#6B6B7B', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 500, marginBottom: '14px' }}>By Category</p>
 
               {/* Simple bar chart */}
               <div className="flex flex-col gap-3 mb-4">
@@ -269,14 +269,14 @@ export default function Budget() {
                       <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2">
                           <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: EXPENSE_COLORS[c.category], flexShrink: 0 }} />
-                          <span style={{ fontSize: '13px', color: '#F5F5F5' }}>{EXPENSE_LABELS[c.category]}</span>
+                          <span style={{ fontSize: '13px', color: '#0F0F1A' }}>{EXPENSE_LABELS[c.category]}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span style={{ fontSize: '12px', color: '#888780' }}>{pct.toFixed(0)}%</span>
-                          <span style={{ fontSize: '13px', color: '#F5F5F5', fontWeight: 500 }}>₼{c.amount.toFixed(2)}</span>
+                          <span style={{ fontSize: '12px', color: '#6B6B7B' }}>{pct.toFixed(0)}%</span>
+                          <span style={{ fontSize: '13px', color: '#0F0F1A', fontWeight: 500 }}>₼{c.amount.toFixed(2)}</span>
                         </div>
                       </div>
-                      <div style={{ height: '4px', backgroundColor: '#2A2A2A', borderRadius: '2px', overflow: 'hidden' }}>
+                      <div style={{ height: '4px', backgroundColor: '#E8E8F0', borderRadius: '2px', overflow: 'hidden' }}>
                         <div style={{ height: '100%', width: `${pct}%`, backgroundColor: EXPENSE_COLORS[c.category], borderRadius: '2px' }} />
                       </div>
                     </div>
@@ -288,7 +288,7 @@ export default function Budget() {
 
           {catTotals.length === 0 && (
             <div className="flex flex-col items-center gap-2 py-10">
-              <p style={{ fontSize: '14px', color: '#888780' }}>No expenses for this period</p>
+              <p style={{ fontSize: '14px', color: '#6B6B7B' }}>No expenses for this period</p>
             </div>
           )}
         </>
@@ -307,9 +307,9 @@ export default function Budget() {
                 fontWeight: 500,
                 padding: '5px 12px',
                 borderRadius: '20px',
-                backgroundColor: catFilter === 'all' ? '#378ADD20' : '#1A1A1A',
-                color: catFilter === 'all' ? '#378ADD' : '#888780',
-                border: `0.5px solid ${catFilter === 'all' ? '#378ADD40' : '#2A2A2A'}`,
+                backgroundColor: catFilter === 'all' ? '#4C4DDC20' : '#FFFFFF',
+                color: catFilter === 'all' ? '#4C4DDC' : '#6B6B7B',
+                border: `1px solid ${catFilter === 'all' ? '#4C4DDC40' : '#E8E8F0'}`,
               }}
             >
               All
@@ -324,9 +324,9 @@ export default function Budget() {
                   fontWeight: 500,
                   padding: '5px 12px',
                   borderRadius: '20px',
-                  backgroundColor: catFilter === c ? EXPENSE_COLORS[c] + '25' : '#1A1A1A',
-                  color: catFilter === c ? EXPENSE_COLORS[c] : '#888780',
-                  border: `0.5px solid ${catFilter === c ? EXPENSE_COLORS[c] + '50' : '#2A2A2A'}`,
+                  backgroundColor: catFilter === c ? EXPENSE_COLORS[c] + '25' : '#FFFFFF',
+                  color: catFilter === c ? EXPENSE_COLORS[c] : '#6B6B7B',
+                  border: `1px solid ${catFilter === c ? EXPENSE_COLORS[c] + '50' : '#E8E8F0'}`,
                 }}
               >
                 {EXPENSE_LABELS[c]}
@@ -337,7 +337,7 @@ export default function Budget() {
           {/* Transactions grouped by day */}
           {filteredByCat.length === 0 ? (
             <div className="flex flex-col items-center gap-2 py-10">
-              <p style={{ fontSize: '14px', color: '#888780' }}>No transactions</p>
+              <p style={{ fontSize: '14px', color: '#6B6B7B' }}>No transactions</p>
             </div>
           ) : (
             groupByDay(filteredByCat).map(([date, dayExpenses]) => {
@@ -345,17 +345,17 @@ export default function Budget() {
               return (
                 <div key={date}>
                   <div className="flex items-center justify-between mb-2">
-                    <span style={{ fontSize: '11px', fontWeight: 500, color: '#888780', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    <span style={{ fontSize: '11px', fontWeight: 500, color: '#6B6B7B', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                       {formatDate(date)}
                     </span>
-                    <span style={{ fontSize: '12px', color: '#888780' }}>₼{dayTotal.toFixed(2)}</span>
+                    <span style={{ fontSize: '12px', color: '#6B6B7B' }}>₼{dayTotal.toFixed(2)}</span>
                   </div>
-                  <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
+                  <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
                     {dayExpenses.map((expense, i) => (
                       <div
                         key={expense.id}
                         className="flex items-center gap-3 px-4 py-3 group"
-                        style={{ borderTop: i === 0 ? 'none' : '0.5px solid #2A2A2A' }}
+                        style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
                       >
                         <div
                           style={{
@@ -366,20 +366,20 @@ export default function Budget() {
                           }}
                         />
                         <button className="flex-1 text-left" onClick={() => openEdit(expense)}>
-                          <p style={{ fontSize: '14px', color: '#F5F5F5' }}>
+                          <p style={{ fontSize: '14px', color: '#0F0F1A' }}>
                             {expense.note || EXPENSE_LABELS[expense.category]}
                           </p>
-                          <p style={{ fontSize: '11px', color: '#555550', marginTop: '1px' }}>
+                          <p style={{ fontSize: '11px', color: '#6B6B7B', marginTop: '1px' }}>
                             {EXPENSE_LABELS[expense.category]}
                           </p>
                         </button>
-                        <span style={{ fontSize: '14px', fontWeight: 500, color: '#F5F5F5', flexShrink: 0 }}>
+                        <span style={{ fontSize: '14px', fontWeight: 500, color: '#0F0F1A', flexShrink: 0 }}>
                           ₼{Number(expense.amount).toFixed(2)}
                         </span>
                         <button
                           onClick={() => deleteExpense(expense)}
                           className="opacity-0 group-hover:opacity-100 active:opacity-100 transition-opacity flex-shrink-0"
-                          style={{ color: '#555550' }}
+                          style={{ color: '#6B6B7B' }}
                         >
                           <Trash2 size={13} />
                         </button>
@@ -397,10 +397,10 @@ export default function Budget() {
       {undoExpense && (
         <div
           className="fixed bottom-24 left-1/2 -translate-x-1/2 flex items-center gap-3 px-4 py-3 rounded-xl z-50"
-          style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', minWidth: '200px' }}
+          style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', minWidth: '200px' }}
         >
-          <p style={{ fontSize: '13px', color: '#F5F5F5' }}>Expense deleted</p>
-          <button onClick={undoDelete} style={{ fontSize: '13px', color: '#378ADD', fontWeight: 500 }}>Undo</button>
+          <p style={{ fontSize: '13px', color: '#0F0F1A' }}>Expense deleted</p>
+          <button onClick={undoDelete} style={{ fontSize: '13px', color: '#4C4DDC', fontWeight: 500 }}>Undo</button>
         </div>
       )}
 
@@ -411,14 +411,14 @@ export default function Budget() {
           style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
           onClick={e => { if (e.target === e.currentTarget) setShowSettings(false) }}
         >
-          <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '16px', padding: '24px 20px', width: '90%', maxWidth: '400px' }}>
+          <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '16px', padding: '24px 20px', width: '90%', maxWidth: '400px' }}>
             <div className="flex items-center justify-between mb-5">
-              <p className="font-medium" style={{ fontSize: '16px', color: '#F5F5F5' }}>Budget Settings</p>
-              <button onClick={() => setShowSettings(false)} style={{ color: '#555550' }}><X size={18} /></button>
+              <p className="font-medium" style={{ fontSize: '16px', color: '#0F0F1A' }}>Budget Settings</p>
+              <button onClick={() => setShowSettings(false)} style={{ color: '#6B6B7B' }}><X size={18} /></button>
             </div>
             <div className="flex flex-col gap-4">
               <div>
-                <p style={{ fontSize: '11px', color: '#888780', marginBottom: '6px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                <p style={{ fontSize: '11px', color: '#6B6B7B', marginBottom: '6px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                   Monthly target (AZN)
                 </p>
                 <input
@@ -428,14 +428,14 @@ export default function Budget() {
                   value={newTarget}
                   onChange={e => setNewTarget(e.target.value)}
                   className="w-full rounded-lg px-4 py-3 outline-none"
-                  style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '18px', fontWeight: 500 }}
+                  style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '18px', fontWeight: 500 }}
                 />
               </div>
               <button
                 onClick={saveTarget}
                 disabled={savingTarget || !newTarget}
                 className="w-full py-3 rounded-lg font-medium disabled:opacity-40"
-                style={{ backgroundColor: '#378ADD', color: '#fff', fontSize: '15px' }}
+                style={{ backgroundColor: '#4C4DDC', color: '#fff', fontSize: '15px' }}
               >
                 {savingTarget ? 'Saving...' : 'Save Target'}
               </button>
@@ -451,13 +451,13 @@ export default function Budget() {
           style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
           onClick={e => { if (e.target === e.currentTarget) setEditExpense(null) }}
         >
-          <div className="w-full max-w-lg flex flex-col" style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderBottom: 'none', borderRadius: '16px 16px 0 0', maxHeight: '85dvh' }}>
+          <div className="w-full max-w-lg flex flex-col" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderBottom: 'none', borderRadius: '16px 16px 0 0', maxHeight: '85dvh' }}>
             <div className="flex justify-center pt-3 pb-1">
-              <div className="w-8 h-0.5 rounded-full" style={{ backgroundColor: '#3A3A3A' }} />
+              <div className="w-8 h-0.5 rounded-full" style={{ backgroundColor: '#D1D1E0' }} />
             </div>
-            <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '0.5px solid #2A2A2A' }}>
-              <p className="font-medium" style={{ fontSize: '15px', color: '#F5F5F5' }}>Edit Expense</p>
-              <button onClick={() => setEditExpense(null)}><X size={18} color="#555550" /></button>
+            <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid #E8E8F0' }}>
+              <p className="font-medium" style={{ fontSize: '15px', color: '#0F0F1A' }}>Edit Expense</p>
+              <button onClick={() => setEditExpense(null)}><X size={18} color="#6B6B7B" /></button>
             </div>
             <div className="flex flex-col gap-4 px-5 py-5 overflow-y-auto">
               <input
@@ -465,10 +465,10 @@ export default function Budget() {
                 value={editAmount}
                 onChange={e => setEditAmount(e.target.value)}
                 className="w-full rounded-lg px-4 py-3 outline-none"
-                style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '22px', fontWeight: 500 }}
+                style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '22px', fontWeight: 500 }}
               />
               <div>
-                <p style={{ fontSize: '11px', color: '#888780', marginBottom: '8px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Category</p>
+                <p style={{ fontSize: '11px', color: '#6B6B7B', marginBottom: '8px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Category</p>
                 <div className="flex flex-wrap gap-2">
                   {EXPENSE_CATEGORIES.map(c => (
                     <button
@@ -476,9 +476,9 @@ export default function Budget() {
                       onClick={() => setEditCategory(c)}
                       style={{
                         fontSize: '11px', fontWeight: 500, padding: '4px 10px', borderRadius: '6px',
-                        backgroundColor: editCategory === c ? EXPENSE_COLORS[c] + '30' : '#222222',
-                        color: editCategory === c ? EXPENSE_COLORS[c] : '#888780',
-                        border: `0.5px solid ${editCategory === c ? EXPENSE_COLORS[c] : '#2A2A2A'}`,
+                        backgroundColor: editCategory === c ? EXPENSE_COLORS[c] + '30' : '#F5F5FA',
+                        color: editCategory === c ? EXPENSE_COLORS[c] : '#6B6B7B',
+                        border: `1px solid ${editCategory === c ? EXPENSE_COLORS[c] : '#E8E8F0'}`,
                       }}
                     >
                       {EXPENSE_LABELS[c]}
@@ -492,16 +492,16 @@ export default function Budget() {
                 value={editNote}
                 onChange={e => setEditNote(e.target.value)}
                 className="w-full rounded-lg px-4 py-2.5 outline-none"
-                style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '14px' }}
+                style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '14px' }}
               />
               <div>
-                <p style={{ fontSize: '11px', color: '#888780', marginBottom: '6px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Date</p>
+                <p style={{ fontSize: '11px', color: '#6B6B7B', marginBottom: '6px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Date</p>
                 <input
                   type="date"
                   value={editDate}
                   onChange={e => setEditDate(e.target.value)}
                   className="w-full rounded-lg px-4 py-2.5 outline-none"
-                  style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '14px' }}
+                  style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '14px' }}
                 />
               </div>
             </div>
@@ -510,7 +510,7 @@ export default function Budget() {
                 onClick={saveEdit}
                 disabled={editSaving || !editAmount}
                 className="w-full py-3 rounded-lg font-medium disabled:opacity-40"
-                style={{ backgroundColor: '#378ADD', color: '#fff', fontSize: '15px' }}
+                style={{ backgroundColor: '#4C4DDC', color: '#fff', fontSize: '15px' }}
               >
                 {editSaving ? 'Saving...' : 'Save Changes'}
               </button>

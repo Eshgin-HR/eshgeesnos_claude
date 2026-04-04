@@ -197,7 +197,7 @@ export default function WeeklyReview() {
   if (loading) {
     return (
       <div className="flex flex-col gap-4">
-        {[1, 2, 3].map(i => <div key={i} className="h-16 rounded-xl animate-pulse" style={{ backgroundColor: '#1A1A1A' }} />)}
+        {[1, 2, 3].map(i => <div key={i} className="h-16 rounded-xl animate-pulse" style={{ backgroundColor: '#FFFFFF' }} />)}
       </div>
     )
   }
@@ -208,7 +208,7 @@ export default function WeeklyReview() {
     <div className="flex flex-col gap-5">
       {/* Last review info */}
       {lastCompleted && (
-        <p className="text-[12px]" style={{ color: '#888780' }}>
+        <p className="text-[12px]" style={{ color: '#6B6B7B' }}>
           Last review completed:{' '}
           {new Date(lastCompleted).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
         </p>
@@ -218,12 +218,12 @@ export default function WeeklyReview() {
       {isCompleted && (
         <div
           className="flex items-center gap-3 px-4 py-3 rounded-xl"
-          style={{ backgroundColor: '#1D9E7515', border: '0.5px solid #1D9E7530' }}
+          style={{ backgroundColor: '#50CD8915', border: '1px solid #50CD8930' }}
         >
-          <CheckCircle2 size={18} style={{ color: '#1D9E75', flexShrink: 0 }} />
+          <CheckCircle2 size={18} style={{ color: '#50CD89', flexShrink: 0 }} />
           <div>
-            <p className="text-[14px] font-medium" style={{ color: '#F5F5F5' }}>Review complete</p>
-            <p className="text-[12px]" style={{ color: '#888780' }}>
+            <p className="text-[14px] font-medium" style={{ color: '#0F0F1A' }}>Review complete</p>
+            <p className="text-[12px]" style={{ color: '#6B6B7B' }}>
               Completed {new Date(review!.completed_at!).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
             </p>
           </div>
@@ -233,17 +233,17 @@ export default function WeeklyReview() {
       {/* Step indicator */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[12px] font-medium" style={{ color: '#888780' }}>
+          <span className="text-[12px] font-medium" style={{ color: '#6B6B7B' }}>
             Step {step} of 3 — {STEPS[step - 1].title}
           </span>
-          <span className="text-[12px]" style={{ color: '#555550' }}>{STEPS[step - 1].subtitle}</span>
+          <span className="text-[12px]" style={{ color: '#6B6B7B' }}>{STEPS[step - 1].subtitle}</span>
         </div>
         <div className="flex gap-1">
           {[1, 2, 3].map(s => (
             <div
               key={s}
               className="h-1 rounded-full flex-1 transition-all duration-300"
-              style={{ backgroundColor: s <= step ? '#378ADD' : '#2A2A2A' }}
+              style={{ backgroundColor: s <= step ? '#4C4DDC' : '#E8E8F0' }}
             />
           ))}
         </div>
@@ -256,36 +256,36 @@ export default function WeeklyReview() {
           <div
             className="flex items-center justify-between px-4 py-3 rounded-xl"
             style={{
-              backgroundColor: inboxCount > 0 ? '#E24B4A15' : '#1D9E7515',
-              border: `0.5px solid ${inboxCount > 0 ? '#E24B4A30' : '#1D9E7530'}`,
+              backgroundColor: inboxCount > 0 ? '#E5535315' : '#50CD8915',
+              border: `1px solid ${inboxCount > 0 ? '#E5535330' : '#50CD8930'}`,
             }}
           >
-            <span className="text-[14px]" style={{ color: '#F5F5F5' }}>
+            <span className="text-[14px]" style={{ color: '#0F0F1A' }}>
               {inboxCount === 0 ? 'Inbox clear ✓' : `Inbox: ${inboxCount} item${inboxCount > 1 ? 's' : ''} remaining`}
             </span>
             <span
               className="text-[22px] font-medium"
-              style={{ color: inboxCount > 0 ? '#E24B4A' : '#1D9E75' }}
+              style={{ color: inboxCount > 0 ? '#E55353' : '#50CD89' }}
             >
               {inboxCount}
             </span>
           </div>
 
           {/* Checklist */}
-          <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
+          <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
             {STEP1_ITEMS.map((item, i) => (
               <button
                 key={item.key}
                 onClick={() => toggleStep1(item.key)}
-                className="w-full flex items-start gap-3 px-4 py-3.5 text-left transition-colors hover:bg-[#222222]"
-                style={{ borderTop: i === 0 ? 'none' : '0.5px solid #2A2A2A' }}
+                className="w-full flex items-start gap-3 px-4 py-3.5 text-left transition-colors hover:bg-[#F5F5FA]"
+                style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
               >
                 <div
                   className="flex-shrink-0 flex items-center justify-center rounded mt-0.5"
                   style={{
                     width: '18px', height: '18px',
-                    border: step1State[item.key] ? 'none' : '1.5px solid #3A3A3A',
-                    backgroundColor: step1State[item.key] ? '#1D9E75' : 'transparent',
+                    border: step1State[item.key] ? 'none' : '1.5px solid #D1D1E0',
+                    backgroundColor: step1State[item.key] ? '#50CD89' : 'transparent',
                     borderRadius: '4px',
                   }}
                 >
@@ -293,7 +293,7 @@ export default function WeeklyReview() {
                 </div>
                 <span
                   className="text-[14px] leading-snug"
-                  style={{ color: step1State[item.key] ? '#555550' : '#F5F5F5', textDecoration: step1State[item.key] ? 'line-through' : 'none' }}
+                  style={{ color: step1State[item.key] ? '#6B6B7B' : '#0F0F1A', textDecoration: step1State[item.key] ? 'line-through' : 'none' }}
                 >
                   {item.label}
                 </span>
@@ -308,41 +308,41 @@ export default function WeeklyReview() {
         <div className="flex flex-col gap-4">
           {/* Task stats */}
           <div className="flex gap-2 flex-wrap">
-            <div className="px-3 py-2 rounded-lg" style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A' }}>
-              <p className="text-[18px] font-medium" style={{ color: '#F5F5F5' }}>{activeCount}</p>
-              <p className="text-[11px] uppercase tracking-wide" style={{ color: '#888780' }}>Active</p>
+            <div className="px-3 py-2 rounded-lg" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0' }}>
+              <p className="text-[18px] font-medium" style={{ color: '#0F0F1A' }}>{activeCount}</p>
+              <p className="text-[11px] uppercase tracking-wide" style={{ color: '#6B6B7B' }}>Active</p>
             </div>
-            <div className="px-3 py-2 rounded-lg" style={{ backgroundColor: '#1A1A1A', border: `0.5px solid ${overdueCount > 0 ? '#E24B4A40' : '#2A2A2A'}` }}>
-              <p className="text-[18px] font-medium" style={{ color: overdueCount > 0 ? '#E24B4A' : '#F5F5F5' }}>{overdueCount}</p>
-              <p className="text-[11px] uppercase tracking-wide" style={{ color: '#888780' }}>Overdue</p>
+            <div className="px-3 py-2 rounded-lg" style={{ backgroundColor: '#FFFFFF', border: `1px solid ${overdueCount > 0 ? '#E5535340' : '#E8E8F0'}` }}>
+              <p className="text-[18px] font-medium" style={{ color: overdueCount > 0 ? '#E55353' : '#0F0F1A' }}>{overdueCount}</p>
+              <p className="text-[11px] uppercase tracking-wide" style={{ color: '#6B6B7B' }}>Overdue</p>
             </div>
-            <div className="px-3 py-2 rounded-lg" style={{ backgroundColor: '#1A1A1A', border: `0.5px solid ${stalledCount > 0 ? '#EF9F2740' : '#2A2A2A'}` }}>
-              <p className="text-[18px] font-medium" style={{ color: stalledCount > 0 ? '#EF9F27' : '#F5F5F5' }}>{stalledCount}</p>
-              <p className="text-[11px] uppercase tracking-wide" style={{ color: '#888780' }}>Stalled</p>
+            <div className="px-3 py-2 rounded-lg" style={{ backgroundColor: '#FFFFFF', border: `1px solid ${stalledCount > 0 ? '#FFD33C40' : '#E8E8F0'}` }}>
+              <p className="text-[18px] font-medium" style={{ color: stalledCount > 0 ? '#FFD33C' : '#0F0F1A' }}>{stalledCount}</p>
+              <p className="text-[11px] uppercase tracking-wide" style={{ color: '#6B6B7B' }}>Stalled</p>
             </div>
           </div>
 
           {/* Waiting For */}
           <div>
-            <p className="text-[13px] font-medium mb-2" style={{ color: '#888780' }}>Waiting For ({waitingItems.length})</p>
+            <p className="text-[13px] font-medium mb-2" style={{ color: '#6B6B7B' }}>Waiting For ({waitingItems.length})</p>
             {waitingItems.length === 0 ? (
-              <p className="text-[13px]" style={{ color: '#555550' }}>No open waiting-for items</p>
+              <p className="text-[13px]" style={{ color: '#6B6B7B' }}>No open waiting-for items</p>
             ) : (
-              <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
+              <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
                 {waitingItems.map((w, i) => (
                   <div
                     key={w.id}
                     className="flex items-start justify-between gap-3 px-4 py-3"
-                    style={{ borderTop: i === 0 ? 'none' : '0.5px solid #2A2A2A' }}
+                    style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
                   >
                     <div className="min-w-0">
-                      <p className="text-[13px]" style={{ color: '#F5F5F5' }}>{w.title}</p>
-                      {w.waiting_on && <p className="text-[11px] mt-0.5" style={{ color: '#888780' }}>Waiting on: {w.waiting_on}</p>}
+                      <p className="text-[13px]" style={{ color: '#0F0F1A' }}>{w.title}</p>
+                      {w.waiting_on && <p className="text-[11px] mt-0.5" style={{ color: '#6B6B7B' }}>Waiting on: {w.waiting_on}</p>}
                     </div>
                     <button
                       onClick={() => resolveWaiting(w.id)}
                       className="flex-shrink-0 text-[11px] px-2 py-1 rounded-md transition-colors"
-                      style={{ backgroundColor: '#1D9E7520', color: '#1D9E75', border: '0.5px solid #1D9E7540' }}
+                      style={{ backgroundColor: '#50CD8920', color: '#50CD89', border: '1px solid #50CD8940' }}
                     >
                       Resolved
                     </button>
@@ -354,22 +354,22 @@ export default function WeeklyReview() {
 
           {/* Someday/Maybe */}
           <div>
-            <p className="text-[13px] font-medium mb-2" style={{ color: '#888780' }}>Someday / Maybe ({somedayItems.length})</p>
+            <p className="text-[13px] font-medium mb-2" style={{ color: '#6B6B7B' }}>Someday / Maybe ({somedayItems.length})</p>
             {somedayItems.length === 0 ? (
-              <p className="text-[13px]" style={{ color: '#555550' }}>No someday/maybe items</p>
+              <p className="text-[13px]" style={{ color: '#6B6B7B' }}>No someday/maybe items</p>
             ) : (
-              <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
+              <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
                 {somedayItems.map((s, i) => (
                   <div
                     key={s.id}
                     className="flex items-start justify-between gap-3 px-4 py-3"
-                    style={{ borderTop: i === 0 ? 'none' : '0.5px solid #2A2A2A' }}
+                    style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
                   >
-                    <p className="text-[13px] min-w-0" style={{ color: '#F5F5F5' }}>{s.title}</p>
+                    <p className="text-[13px] min-w-0" style={{ color: '#0F0F1A' }}>{s.title}</p>
                     <button
                       onClick={() => activateSomeday(s)}
                       className="flex-shrink-0 text-[11px] px-2 py-1 rounded-md transition-colors"
-                      style={{ backgroundColor: '#378ADD20', color: '#378ADD', border: '0.5px solid #378ADD40' }}
+                      style={{ backgroundColor: '#4C4DDC20', color: '#4C4DDC', border: '1px solid #4C4DDC40' }}
                     >
                       Activate → Tasks
                     </button>
@@ -380,20 +380,20 @@ export default function WeeklyReview() {
           </div>
 
           {/* Step 2 checklist */}
-          <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
+          <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
             {STEP2_ITEMS.map((item, i) => (
               <button
                 key={item.key}
                 onClick={() => toggleStep2(item.key)}
-                className="w-full flex items-start gap-3 px-4 py-3.5 text-left transition-colors hover:bg-[#222222]"
-                style={{ borderTop: i === 0 ? 'none' : '0.5px solid #2A2A2A' }}
+                className="w-full flex items-start gap-3 px-4 py-3.5 text-left transition-colors hover:bg-[#F5F5FA]"
+                style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
               >
                 <div
                   className="flex-shrink-0 flex items-center justify-center rounded mt-0.5"
                   style={{
                     width: '18px', height: '18px',
-                    border: step2State[item.key] ? 'none' : '1.5px solid #3A3A3A',
-                    backgroundColor: step2State[item.key] ? '#1D9E75' : 'transparent',
+                    border: step2State[item.key] ? 'none' : '1.5px solid #D1D1E0',
+                    backgroundColor: step2State[item.key] ? '#50CD89' : 'transparent',
                     borderRadius: '4px',
                   }}
                 >
@@ -401,7 +401,7 @@ export default function WeeklyReview() {
                 </div>
                 <span
                   className="text-[14px] leading-snug"
-                  style={{ color: step2State[item.key] ? '#555550' : '#F5F5F5', textDecoration: step2State[item.key] ? 'line-through' : 'none' }}
+                  style={{ color: step2State[item.key] ? '#6B6B7B' : '#0F0F1A', textDecoration: step2State[item.key] ? 'line-through' : 'none' }}
                 >
                   {item.label}
                 </span>
@@ -414,7 +414,7 @@ export default function WeeklyReview() {
       {/* Step 3 — Get Creative */}
       {step === 3 && (
         <div className="flex flex-col gap-4">
-          <div className="text-[13px] font-medium mb-1" style={{ color: '#888780' }}>
+          <div className="text-[13px] font-medium mb-1" style={{ color: '#6B6B7B' }}>
             Top 3 outcomes for next week
           </div>
 
@@ -424,7 +424,7 @@ export default function WeeklyReview() {
             { label: 'Personal', value: personalOutcome, onChange: setPersonalOutcome },
           ].map(({ label, value, onChange }) => (
             <div key={label}>
-              <div className="text-[11px] font-medium uppercase tracking-wide mb-1.5" style={{ color: '#555550' }}>{label}</div>
+              <div className="text-[11px] font-medium uppercase tracking-wide mb-1.5" style={{ color: '#6B6B7B' }}>{label}</div>
               <input
                 type="text"
                 value={value}
@@ -432,13 +432,13 @@ export default function WeeklyReview() {
                 onBlur={saveStep3}
                 placeholder={`${label} outcome for next week…`}
                 className="w-full rounded-lg px-3.5 py-2.5 text-[14px] focus:outline-none"
-                style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5' }}
+                style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A' }}
               />
             </div>
           ))}
 
           <div>
-            <div className="text-[11px] font-medium uppercase tracking-wide mb-1.5" style={{ color: '#555550' }}>Monday 06:00 TapWork task</div>
+            <div className="text-[11px] font-medium uppercase tracking-wide mb-1.5" style={{ color: '#6B6B7B' }}>Monday 06:00 TapWork task</div>
             <input
               type="text"
               value={tapworkMonday}
@@ -446,12 +446,12 @@ export default function WeeklyReview() {
               onBlur={saveStep3}
               placeholder="Pre-load Monday morning TapWork task…"
               className="w-full rounded-lg px-3.5 py-2.5 text-[14px] focus:outline-none"
-              style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5' }}
+              style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A' }}
             />
           </div>
 
           <div>
-            <div className="text-[11px] font-medium uppercase tracking-wide mb-1.5" style={{ color: '#555550' }}>Any projects at risk this week?</div>
+            <div className="text-[11px] font-medium uppercase tracking-wide mb-1.5" style={{ color: '#6B6B7B' }}>Any projects at risk this week?</div>
             <textarea
               value={atRisk}
               onChange={e => setAtRisk(e.target.value)}
@@ -459,7 +459,7 @@ export default function WeeklyReview() {
               placeholder="Anything at risk or needing extra attention…"
               rows={3}
               className="w-full rounded-lg px-3.5 py-2.5 text-[14px] focus:outline-none resize-none"
-              style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', lineHeight: '1.6' }}
+              style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', lineHeight: '1.6' }}
             />
           </div>
 
@@ -469,7 +469,7 @@ export default function WeeklyReview() {
               onClick={completeReview}
               disabled={completing}
               className="w-full py-3 rounded-lg text-[14px] font-medium transition-all active:scale-[0.98] disabled:opacity-40 mt-2"
-              style={{ backgroundColor: '#1D9E75', color: '#fff' }}
+              style={{ backgroundColor: '#50CD89', color: '#fff' }}
             >
               {completing ? 'Completing…' : '✓ Complete review'}
             </button>
@@ -483,7 +483,7 @@ export default function WeeklyReview() {
           onClick={() => setStep(s => Math.max(1, s - 1))}
           disabled={step === 1}
           className="flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all disabled:opacity-30"
-          style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', color: '#F5F5F5' }}
+          style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', color: '#0F0F1A' }}
         >
           <ChevronLeft size={14} />
           Back
@@ -492,7 +492,7 @@ export default function WeeklyReview() {
           <button
             onClick={() => setStep(s => Math.min(3, s + 1))}
             className="flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all active:scale-[0.98]"
-            style={{ backgroundColor: '#378ADD', color: '#fff' }}
+            style={{ backgroundColor: '#4C4DDC', color: '#fff' }}
           >
             Next
             <ChevronRight size={14} />

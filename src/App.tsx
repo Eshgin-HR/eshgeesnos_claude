@@ -19,36 +19,36 @@ function AppRoutes() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4" style={{ backgroundColor: '#0F0F0F' }}>
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4" style={{ backgroundColor: '#F8F8FC' }}>
         <div
           className="w-14 h-14 rounded-xl flex items-center justify-center text-xl font-semibold"
-          style={{ backgroundColor: '#378ADD', color: '#fff' }}
+          style={{ backgroundColor: '#4C4DDC', color: '#fff' }}
         >
           E
         </div>
-        <div className="w-5 h-5 rounded-full border-2 animate-spin" style={{ borderColor: '#378ADD', borderTopColor: 'transparent' }} />
+        <div className="w-5 h-5 rounded-full border-2 animate-spin" style={{ borderColor: '#4C4DDC', borderTopColor: 'transparent' }} />
       </div>
     )
   }
 
   if (!session) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ backgroundColor: '#0F0F0F' }}>
+      <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ backgroundColor: '#F8F8FC' }}>
         <div className="text-center flex flex-col items-center gap-4">
           <div
             className="w-14 h-14 rounded-xl flex items-center justify-center text-xl font-semibold"
-            style={{ backgroundColor: '#378ADD', color: '#fff' }}
+            style={{ backgroundColor: '#4C4DDC', color: '#fff' }}
           >
             E
           </div>
-          <p className="font-semibold" style={{ color: '#F5F5F5', fontSize: '18px' }}>EshgeenOS</p>
-          <p style={{ fontSize: '14px', color: '#E24B4A' }}>
+          <p className="font-semibold" style={{ color: '#0F0F1A', fontSize: '18px' }}>EshgeenOS</p>
+          <p style={{ fontSize: '14px', color: '#E55353' }}>
             Could not connect. Check your internet and reload.
           </p>
           <button
             onClick={() => window.location.reload()}
             className="px-6 py-2.5 rounded-lg font-medium"
-            style={{ backgroundColor: '#378ADD', color: '#fff', fontSize: '14px' }}
+            style={{ backgroundColor: '#4C4DDC', color: '#fff', fontSize: '14px' }}
           >
             Reload
           </button>

@@ -90,8 +90,8 @@ export default function QuickAddModal({ onClose }: { onClose: () => void }) {
     >
       <div
         style={{
-          backgroundColor: '#1A1A1A',
-          border: '0.5px solid #2A2A2A',
+          backgroundColor: '#FFFFFF',
+          border: '1px solid #E8E8F0',
           borderRadius: '16px',
           padding: '24px 20px',
           width: '90%',
@@ -100,10 +100,10 @@ export default function QuickAddModal({ onClose }: { onClose: () => void }) {
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
-          <p className="font-medium" style={{ fontSize: '16px', color: '#F5F5F5' }}>
+          <p className="font-medium" style={{ fontSize: '16px', color: '#0F0F1A' }}>
             {view === 'menu' ? 'Quick Add' : view === 'expense' ? 'Add Expense' : view === 'task' ? 'Add Task' : 'Add Note'}
           </p>
-          <button onClick={view === 'menu' ? onClose : goBack} style={{ color: '#555550' }}>
+          <button onClick={view === 'menu' ? onClose : goBack} style={{ color: '#6B6B7B' }}>
             <X size={18} />
           </button>
         </div>
@@ -112,24 +112,24 @@ export default function QuickAddModal({ onClose }: { onClose: () => void }) {
         {view === 'menu' && (
           <div className="flex flex-col gap-2.5">
             {[
-              { key: 'expense' as View, icon: DollarSign, label: 'Add expense', color: '#378ADD' },
-              { key: 'task' as View, icon: CheckSquare, label: 'Add task', color: '#1D9E75' },
+              { key: 'expense' as View, icon: DollarSign, label: 'Add expense', color: '#4C4DDC' },
+              { key: 'task' as View, icon: CheckSquare, label: 'Add task', color: '#50CD89' },
               { key: 'note' as View, icon: FileText, label: 'Add note', color: '#534AB7' },
             ].map(({ key, icon: Icon, label, color }) => (
               <button
                 key={key}
                 onClick={() => setView(key)}
                 className="flex items-center gap-3 px-4 py-4 rounded-xl text-left transition-all active:scale-[0.98]"
-                style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A' }}
+                style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0' }}
               >
                 <Icon size={20} color={color} />
-                <span style={{ fontSize: '15px', fontWeight: 500, color: '#F5F5F5' }}>{label}</span>
+                <span style={{ fontSize: '15px', fontWeight: 500, color: '#0F0F1A' }}>{label}</span>
               </button>
             ))}
             <button
               onClick={onClose}
               className="mt-1 w-full py-3 rounded-lg"
-              style={{ color: '#888780', fontSize: '14px' }}
+              style={{ color: '#6B6B7B', fontSize: '14px' }}
             >
               Cancel
             </button>
@@ -146,10 +146,10 @@ export default function QuickAddModal({ onClose }: { onClose: () => void }) {
               value={expAmount}
               onChange={e => setExpAmount(e.target.value)}
               className="w-full rounded-lg px-4 py-3 outline-none"
-              style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '22px', fontWeight: 500 }}
+              style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '22px', fontWeight: 500 }}
             />
             <div>
-              <p style={{ fontSize: '11px', color: '#888780', marginBottom: '8px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Category</p>
+              <p style={{ fontSize: '11px', color: '#6B6B7B', marginBottom: '8px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Category</p>
               <div className="flex flex-wrap gap-2">
                 {EXPENSE_CATEGORIES.map(c => (
                   <button
@@ -160,9 +160,9 @@ export default function QuickAddModal({ onClose }: { onClose: () => void }) {
                       fontWeight: 500,
                       padding: '4px 10px',
                       borderRadius: '6px',
-                      backgroundColor: expCategory === c ? EXPENSE_COLORS[c] + '30' : '#222222',
-                      color: expCategory === c ? EXPENSE_COLORS[c] : '#888780',
-                      border: `0.5px solid ${expCategory === c ? EXPENSE_COLORS[c] : '#2A2A2A'}`,
+                      backgroundColor: expCategory === c ? EXPENSE_COLORS[c] + '30' : '#F5F5FA',
+                      color: expCategory === c ? EXPENSE_COLORS[c] : '#6B6B7B',
+                      border: `1px solid ${expCategory === c ? EXPENSE_COLORS[c] : '#E8E8F0'}`,
                     }}
                   >
                     {EXPENSE_LABELS[c]}
@@ -176,23 +176,23 @@ export default function QuickAddModal({ onClose }: { onClose: () => void }) {
               value={expNote}
               onChange={e => setExpNote(e.target.value)}
               className="w-full rounded-lg px-4 py-2.5 outline-none"
-              style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '14px' }}
+              style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '14px' }}
             />
             <div>
-              <p style={{ fontSize: '11px', color: '#888780', marginBottom: '6px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Date</p>
+              <p style={{ fontSize: '11px', color: '#6B6B7B', marginBottom: '6px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Date</p>
               <input
                 type="date"
                 value={expDate}
                 onChange={e => setExpDate(e.target.value)}
                 className="w-full rounded-lg px-4 py-2.5 outline-none"
-                style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '14px' }}
+                style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '14px' }}
               />
             </div>
             <button
               onClick={saveExpense}
               disabled={saving || !expAmount}
               className="w-full py-3 rounded-lg font-medium disabled:opacity-40"
-              style={{ backgroundColor: '#378ADD', color: '#fff', fontSize: '15px' }}
+              style={{ backgroundColor: '#4C4DDC', color: '#fff', fontSize: '15px' }}
             >
               {saving ? 'Saving...' : 'Save Expense'}
             </button>
@@ -210,10 +210,10 @@ export default function QuickAddModal({ onClose }: { onClose: () => void }) {
               onChange={e => setTaskTitle(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter' && taskTitle.trim()) saveTask() }}
               className="w-full rounded-lg px-4 py-3 outline-none"
-              style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '14px' }}
+              style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '14px' }}
             />
             <div>
-              <p style={{ fontSize: '11px', color: '#888780', marginBottom: '8px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Context</p>
+              <p style={{ fontSize: '11px', color: '#6B6B7B', marginBottom: '8px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Context</p>
               <div className="flex flex-wrap gap-2">
                 {CONTEXTS.map(c => (
                   <button
@@ -224,9 +224,9 @@ export default function QuickAddModal({ onClose }: { onClose: () => void }) {
                       fontWeight: 500,
                       padding: '4px 10px',
                       borderRadius: '6px',
-                      backgroundColor: taskContext === c ? CONTEXT_COLORS[c] + '30' : '#222222',
-                      color: taskContext === c ? CONTEXT_COLORS[c] : '#888780',
-                      border: `0.5px solid ${taskContext === c ? CONTEXT_COLORS[c] : '#2A2A2A'}`,
+                      backgroundColor: taskContext === c ? CONTEXT_COLORS[c] + '30' : '#F5F5FA',
+                      color: taskContext === c ? CONTEXT_COLORS[c] : '#6B6B7B',
+                      border: `1px solid ${taskContext === c ? CONTEXT_COLORS[c] : '#E8E8F0'}`,
                     }}
                   >
                     {CONTEXT_LABELS[c]}
@@ -235,7 +235,7 @@ export default function QuickAddModal({ onClose }: { onClose: () => void }) {
               </div>
             </div>
             <div>
-              <p style={{ fontSize: '11px', color: '#888780', marginBottom: '8px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Area</p>
+              <p style={{ fontSize: '11px', color: '#6B6B7B', marginBottom: '8px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Area</p>
               <div className="flex flex-wrap gap-2">
                 {AREA_OPTIONS.map(a => (
                   <button
@@ -246,9 +246,9 @@ export default function QuickAddModal({ onClose }: { onClose: () => void }) {
                       fontWeight: 500,
                       padding: '4px 10px',
                       borderRadius: '6px',
-                      backgroundColor: taskArea === a ? AREA_COLORS[a] + '30' : '#222222',
-                      color: taskArea === a ? AREA_COLORS[a] : '#888780',
-                      border: `0.5px solid ${taskArea === a ? AREA_COLORS[a] : '#2A2A2A'}`,
+                      backgroundColor: taskArea === a ? AREA_COLORS[a] + '30' : '#F5F5FA',
+                      color: taskArea === a ? AREA_COLORS[a] : '#6B6B7B',
+                      border: `1px solid ${taskArea === a ? AREA_COLORS[a] : '#E8E8F0'}`,
                     }}
                   >
                     {a}
@@ -257,20 +257,20 @@ export default function QuickAddModal({ onClose }: { onClose: () => void }) {
               </div>
             </div>
             <div>
-              <p style={{ fontSize: '11px', color: '#888780', marginBottom: '6px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Due date (optional)</p>
+              <p style={{ fontSize: '11px', color: '#6B6B7B', marginBottom: '6px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Due date (optional)</p>
               <input
                 type="date"
                 value={taskDue}
                 onChange={e => setTaskDue(e.target.value)}
                 className="w-full rounded-lg px-4 py-2.5 outline-none"
-                style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '14px' }}
+                style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '14px' }}
               />
             </div>
             <button
               onClick={saveTask}
               disabled={saving || !taskTitle.trim()}
               className="w-full py-3 rounded-lg font-medium disabled:opacity-40"
-              style={{ backgroundColor: '#378ADD', color: '#fff', fontSize: '15px' }}
+              style={{ backgroundColor: '#4C4DDC', color: '#fff', fontSize: '15px' }}
             >
               {saving ? 'Saving...' : 'Save Task'}
             </button>
@@ -286,7 +286,7 @@ export default function QuickAddModal({ onClose }: { onClose: () => void }) {
               value={noteTitle}
               onChange={e => setNoteTitle(e.target.value)}
               className="w-full rounded-lg px-4 py-2.5 outline-none"
-              style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '14px' }}
+              style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '14px' }}
             />
             <textarea
               autoFocus
@@ -295,13 +295,13 @@ export default function QuickAddModal({ onClose }: { onClose: () => void }) {
               onChange={e => setNoteBody(e.target.value)}
               rows={5}
               className="w-full rounded-lg px-4 py-3 outline-none resize-none"
-              style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '14px' }}
+              style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '14px' }}
             />
             <button
               onClick={saveNote}
               disabled={saving || !noteBody.trim()}
               className="w-full py-3 rounded-lg font-medium disabled:opacity-40"
-              style={{ backgroundColor: '#378ADD', color: '#fff', fontSize: '15px' }}
+              style={{ backgroundColor: '#4C4DDC', color: '#fff', fontSize: '15px' }}
             >
               {saving ? 'Saving...' : 'Save Note'}
             </button>

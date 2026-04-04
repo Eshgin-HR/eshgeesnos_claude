@@ -125,32 +125,32 @@ export default function DailyRituals() {
     <div className="flex flex-col gap-5">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="font-medium" style={{ fontSize: '20px', color: '#F5F5F5' }}>Rituals</h1>
+        <h1 className="font-medium" style={{ fontSize: '20px', color: '#0F0F1A' }}>Rituals</h1>
         {eveningStreak > 0 && (
           <div
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg"
-            style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A' }}
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0' }}
           >
-            <Flame size={14} color="#EF9F27" />
-            <span style={{ fontSize: '16px', fontWeight: 500, color: '#F5F5F5' }}>{eveningStreak}</span>
-            <span style={{ fontSize: '11px', color: '#888780', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Evening streak</span>
+            <Flame size={14} color="#FFD33C" />
+            <span style={{ fontSize: '16px', fontWeight: 500, color: '#0F0F1A' }}>{eveningStreak}</span>
+            <span style={{ fontSize: '11px', color: '#6B6B7B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Evening streak</span>
           </div>
         )}
       </div>
 
       {/* Tabs */}
-      <div className="flex" style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '10px', padding: '3px' }}>
+      <div className="flex" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '10px', padding: '3px' }}>
         {([['morning', 'Morning', morningDone, MORNING_ITEMS.length], ['evening', 'Evening', eveningDone, EVENING_ITEMS.length]] as const).map(([type, label, done, total]) => (
           <button
             key={type}
             onClick={() => setTab(type)}
             className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-all"
             style={{
-              backgroundColor: tab === type ? '#222222' : 'transparent',
-              border: tab === type ? '0.5px solid #2A2A2A' : 'none',
+              backgroundColor: tab === type ? '#F5F5FA' : 'transparent',
+              border: tab === type ? '0.5px solid #E8E8F0' : 'none',
             }}
           >
-            <span style={{ fontSize: '13px', fontWeight: 500, color: tab === type ? '#F5F5F5' : '#888780' }}>
+            <span style={{ fontSize: '13px', fontWeight: 500, color: tab === type ? '#0F0F1A' : '#6B6B7B' }}>
               {label}
             </span>
             {done > 0 && (
@@ -159,8 +159,8 @@ export default function DailyRituals() {
                 fontWeight: 600,
                 padding: '1px 6px',
                 borderRadius: '4px',
-                backgroundColor: done === total ? '#1D9E7525' : '#2A2A2A',
-                color: done === total ? '#1D9E75' : '#888780',
+                backgroundColor: done === total ? '#50CD8925' : '#E8E8F0',
+                color: done === total ? '#50CD89' : '#6B6B7B',
               }}>
                 {done}/{total}
               </span>
@@ -175,26 +175,26 @@ export default function DailyRituals() {
           {isMorningComplete && (
             <div
               className="flex items-center gap-2 px-4 py-3 rounded-xl mb-4"
-              style={{ backgroundColor: '#1D9E7515', border: '0.5px solid #1D9E7530' }}
+              style={{ backgroundColor: '#50CD8915', border: '1px solid #50CD8930' }}
             >
-              <Check size={14} color="#1D9E75" />
-              <p style={{ fontSize: '13px', color: '#1D9E75', fontWeight: 500 }}>Morning ritual complete — great start!</p>
+              <Check size={14} color="#50CD89" />
+              <p style={{ fontSize: '13px', color: '#50CD89', fontWeight: 500 }}>Morning ritual complete — great start!</p>
             </div>
           )}
-          <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
+          <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
             {MORNING_ITEMS.map((item, i) => (
               <div
                 key={item.key}
                 className="flex items-start gap-3 px-4 py-3"
-                style={{ borderTop: i === 0 ? 'none' : '0.5px solid #2A2A2A' }}
+                style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
               >
                 <button
                   onClick={() => toggle('morning', item.key)}
                   className="flex-shrink-0 mt-0.5"
                   style={{
                     width: '18px', height: '18px',
-                    border: `1.5px solid ${morningState[item.key] ? '#1D9E75' : '#3A3A3A'}`,
-                    backgroundColor: morningState[item.key] ? '#1D9E75' : '#222222',
+                    border: `1.5px solid ${morningState[item.key] ? '#50CD89' : '#D1D1E0'}`,
+                    backgroundColor: morningState[item.key] ? '#50CD89' : '#F5F5FA',
                     borderRadius: '4px',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}
@@ -204,13 +204,13 @@ export default function DailyRituals() {
                 <div className="flex-1">
                   <p style={{
                     fontSize: '14px',
-                    color: morningState[item.key] ? '#555550' : '#F5F5F5',
+                    color: morningState[item.key] ? '#6B6B7B' : '#0F0F1A',
                     textDecoration: morningState[item.key] ? 'line-through' : 'none',
                   }}>
                     {item.label}
                   </p>
                   {(item.time || item.note) && (
-                    <p style={{ fontSize: '11px', color: '#555550', marginTop: '2px' }}>
+                    <p style={{ fontSize: '11px', color: '#6B6B7B', marginTop: '2px' }}>
                       {[item.time, item.note].filter(Boolean).join(' · ')}
                     </p>
                   )}
@@ -227,26 +227,26 @@ export default function DailyRituals() {
           {isEveningComplete && (
             <div
               className="flex items-center gap-2 px-4 py-3 rounded-xl"
-              style={{ backgroundColor: '#1D9E7515', border: '0.5px solid #1D9E7530' }}
+              style={{ backgroundColor: '#50CD8915', border: '1px solid #50CD8930' }}
             >
-              <Check size={14} color="#1D9E75" />
-              <p style={{ fontSize: '13px', color: '#1D9E75', fontWeight: 500 }}>Evening ritual complete — streak updated!</p>
+              <Check size={14} color="#50CD89" />
+              <p style={{ fontSize: '13px', color: '#50CD89', fontWeight: 500 }}>Evening ritual complete — streak updated!</p>
             </div>
           )}
-          <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
+          <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
             {EVENING_ITEMS.map((item, i) => (
               <div
                 key={item.key}
                 className="flex items-start gap-3 px-4 py-3"
-                style={{ borderTop: i === 0 ? 'none' : '0.5px solid #2A2A2A' }}
+                style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
               >
                 <button
                   onClick={() => toggle('evening', item.key)}
                   className="flex-shrink-0 mt-0.5"
                   style={{
                     width: '18px', height: '18px',
-                    border: `1.5px solid ${eveningState[item.key] ? '#1D9E75' : '#3A3A3A'}`,
-                    backgroundColor: eveningState[item.key] ? '#1D9E75' : '#222222',
+                    border: `1.5px solid ${eveningState[item.key] ? '#50CD89' : '#D1D1E0'}`,
+                    backgroundColor: eveningState[item.key] ? '#50CD89' : '#F5F5FA',
                     borderRadius: '4px',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}
@@ -256,13 +256,13 @@ export default function DailyRituals() {
                 <div className="flex-1">
                   <p style={{
                     fontSize: '14px',
-                    color: eveningState[item.key] ? '#555550' : '#F5F5F5',
+                    color: eveningState[item.key] ? '#6B6B7B' : '#0F0F1A',
                     textDecoration: eveningState[item.key] ? 'line-through' : 'none',
                   }}>
                     {item.label}
                   </p>
                   {item.note && (
-                    <p style={{ fontSize: '11px', color: '#555550', marginTop: '2px' }}>{item.note}</p>
+                    <p style={{ fontSize: '11px', color: '#6B6B7B', marginTop: '2px' }}>{item.note}</p>
                   )}
                 </div>
               </div>
@@ -270,8 +270,8 @@ export default function DailyRituals() {
           </div>
 
           {/* Tomorrow's TapWork task */}
-          <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '16px' }}>
-            <p style={{ fontSize: '13px', fontWeight: 500, color: '#F5F5F5', marginBottom: '10px' }}>
+          <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', padding: '16px' }}>
+            <p style={{ fontSize: '13px', fontWeight: 500, color: '#0F0F1A', marginBottom: '10px' }}>
               Tomorrow's 06:00 TapWork task
             </p>
             <div className="flex gap-2">
@@ -281,13 +281,13 @@ export default function DailyRituals() {
                 value={tapworkTask}
                 onChange={e => setTapworkTask(e.target.value)}
                 className="flex-1 rounded-lg px-3 py-2.5 outline-none"
-                style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '14px' }}
+                style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '14px' }}
               />
               <button
                 onClick={saveTapworkTask}
                 disabled={savingTask || !tapworkTask.trim()}
                 className="px-4 py-2.5 rounded-lg font-medium disabled:opacity-40"
-                style={{ backgroundColor: '#378ADD', color: '#fff', fontSize: '13px', flexShrink: 0 }}
+                style={{ backgroundColor: '#4C4DDC', color: '#fff', fontSize: '13px', flexShrink: 0 }}
               >
                 Save
               </button>

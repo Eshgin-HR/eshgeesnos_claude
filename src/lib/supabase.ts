@@ -39,20 +39,20 @@ export const CONTEXT_LABELS: Record<GTDContext, string> = {
   '@transit': 'Transit',
 }
 
-// v3 authoritative colors from CLAUDE.md
+// Design system colors (iris palette)
 export const CONTEXT_COLORS: Record<GTDContext, string> = {
   '@morning-ritual': '#534AB7',
-  '@home-morning': '#1D9E75',
-  '@office': '#378ADD',
-  '@home-evening': '#EF9F27',
-  '@transit': '#888780',
+  '@home-morning': '#50CD89',
+  '@office': '#4C4DDC',
+  '@home-evening': '#FFD33C',
+  '@transit': '#6B6B7B',
 }
 
 export const AREA_COLORS: Record<AreaTag, string> = {
-  'PASHA': '#378ADD',
-  'TapWork': '#1D9E75',
+  'PASHA': '#4C4DDC',
+  'TapWork': '#50CD89',
   'himate.az': '#534AB7',
-  'Personal': '#888780',
+  'Personal': '#6B6B7B',
 }
 
 export const AREAS: AreaTag[] = ['PASHA', 'TapWork', 'himate.az', 'Personal']

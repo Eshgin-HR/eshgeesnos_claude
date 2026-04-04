@@ -8,11 +8,11 @@ import {
 } from '../lib/supabase'
 
 const ITEM_TYPE_OPTIONS: { value: GTDItemType; label: string; color: string }[] = [
-  { value: 'next_action', label: 'Next Action', color: '#378ADD' },
-  { value: 'waiting_for', label: 'Waiting For', color: '#EF9F27' },
+  { value: 'next_action', label: 'Next Action', color: '#4C4DDC' },
+  { value: 'waiting_for', label: 'Waiting For', color: '#FFD33C' },
   { value: 'someday_maybe', label: 'Someday / Maybe', color: '#534AB7' },
-  { value: 'reference', label: 'Reference', color: '#888780' },
-  { value: 'trash', label: 'Trash', color: '#E24B4A' },
+  { value: 'reference', label: 'Reference', color: '#6B6B7B' },
+  { value: 'trash', label: 'Trash', color: '#E55353' },
 ]
 
 export default function Inbox() {
@@ -143,14 +143,14 @@ export default function Inbox() {
     <div className="flex flex-col gap-5">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="font-medium" style={{ fontSize: '20px', color: '#F5F5F5' }}>Inbox</h1>
+        <h1 className="font-medium" style={{ fontSize: '20px', color: '#0F0F1A' }}>Inbox</h1>
         <div className="flex items-center gap-2">
           {items.length > 0 && (
             <button
               onClick={() => { setBulkMode(v => !v); setSelectedIds(new Set()) }}
               style={{
                 fontSize: '12px',
-                color: bulkMode ? '#378ADD' : '#888780',
+                color: bulkMode ? '#4C4DDC' : '#6B6B7B',
                 fontWeight: 500,
               }}
             >
@@ -164,8 +164,8 @@ export default function Inbox() {
                 fontWeight: 600,
                 padding: '2px 8px',
                 borderRadius: '6px',
-                backgroundColor: '#E24B4A20',
-                color: '#E24B4A',
+                backgroundColor: '#E5535320',
+                color: '#E55353',
               }}
             >
               {items.length}
@@ -177,9 +177,9 @@ export default function Inbox() {
       {/* Quick capture */}
       <div
         className="flex items-center gap-3"
-        style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '12px 16px' }}
+        style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', padding: '12px 16px' }}
       >
-        <Plus size={16} color="#378ADD" />
+        <Plus size={16} color="#4C4DDC" />
         <input
           type="text"
           placeholder="Capture anything..."
@@ -187,7 +187,7 @@ export default function Inbox() {
           onChange={e => setNewContent(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter' && newContent.trim()) addItem() }}
           className="flex-1 outline-none bg-transparent"
-          style={{ fontSize: '14px', color: '#F5F5F5' }}
+          style={{ fontSize: '14px', color: '#0F0F1A' }}
         />
         {newContent.trim() && (
           <button
@@ -195,7 +195,7 @@ export default function Inbox() {
             disabled={saving}
             className="flex-shrink-0"
             style={{
-              backgroundColor: '#378ADD',
+              backgroundColor: '#4C4DDC',
               color: '#fff',
               borderRadius: '6px',
               padding: '4px 12px',
@@ -212,9 +212,9 @@ export default function Inbox() {
       {bulkMode && selectedIds.size > 0 && (
         <div
           className="flex items-center gap-2 flex-wrap"
-          style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '12px 16px' }}
+          style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', padding: '12px 16px' }}
         >
-          <span style={{ fontSize: '12px', color: '#888780', marginRight: '4px' }}>{selectedIds.size} selected →</span>
+          <span style={{ fontSize: '12px', color: '#6B6B7B', marginRight: '4px' }}>{selectedIds.size} selected →</span>
           {ITEM_TYPE_OPTIONS.map(o => (
             <button
               key={o.value}
@@ -226,7 +226,7 @@ export default function Inbox() {
                 borderRadius: '6px',
                 backgroundColor: o.color + '25',
                 color: o.color,
-                border: `0.5px solid ${o.color}40`,
+                border: `1px solid ${o.color}40`,
               }}
             >
               {o.label}
@@ -238,24 +238,24 @@ export default function Inbox() {
       {/* Items list */}
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="w-6 h-6 rounded-full border-2 animate-spin" style={{ borderColor: '#378ADD', borderTopColor: 'transparent' }} />
+          <div className="w-6 h-6 rounded-full border-2 animate-spin" style={{ borderColor: '#4C4DDC', borderTopColor: 'transparent' }} />
         </div>
       ) : items.length === 0 ? (
         <div
           className="flex flex-col items-center gap-3 py-16"
-          style={{ color: '#555550' }}
+          style={{ color: '#6B6B7B' }}
         >
-          <Check size={32} strokeWidth={1.5} color="#1D9E75" />
-          <p style={{ fontSize: '15px', color: '#888780', fontWeight: 500 }}>Inbox zero</p>
-          <p style={{ fontSize: '13px', color: '#555550' }}>Everything is processed</p>
+          <Check size={32} strokeWidth={1.5} color="#50CD89" />
+          <p style={{ fontSize: '15px', color: '#6B6B7B', fontWeight: 500 }}>Inbox zero</p>
+          <p style={{ fontSize: '13px', color: '#6B6B7B' }}>Everything is processed</p>
         </div>
       ) : (
-        <div className="flex flex-col" style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
+        <div className="flex flex-col" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
           {items.map((item, i) => (
             <div
               key={item.id}
               className="flex items-start gap-3 px-4 py-4 group"
-              style={{ borderTop: i === 0 ? 'none' : '0.5px solid #2A2A2A' }}
+              style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
             >
               {bulkMode && (
                 <button
@@ -263,8 +263,8 @@ export default function Inbox() {
                   className="flex-shrink-0 mt-0.5"
                   style={{
                     width: '18px', height: '18px',
-                    border: `1.5px solid ${selectedIds.has(item.id) ? '#378ADD' : '#3A3A3A'}`,
-                    backgroundColor: selectedIds.has(item.id) ? '#378ADD' : 'transparent',
+                    border: `1.5px solid ${selectedIds.has(item.id) ? '#4C4DDC' : '#D1D1E0'}`,
+                    backgroundColor: selectedIds.has(item.id) ? '#4C4DDC' : 'transparent',
                     borderRadius: '4px',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}
@@ -276,8 +276,8 @@ export default function Inbox() {
                 className="flex-1 text-left"
                 onClick={() => !bulkMode && openClarify(item)}
               >
-                <p style={{ fontSize: '14px', color: '#F5F5F5', lineHeight: 1.4 }}>{item.content}</p>
-                <p style={{ fontSize: '11px', color: '#555550', marginTop: '4px' }}>{timeAgo(item.created_at)}</p>
+                <p style={{ fontSize: '14px', color: '#0F0F1A', lineHeight: 1.4 }}>{item.content}</p>
+                <p style={{ fontSize: '11px', color: '#6B6B7B', marginTop: '4px' }}>{timeAgo(item.created_at)}</p>
               </button>
               {!bulkMode && (
                 <div className="flex items-center gap-2 flex-shrink-0">
@@ -285,11 +285,11 @@ export default function Inbox() {
                     onClick={() => openClarify(item)}
                     style={{
                       fontSize: '11px',
-                      color: '#378ADD',
+                      color: '#4C4DDC',
                       fontWeight: 500,
                       padding: '3px 8px',
                       borderRadius: '5px',
-                      backgroundColor: '#378ADD15',
+                      backgroundColor: '#4C4DDC15',
                     }}
                   >
                     Clarify <ChevronDown size={10} style={{ display: 'inline', marginBottom: '1px' }} />
@@ -297,7 +297,7 @@ export default function Inbox() {
                   <button
                     onClick={() => deleteItem(item.id)}
                     className="opacity-0 group-hover:opacity-100 transition-opacity"
-                    style={{ color: '#555550' }}
+                    style={{ color: '#6B6B7B' }}
                   >
                     <Trash2 size={13} />
                   </button>
@@ -318,29 +318,29 @@ export default function Inbox() {
           <div
             className="w-full max-w-lg flex flex-col"
             style={{
-              backgroundColor: '#1A1A1A',
-              border: '0.5px solid #2A2A2A',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #E8E8F0',
               borderBottom: 'none',
               borderRadius: '16px 16px 0 0',
               maxHeight: '80dvh',
             }}
           >
             <div className="flex justify-center pt-3 pb-1">
-              <div className="w-8 h-0.5 rounded-full" style={{ backgroundColor: '#3A3A3A' }} />
+              <div className="w-8 h-0.5 rounded-full" style={{ backgroundColor: '#D1D1E0' }} />
             </div>
-            <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '0.5px solid #2A2A2A' }}>
-              <p className="font-medium" style={{ fontSize: '15px', color: '#F5F5F5' }}>Clarify</p>
-              <button onClick={() => setClarifyItem(null)}><X size={18} color="#555550" /></button>
+            <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid #E8E8F0' }}>
+              <p className="font-medium" style={{ fontSize: '15px', color: '#0F0F1A' }}>Clarify</p>
+              <button onClick={() => setClarifyItem(null)}><X size={18} color="#6B6B7B" /></button>
             </div>
             <div className="flex flex-col gap-5 px-5 py-5 overflow-y-auto">
               {/* Item preview */}
-              <div style={{ backgroundColor: '#222222', borderRadius: '8px', padding: '12px 14px' }}>
-                <p style={{ fontSize: '14px', color: '#F5F5F5' }}>{clarifyItem.content}</p>
+              <div style={{ backgroundColor: '#F5F5FA', borderRadius: '8px', padding: '12px 14px' }}>
+                <p style={{ fontSize: '14px', color: '#0F0F1A' }}>{clarifyItem.content}</p>
               </div>
 
               {/* Type */}
               <div>
-                <p style={{ fontSize: '11px', color: '#888780', marginBottom: '8px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>What is this?</p>
+                <p style={{ fontSize: '11px', color: '#6B6B7B', marginBottom: '8px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>What is this?</p>
                 <div className="flex flex-col gap-2">
                   {ITEM_TYPE_OPTIONS.map(o => (
                     <button
@@ -348,8 +348,8 @@ export default function Inbox() {
                       onClick={() => setSelectedType(selectedType === o.value ? '' : o.value)}
                       className="flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all"
                       style={{
-                        backgroundColor: selectedType === o.value ? o.color + '20' : '#222222',
-                        border: `0.5px solid ${selectedType === o.value ? o.color : '#2A2A2A'}`,
+                        backgroundColor: selectedType === o.value ? o.color + '20' : '#F5F5FA',
+                        border: `1px solid ${selectedType === o.value ? o.color : '#E8E8F0'}`,
                       }}
                     >
                       <div
@@ -358,7 +358,7 @@ export default function Inbox() {
                           backgroundColor: o.color, flexShrink: 0,
                         }}
                       />
-                      <span style={{ fontSize: '14px', color: '#F5F5F5' }}>{o.label}</span>
+                      <span style={{ fontSize: '14px', color: '#0F0F1A' }}>{o.label}</span>
                     </button>
                   ))}
                 </div>
@@ -367,7 +367,7 @@ export default function Inbox() {
               {/* Context (only for next_action) */}
               {selectedType === 'next_action' && (
                 <div>
-                  <p style={{ fontSize: '11px', color: '#888780', marginBottom: '8px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Context</p>
+                  <p style={{ fontSize: '11px', color: '#6B6B7B', marginBottom: '8px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Context</p>
                   <div className="flex flex-wrap gap-2">
                     {CONTEXTS.map(c => (
                       <button
@@ -378,9 +378,9 @@ export default function Inbox() {
                           fontWeight: 500,
                           padding: '4px 10px',
                           borderRadius: '6px',
-                          backgroundColor: selectedContext === c ? CONTEXT_COLORS[c] + '30' : '#222222',
-                          color: selectedContext === c ? CONTEXT_COLORS[c] : '#888780',
-                          border: `0.5px solid ${selectedContext === c ? CONTEXT_COLORS[c] : '#2A2A2A'}`,
+                          backgroundColor: selectedContext === c ? CONTEXT_COLORS[c] + '30' : '#F5F5FA',
+                          color: selectedContext === c ? CONTEXT_COLORS[c] : '#6B6B7B',
+                          border: `1px solid ${selectedContext === c ? CONTEXT_COLORS[c] : '#E8E8F0'}`,
                         }}
                       >
                         {CONTEXT_LABELS[c]}
@@ -395,7 +395,7 @@ export default function Inbox() {
                 onClick={saveClarify}
                 disabled={!selectedType}
                 className="w-full py-3 rounded-lg font-medium disabled:opacity-30"
-                style={{ backgroundColor: '#378ADD', color: '#fff', fontSize: '15px' }}
+                style={{ backgroundColor: '#4C4DDC', color: '#fff', fontSize: '15px' }}
               >
                 Process Item
               </button>

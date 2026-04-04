@@ -92,8 +92,8 @@ export default function Home() {
     <div className="flex flex-col gap-5">
       {/* Date + greeting */}
       <div>
-        <p className="text-[12px] mb-1" style={{ color: '#888780' }}>{dateLabel}</p>
-        <h1 className="text-[20px] font-medium" style={{ color: '#F5F5F5' }}>
+        <p className="text-[12px] mb-1" style={{ color: '#6B6B7B' }}>{dateLabel}</p>
+        <h1 className="text-[20px] font-medium" style={{ color: '#0F0F1A' }}>
           {hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'}, Eshgeen
         </h1>
       </div>
@@ -102,17 +102,17 @@ export default function Home() {
       {tapworkTask && (
         <div
           className="flex items-start gap-3 px-4 py-3 rounded-xl"
-          style={{ backgroundColor: '#1D9E7515', border: '0.5px solid #1D9E7530' }}
+          style={{ backgroundColor: '#50CD8915', border: '1px solid #50CD8930' }}
         >
           <div
             className="w-1 rounded-full flex-shrink-0 self-stretch"
-            style={{ backgroundColor: '#1D9E75', minHeight: '20px' }}
+            style={{ backgroundColor: '#50CD89', minHeight: '20px' }}
           />
           <div className="min-w-0">
-            <p className="text-[11px] font-medium uppercase tracking-wide mb-1" style={{ color: '#1D9E75' }}>
+            <p className="text-[11px] font-medium uppercase tracking-wide mb-1" style={{ color: '#50CD89' }}>
               TapWork 06:00 — Tomorrow
             </p>
-            <p className="text-[14px]" style={{ color: '#F5F5F5' }}>{tapworkTask}</p>
+            <p className="text-[14px]" style={{ color: '#0F0F1A' }}>{tapworkTask}</p>
           </div>
         </div>
       )}
@@ -122,41 +122,41 @@ export default function Home() {
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => navigate('/tasks')}
-            className="flex flex-col gap-1 p-3 rounded-xl text-left transition-colors hover:border-[#3A3A3A]"
-            style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A' }}
+            className="flex flex-col gap-1 p-3 rounded-xl text-left transition-colors hover:border-[#D1D1E0]"
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0' }}
           >
-            <CheckSquare size={16} style={{ color: '#378ADD' }} />
-            <p className="text-[22px] font-medium" style={{ color: '#F5F5F5' }}>{openTaskCount}</p>
-            <p className="text-[11px] font-medium uppercase tracking-wide" style={{ color: '#888780' }}>Open tasks</p>
+            <CheckSquare size={16} style={{ color: '#4C4DDC' }} />
+            <p className="text-[22px] font-medium" style={{ color: '#0F0F1A' }}>{openTaskCount}</p>
+            <p className="text-[11px] font-medium uppercase tracking-wide" style={{ color: '#6B6B7B' }}>Open tasks</p>
           </button>
           <button
             onClick={() => navigate('/inbox')}
-            className="flex flex-col gap-1 p-3 rounded-xl text-left transition-colors hover:border-[#3A3A3A]"
-            style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A' }}
+            className="flex flex-col gap-1 p-3 rounded-xl text-left transition-colors hover:border-[#D1D1E0]"
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0' }}
           >
-            <Inbox size={16} style={{ color: inboxCount > 0 ? '#E24B4A' : '#888780' }} />
-            <p className="text-[22px] font-medium" style={{ color: inboxCount > 0 ? '#E24B4A' : '#F5F5F5' }}>{inboxCount}</p>
-            <p className="text-[11px] font-medium uppercase tracking-wide" style={{ color: '#888780' }}>Inbox</p>
+            <Inbox size={16} style={{ color: inboxCount > 0 ? '#E55353' : '#6B6B7B' }} />
+            <p className="text-[22px] font-medium" style={{ color: inboxCount > 0 ? '#E55353' : '#0F0F1A' }}>{inboxCount}</p>
+            <p className="text-[11px] font-medium uppercase tracking-wide" style={{ color: '#6B6B7B' }}>Inbox</p>
           </button>
           <button
             onClick={() => navigate('/budget')}
-            className="flex flex-col gap-1 p-3 rounded-xl text-left transition-colors hover:border-[#3A3A3A]"
-            style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A' }}
+            className="flex flex-col gap-1 p-3 rounded-xl text-left transition-colors hover:border-[#D1D1E0]"
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0' }}
           >
-            <Wallet size={16} style={{ color: '#1D9E75' }} />
-            <p className="text-[22px] font-medium" style={{ color: '#F5F5F5' }}>
+            <Wallet size={16} style={{ color: '#50CD89' }} />
+            <p className="text-[22px] font-medium" style={{ color: '#0F0F1A' }}>
               {todaySpend === 0 ? '₼0' : `₼${todaySpend.toFixed(0)}`}
             </p>
-            <p className="text-[11px] font-medium uppercase tracking-wide" style={{ color: '#888780' }}>Spent today</p>
+            <p className="text-[11px] font-medium uppercase tracking-wide" style={{ color: '#6B6B7B' }}>Spent today</p>
           </button>
           <button
             onClick={() => navigate('/progress')}
-            className="flex flex-col gap-1 p-3 rounded-xl text-left transition-colors hover:border-[#3A3A3A]"
-            style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A' }}
+            className="flex flex-col gap-1 p-3 rounded-xl text-left transition-colors hover:border-[#D1D1E0]"
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0' }}
           >
-            <Flame size={16} style={{ color: '#EF9F27' }} />
-            <p className="text-[22px] font-medium" style={{ color: '#F5F5F5' }}>{eveningStreak}</p>
-            <p className="text-[11px] font-medium uppercase tracking-wide" style={{ color: '#888780' }}>Evening streak</p>
+            <Flame size={16} style={{ color: '#FFD33C' }} />
+            <p className="text-[22px] font-medium" style={{ color: '#0F0F1A' }}>{eveningStreak}</p>
+            <p className="text-[11px] font-medium uppercase tracking-wide" style={{ color: '#6B6B7B' }}>Evening streak</p>
           </button>
         </div>
       )}
@@ -166,28 +166,28 @@ export default function Home() {
         <button
           onClick={() => navigate('/weekly')}
           className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-left"
-          style={{ backgroundColor: '#EF9F2715', border: '0.5px solid #EF9F2740' }}
+          style={{ backgroundColor: '#FFD33C15', border: '1px solid #FFD33C40' }}
         >
           <div>
-            <p className="text-[13px] font-medium" style={{ color: '#F5F5F5' }}>Weekly review pending</p>
-            <p className="text-[12px]" style={{ color: '#888780' }}>Saturday afternoon — time to review</p>
+            <p className="text-[13px] font-medium" style={{ color: '#0F0F1A' }}>Weekly review pending</p>
+            <p className="text-[12px]" style={{ color: '#6B6B7B' }}>Saturday afternoon — time to review</p>
           </div>
-          <ChevronRight size={14} style={{ color: '#EF9F27', flexShrink: 0 }} />
+          <ChevronRight size={14} style={{ color: '#FFD33C', flexShrink: 0 }} />
         </button>
       )}
 
       {/* Open tasks list */}
-      <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
         <div
           className="flex items-center justify-between px-4 py-3"
-          style={{ borderBottom: '0.5px solid #2A2A2A' }}
+          style={{ borderBottom: '1px solid #E8E8F0' }}
         >
           <div className="flex items-center gap-2">
-            <span className="text-[14px] font-medium" style={{ color: '#F5F5F5' }}>Open tasks</span>
+            <span className="text-[14px] font-medium" style={{ color: '#0F0F1A' }}>Open tasks</span>
             {openTaskCount > 0 && (
               <span
                 className="flex items-center justify-center rounded-full text-[10px] font-medium"
-                style={{ backgroundColor: '#378ADD20', color: '#378ADD', width: '20px', height: '20px' }}
+                style={{ backgroundColor: '#4C4DDC20', color: '#4C4DDC', width: '20px', height: '20px' }}
               >
                 {openTaskCount}
               </span>
@@ -196,7 +196,7 @@ export default function Home() {
           <button
             onClick={() => navigate('/tasks')}
             className="text-[12px] transition-colors"
-            style={{ color: '#378ADD' }}
+            style={{ color: '#4C4DDC' }}
           >
             View all →
           </button>
@@ -205,12 +205,12 @@ export default function Home() {
         {loading ? (
           <div className="p-4 flex flex-col gap-3">
             {[1, 2, 3].map(i => (
-              <div key={i} className="h-10 rounded-lg animate-pulse" style={{ backgroundColor: '#2A2A2A' }} />
+              <div key={i} className="h-10 rounded-lg animate-pulse" style={{ backgroundColor: '#E8E8F0' }} />
             ))}
           </div>
         ) : tasks.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-10 gap-2">
-            <p className="text-[13px]" style={{ color: '#555550' }}>All clear — nothing open</p>
+            <p className="text-[13px]" style={{ color: '#6B6B7B' }}>All clear — nothing open</p>
           </div>
         ) : (
           tasks.map((task, i) => {
@@ -219,7 +219,7 @@ export default function Home() {
               <div
                 key={task.id}
                 className="flex items-start gap-3 px-4 py-3"
-                style={{ borderTop: i === 0 ? 'none' : '0.5px solid #2A2A2A' }}
+                style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
               >
                 {/* Checkbox */}
                 <button
@@ -229,18 +229,18 @@ export default function Home() {
                     width: '18px',
                     height: '18px',
                     marginTop: '2px',
-                    border: '1.5px solid #3A3A3A',
+                    border: '1.5px solid #D1D1E0',
                     backgroundColor: 'transparent',
                     borderRadius: '4px',
                   }}
                   aria-label="Complete task"
                 >
-                  <Check size={10} style={{ color: '#378ADD' }} strokeWidth={3} />
+                  <Check size={10} style={{ color: '#4C4DDC' }} strokeWidth={3} />
                 </button>
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-[14px] leading-snug mb-1 truncate" style={{ color: '#F5F5F5' }}>{task.title}</p>
+                  <p className="text-[14px] leading-snug mb-1 truncate" style={{ color: '#0F0F1A' }}>{task.title}</p>
                   <div className="flex items-center gap-1.5 flex-wrap">
                     {task.area_tag && (
                       <span
@@ -268,8 +268,8 @@ export default function Home() {
                       <span
                         className="text-[11px] px-2 py-0.5 rounded-md"
                         style={{
-                          border: `0.5px solid ${overdue ? '#E24B4A' : '#2A2A2A'}`,
-                          color: overdue ? '#E24B4A' : '#888780',
+                          border: `1px solid ${overdue ? '#E55353' : '#E8E8F0'}`,
+                          color: overdue ? '#E55353' : '#6B6B7B',
                         }}
                       >
                         {formatDate(task.due_date)}

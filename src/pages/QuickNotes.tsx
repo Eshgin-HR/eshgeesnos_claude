@@ -73,8 +73,8 @@ function NoteEditorModal({ note, onClose, onSave, onDelete }: EditorModalProps) 
       <div
         className="w-full max-w-lg rounded-2xl flex flex-col"
         style={{
-          backgroundColor: '#1A1A1A',
-          border: '0.5px solid #2A2A2A',
+          backgroundColor: '#FFFFFF',
+          border: '1px solid #E8E8F0',
           height: '75vh',
           maxHeight: '640px',
         }}
@@ -83,24 +83,24 @@ function NoteEditorModal({ note, onClose, onSave, onDelete }: EditorModalProps) 
         {/* Modal header */}
         <div
           className="flex items-center justify-between px-5 py-3 flex-shrink-0"
-          style={{ borderBottom: '0.5px solid #2A2A2A' }}
+          style={{ borderBottom: '1px solid #E8E8F0' }}
         >
-          <span className="text-[11px] uppercase tracking-wide font-medium" style={{ color: '#555550' }}>
+          <span className="text-[11px] uppercase tracking-wide font-medium" style={{ color: '#6B6B7B' }}>
             {saving ? 'Saving…' : lastSaved ? `Saved ${formatDateTime(lastSaved)}` : 'New note'}
           </span>
           <div className="flex items-center gap-2">
             <button
               onClick={handleDelete}
-              className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#E24B4A15] transition-colors"
+              className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#E5535315] transition-colors"
               title="Delete note"
             >
-              <Trash2 size={14} style={{ color: '#E24B4A' }} />
+              <Trash2 size={14} style={{ color: '#E55353' }} />
             </button>
             <button
               onClick={onClose}
-              className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#222222] transition-colors"
+              className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#F5F5FA] transition-colors"
             >
-              <X size={16} style={{ color: '#888780' }} />
+              <X size={16} style={{ color: '#6B6B7B' }} />
             </button>
           </div>
         </div>
@@ -114,14 +114,14 @@ function NoteEditorModal({ note, onClose, onSave, onDelete }: EditorModalProps) 
             onChange={e => handleTitleChange(e.target.value)}
             placeholder="Untitled"
             className="w-full bg-transparent border-none focus:outline-none text-[20px] font-medium mb-3 flex-shrink-0"
-            style={{ color: '#F5F5F5' }}
+            style={{ color: '#0F0F1A' }}
           />
           <textarea
             value={body}
             onChange={e => handleBodyChange(e.target.value)}
             placeholder="Start writing…"
             className="flex-1 w-full bg-transparent border-none focus:outline-none resize-none text-[14px]"
-            style={{ color: '#F5F5F5', lineHeight: '1.75' }}
+            style={{ color: '#0F0F1A', lineHeight: '1.75' }}
           />
         </div>
       </div>
@@ -202,27 +202,27 @@ export default function QuickNotes() {
       <div className="flex items-center gap-3">
         <div
           className="flex items-center gap-2 flex-1 rounded-lg px-3 py-2"
-          style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A' }}
+          style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0' }}
         >
-          <Search size={13} style={{ color: '#555550', flexShrink: 0 }} />
+          <Search size={13} style={{ color: '#6B6B7B', flexShrink: 0 }} />
           <input
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search notes…"
             className="flex-1 bg-transparent text-[13px] focus:outline-none"
-            style={{ color: '#F5F5F5' }}
+            style={{ color: '#0F0F1A' }}
           />
           {search && (
             <button onClick={() => setSearch('')}>
-              <X size={12} style={{ color: '#555550' }} />
+              <X size={12} style={{ color: '#6B6B7B' }} />
             </button>
           )}
         </div>
         <button
           onClick={createNote}
           className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-[13px] font-medium transition-all active:scale-[0.98] flex-shrink-0"
-          style={{ backgroundColor: '#378ADD', color: '#fff' }}
+          style={{ backgroundColor: '#4C4DDC', color: '#fff' }}
         >
           <Plus size={14} strokeWidth={2.5} />
           New note
@@ -231,7 +231,7 @@ export default function QuickNotes() {
 
       {/* Notes count */}
       {!loading && notes.length > 0 && (
-        <p className="text-[12px]" style={{ color: '#555550' }}>
+        <p className="text-[12px]" style={{ color: '#6B6B7B' }}>
           {filteredNotes.length} {filteredNotes.length === 1 ? 'note' : 'notes'}
           {search ? ` matching "${search}"` : ''}
         </p>
@@ -241,19 +241,19 @@ export default function QuickNotes() {
       {loading ? (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {[1, 2, 3, 4, 5, 6].map(i => (
-            <div key={i} className="h-28 rounded-xl animate-pulse" style={{ backgroundColor: '#1A1A1A' }} />
+            <div key={i} className="h-28 rounded-xl animate-pulse" style={{ backgroundColor: '#FFFFFF' }} />
           ))}
         </div>
       ) : filteredNotes.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 gap-3">
-          <p className="text-[14px]" style={{ color: '#555550' }}>
+          <p className="text-[14px]" style={{ color: '#6B6B7B' }}>
             {search ? 'No notes match your search' : 'No notes yet'}
           </p>
           {!search && (
             <button
               onClick={createNote}
               className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-[13px] font-medium transition-all active:scale-[0.98]"
-              style={{ backgroundColor: '#378ADD', color: '#fff' }}
+              style={{ backgroundColor: '#4C4DDC', color: '#fff' }}
             >
               <Plus size={14} strokeWidth={2.5} />
               Create first note
@@ -268,20 +268,20 @@ export default function QuickNotes() {
               <button
                 key={note.id}
                 onClick={() => setEditingNote(note)}
-                className="text-left rounded-xl p-3.5 transition-colors hover:border-[#3A3A3A] active:scale-[0.98] flex flex-col"
+                className="text-left rounded-xl p-3.5 transition-colors hover:border-[#D1D1E0] active:scale-[0.98] flex flex-col"
                 style={{
-                  backgroundColor: '#1A1A1A',
-                  border: '0.5px solid #2A2A2A',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #E8E8F0',
                   minHeight: '110px',
                 }}
               >
-                <p className="text-[13px] font-medium mb-1.5 line-clamp-2 leading-snug" style={{ color: '#F5F5F5' }}>
+                <p className="text-[13px] font-medium mb-1.5 line-clamp-2 leading-snug" style={{ color: '#0F0F1A' }}>
                   {note.title?.trim() || 'Untitled'}
                 </p>
-                <p className="text-[11px] leading-relaxed flex-1 overflow-hidden" style={{ color: '#888780', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                <p className="text-[11px] leading-relaxed flex-1 overflow-hidden" style={{ color: '#6B6B7B', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                   {preview || 'Empty note'}
                 </p>
-                <p className="text-[10px] mt-2 flex-shrink-0" style={{ color: '#555550' }}>
+                <p className="text-[10px] mt-2 flex-shrink-0" style={{ color: '#6B6B7B' }}>
                   {formatDate(note.updated_at ?? note.created_at)}
                 </p>
               </button>

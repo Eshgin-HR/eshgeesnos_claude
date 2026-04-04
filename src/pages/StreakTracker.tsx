@@ -156,10 +156,10 @@ export default function Progress() {
       catMap[e.category] = (catMap[e.category] ?? 0) + Number(e.amount)
     })
     const catColors: Record<string, string> = {
-      loan: '#E24B4A', lunch: '#EF9F27', coffee: '#8B5E3C', entertainment: '#534AB7',
-      clothing: '#D4537E', family_support: '#1D9E75', transport: '#378ADD', subscriptions: '#888780', other: '#555550',
+      loan: '#E55353', lunch: '#FFD33C', coffee: '#8B5E3C', entertainment: '#534AB7',
+      clothing: '#D4537E', family_support: '#50CD89', transport: '#4C4DDC', subscriptions: '#6B6B7B', other: '#6B6B7B',
     }
-    const cats = Object.entries(catMap).map(([c, a]) => ({ category: c, amount: Number(a), color: catColors[c] ?? '#888780' }))
+    const cats = Object.entries(catMap).map(([c, a]) => ({ category: c, amount: Number(a), color: catColors[c] ?? '#6B6B7B' }))
       .sort((a, b) => b.amount - a.amount)
     setCategorySpend(cats)
 
@@ -178,13 +178,13 @@ export default function Progress() {
   useEffect(() => { load() }, [load])
 
   const budgetPct = monthTarget > 0 ? Math.min((spentThisMonth / monthTarget) * 100, 100) : 0
-  const budgetColor = budgetPct < 70 ? '#1D9E75' : budgetPct < 90 ? '#EF9F27' : '#E24B4A'
+  const budgetColor = budgetPct < 70 ? '#50CD89' : budgetPct < 90 ? '#FFD33C' : '#E55353'
   const weekDelta = thisWeekCount - lastWeekCount
 
   if (loading) {
     return (
       <div className="flex flex-col gap-4">
-        {[1, 2, 3, 4].map(i => <div key={i} className="h-32 rounded-xl animate-pulse" style={{ backgroundColor: '#1A1A1A' }} />)}
+        {[1, 2, 3, 4].map(i => <div key={i} className="h-32 rounded-xl animate-pulse" style={{ backgroundColor: '#FFFFFF' }} />)}
       </div>
     )
   }
@@ -192,24 +192,24 @@ export default function Progress() {
   return (
     <div className="flex flex-col gap-5">
       {/* This week — task performance */}
-      <section style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '16px' }}>
-        <p className="text-[13px] font-medium mb-4" style={{ color: '#F5F5F5' }}>This week — task performance</p>
+      <section style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', padding: '16px' }}>
+        <p className="text-[13px] font-medium mb-4" style={{ color: '#0F0F1A' }}>This week — task performance</p>
 
         <div className="flex gap-4 mb-4 flex-wrap">
           <div>
-            <p className="text-[22px] font-medium" style={{ color: '#F5F5F5' }}>{totalCompletedWeek}</p>
-            <p className="text-[11px] uppercase tracking-wide" style={{ color: '#888780' }}>Completed</p>
+            <p className="text-[22px] font-medium" style={{ color: '#0F0F1A' }}>{totalCompletedWeek}</p>
+            <p className="text-[11px] uppercase tracking-wide" style={{ color: '#6B6B7B' }}>Completed</p>
           </div>
           <div>
-            <p className="text-[22px] font-medium" style={{ color: '#F5F5F5' }}>{inboxProcessedWeek}</p>
-            <p className="text-[11px] uppercase tracking-wide" style={{ color: '#888780' }}>Inbox processed</p>
+            <p className="text-[22px] font-medium" style={{ color: '#0F0F1A' }}>{inboxProcessedWeek}</p>
+            <p className="text-[11px] uppercase tracking-wide" style={{ color: '#6B6B7B' }}>Inbox processed</p>
           </div>
           {stalledCount > 0 && (
             <button onClick={() => navigate('/tasks')} className="flex items-center gap-1">
-              <p className="text-[22px] font-medium" style={{ color: '#EF9F27' }}>{stalledCount}</p>
+              <p className="text-[22px] font-medium" style={{ color: '#FFD33C' }}>{stalledCount}</p>
               <div className="ml-1">
-                <p className="text-[11px] uppercase tracking-wide" style={{ color: '#888780' }}>Stalled</p>
-                <p className="text-[10px]" style={{ color: '#378ADD' }}>View →</p>
+                <p className="text-[11px] uppercase tracking-wide" style={{ color: '#6B6B7B' }}>Stalled</p>
+                <p className="text-[10px]" style={{ color: '#4C4DDC' }}>View →</p>
               </div>
             </button>
           )}
@@ -218,46 +218,46 @@ export default function Progress() {
         {/* Bar chart by area */}
         <ResponsiveContainer width="100%" height={100}>
           <BarChart data={tasksByArea} barSize={14} barGap={2}>
-            <XAxis dataKey="area" tick={{ fontSize: 10, fill: '#888780' }} axisLine={false} tickLine={false} />
+            <XAxis dataKey="area" tick={{ fontSize: 10, fill: '#6B6B7B' }} axisLine={false} tickLine={false} />
             <YAxis hide />
             <Tooltip
-              contentStyle={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '8px', fontSize: '11px' }}
-              labelStyle={{ color: '#F5F5F5' }}
-              itemStyle={{ color: '#888780' }}
+              contentStyle={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '8px', fontSize: '11px' }}
+              labelStyle={{ color: '#0F0F1A' }}
+              itemStyle={{ color: '#6B6B7B' }}
             />
             <Bar dataKey="completed" name="Completed" radius={[3, 3, 0, 0]}>
               {tasksByArea.map((entry, i) => (
-                <Cell key={i} fill={AREA_COLORS[entry.area as AreaTag] ?? '#378ADD'} />
+                <Cell key={i} fill={AREA_COLORS[entry.area as AreaTag] ?? '#4C4DDC'} />
               ))}
             </Bar>
-            <Bar dataKey="open" name="Open" radius={[3, 3, 0, 0]} fill="#2A2A2A" />
+            <Bar dataKey="open" name="Open" radius={[3, 3, 0, 0]} fill="#E8E8F0" />
           </BarChart>
         </ResponsiveContainer>
       </section>
 
       {/* Streaks */}
-      <section style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '16px' }}>
-        <p className="text-[13px] font-medium mb-4" style={{ color: '#F5F5F5' }}>Streaks</p>
+      <section style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', padding: '16px' }}>
+        <p className="text-[13px] font-medium mb-4" style={{ color: '#0F0F1A' }}>Streaks</p>
         <div className="flex gap-4 mb-4">
           <div className="flex items-center gap-2">
-            <Flame size={18} style={{ color: '#EF9F27' }} />
+            <Flame size={18} style={{ color: '#FFD33C' }} />
             <div>
-              <p className="text-[22px] font-medium" style={{ color: '#F5F5F5' }}>{eveningStreak}</p>
-              <p className="text-[11px] uppercase tracking-wide" style={{ color: '#888780' }}>Evening ritual</p>
+              <p className="text-[22px] font-medium" style={{ color: '#0F0F1A' }}>{eveningStreak}</p>
+              <p className="text-[11px] uppercase tracking-wide" style={{ color: '#6B6B7B' }}>Evening ritual</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <TrendingUp size={18} style={{ color: '#378ADD' }} />
+            <TrendingUp size={18} style={{ color: '#4C4DDC' }} />
             <div>
-              <p className="text-[22px] font-medium" style={{ color: '#F5F5F5' }}>{weeklyReviewStreak}</p>
-              <p className="text-[11px] uppercase tracking-wide" style={{ color: '#888780' }}>Weekly reviews</p>
+              <p className="text-[22px] font-medium" style={{ color: '#0F0F1A' }}>{weeklyReviewStreak}</p>
+              <p className="text-[11px] uppercase tracking-wide" style={{ color: '#6B6B7B' }}>Weekly reviews</p>
             </div>
           </div>
         </div>
 
         {/* 30-day contribution grid */}
         <div>
-          <p className="text-[11px] uppercase tracking-wide mb-2" style={{ color: '#555550' }}>Last 30 days</p>
+          <p className="text-[11px] uppercase tracking-wide mb-2" style={{ color: '#6B6B7B' }}>Last 30 days</p>
           <div className="flex gap-1 flex-wrap">
             {ritualGrid.map((done, i) => (
               <div
@@ -266,7 +266,7 @@ export default function Progress() {
                 style={{
                   width: '12px',
                   height: '12px',
-                  backgroundColor: done ? '#1D9E75' : '#2A2A2A',
+                  backgroundColor: done ? '#50CD89' : '#E8E8F0',
                 }}
                 title={`Day ${i + 1}`}
               />
@@ -276,21 +276,21 @@ export default function Progress() {
       </section>
 
       {/* Spending this month */}
-      <section style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '16px' }}>
+      <section style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', padding: '16px' }}>
         <div className="flex items-center justify-between mb-3">
-          <p className="text-[13px] font-medium" style={{ color: '#F5F5F5' }}>Spending this month</p>
-          <button onClick={() => navigate('/budget')} className="text-[12px]" style={{ color: '#378ADD' }}>Full detail →</button>
+          <p className="text-[13px] font-medium" style={{ color: '#0F0F1A' }}>Spending this month</p>
+          <button onClick={() => navigate('/budget')} className="text-[12px]" style={{ color: '#4C4DDC' }}>Full detail →</button>
         </div>
 
         <div className="flex items-baseline gap-2 mb-3">
-          <p className="text-[22px] font-medium" style={{ color: '#F5F5F5' }}>₼{spentThisMonth.toFixed(0)}</p>
+          <p className="text-[22px] font-medium" style={{ color: '#0F0F1A' }}>₼{spentThisMonth.toFixed(0)}</p>
           {monthTarget > 0 && (
-            <p className="text-[13px]" style={{ color: '#888780' }}>of ₼{monthTarget.toFixed(0)}</p>
+            <p className="text-[13px]" style={{ color: '#6B6B7B' }}>of ₼{monthTarget.toFixed(0)}</p>
           )}
         </div>
 
         {monthTarget > 0 && (
-          <div className="mb-3 h-1.5 rounded-full" style={{ backgroundColor: '#2A2A2A' }}>
+          <div className="mb-3 h-1.5 rounded-full" style={{ backgroundColor: '#E8E8F0' }}>
             <div
               className="h-full rounded-full transition-all duration-300"
               style={{ width: `${budgetPct}%`, backgroundColor: budgetColor }}
@@ -305,9 +305,9 @@ export default function Progress() {
             return (
               <div key={cat.category} className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: cat.color }} />
-                <span className="text-[12px] flex-1 capitalize" style={{ color: '#888780' }}>{cat.category.replace('_', ' ')}</span>
-                <span className="text-[12px] font-medium" style={{ color: '#F5F5F5' }}>₼{cat.amount.toFixed(0)}</span>
-                <span className="text-[11px] w-8 text-right" style={{ color: '#555550' }}>{pct.toFixed(0)}%</span>
+                <span className="text-[12px] flex-1 capitalize" style={{ color: '#6B6B7B' }}>{cat.category.replace('_', ' ')}</span>
+                <span className="text-[12px] font-medium" style={{ color: '#0F0F1A' }}>₼{cat.amount.toFixed(0)}</span>
+                <span className="text-[11px] w-8 text-right" style={{ color: '#6B6B7B' }}>{pct.toFixed(0)}%</span>
               </div>
             )
           })}
@@ -315,8 +315,8 @@ export default function Progress() {
       </section>
 
       {/* Context breakdown */}
-      <section style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '16px' }}>
-        <p className="text-[13px] font-medium mb-4" style={{ color: '#F5F5F5' }}>Tasks by context this week</p>
+      <section style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', padding: '16px' }}>
+        <p className="text-[13px] font-medium mb-4" style={{ color: '#0F0F1A' }}>Tasks by context this week</p>
         <div className="flex flex-col gap-2">
           {contextBreakdown.map(({ context, count }) => {
             const maxCount = Math.max(...contextBreakdown.map(c => c.count), 1)
@@ -324,10 +324,10 @@ export default function Progress() {
             return (
               <div key={context}>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-[12px]" style={{ color: '#888780' }}>{CONTEXT_LABELS[context]}</span>
-                  <span className="text-[12px] font-medium" style={{ color: '#F5F5F5' }}>{count}</span>
+                  <span className="text-[12px]" style={{ color: '#6B6B7B' }}>{CONTEXT_LABELS[context]}</span>
+                  <span className="text-[12px] font-medium" style={{ color: '#0F0F1A' }}>{count}</span>
                 </div>
-                <div className="h-1 rounded-full" style={{ backgroundColor: '#2A2A2A' }}>
+                <div className="h-1 rounded-full" style={{ backgroundColor: '#E8E8F0' }}>
                   <div
                     className="h-full rounded-full transition-all duration-300"
                     style={{ width: `${pct}%`, backgroundColor: CONTEXT_COLORS[context] }}
@@ -340,31 +340,31 @@ export default function Progress() {
       </section>
 
       {/* Week comparison */}
-      <section style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '16px' }}>
-        <p className="text-[13px] font-medium mb-4" style={{ color: '#F5F5F5' }}>Week-over-week</p>
+      <section style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', padding: '16px' }}>
+        <p className="text-[13px] font-medium mb-4" style={{ color: '#0F0F1A' }}>Week-over-week</p>
         <div className="flex items-center gap-6">
           <div>
-            <p className="text-[22px] font-medium" style={{ color: '#888780' }}>{lastWeekCount}</p>
-            <p className="text-[11px] uppercase tracking-wide" style={{ color: '#555550' }}>Last week</p>
+            <p className="text-[22px] font-medium" style={{ color: '#6B6B7B' }}>{lastWeekCount}</p>
+            <p className="text-[11px] uppercase tracking-wide" style={{ color: '#6B6B7B' }}>Last week</p>
           </div>
           <div className="flex items-center">
             {weekDelta > 0 ? (
-              <TrendingUp size={20} style={{ color: '#1D9E75' }} />
+              <TrendingUp size={20} style={{ color: '#50CD89' }} />
             ) : weekDelta < 0 ? (
-              <TrendingDown size={20} style={{ color: '#E24B4A' }} />
+              <TrendingDown size={20} style={{ color: '#E55353' }} />
             ) : (
-              <Minus size={20} style={{ color: '#888780' }} />
+              <Minus size={20} style={{ color: '#6B6B7B' }} />
             )}
             <span
               className="text-[13px] font-medium ml-1"
-              style={{ color: weekDelta > 0 ? '#1D9E75' : weekDelta < 0 ? '#E24B4A' : '#888780' }}
+              style={{ color: weekDelta > 0 ? '#50CD89' : weekDelta < 0 ? '#E55353' : '#6B6B7B' }}
             >
               {weekDelta > 0 ? `+${weekDelta}` : weekDelta}
             </span>
           </div>
           <div>
-            <p className="text-[22px] font-medium" style={{ color: '#F5F5F5' }}>{thisWeekCount}</p>
-            <p className="text-[11px] uppercase tracking-wide" style={{ color: '#888780' }}>This week</p>
+            <p className="text-[22px] font-medium" style={{ color: '#0F0F1A' }}>{thisWeekCount}</p>
+            <p className="text-[11px] uppercase tracking-wide" style={{ color: '#6B6B7B' }}>This week</p>
           </div>
         </div>
       </section>

@@ -52,8 +52,8 @@ export default function AddNoteModal({ onClose, onCreated }: Props) {
       <div
         className="w-full max-w-md rounded-2xl flex flex-col"
         style={{
-          backgroundColor: '#1A1A1A',
-          border: '0.5px solid #2A2A2A',
+          backgroundColor: '#FFFFFF',
+          border: '1px solid #E8E8F0',
           height: '60vh',
           maxHeight: '480px',
         }}
@@ -62,14 +62,14 @@ export default function AddNoteModal({ onClose, onCreated }: Props) {
         {/* Header */}
         <div
           className="flex items-center justify-between px-5 py-3 flex-shrink-0"
-          style={{ borderBottom: '0.5px solid #2A2A2A' }}
+          style={{ borderBottom: '1px solid #E8E8F0' }}
         >
-          <span className="text-[16px] font-medium" style={{ color: '#F5F5F5' }}>New Note</span>
+          <span className="text-[16px] font-medium" style={{ color: '#0F0F1A' }}>New Note</span>
           <button
             onClick={onClose}
-            className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#222222] transition-colors"
+            className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#F5F5FA] transition-colors"
           >
-            <X size={16} style={{ color: '#888780' }} />
+            <X size={16} style={{ color: '#6B6B7B' }} />
           </button>
         </div>
 
@@ -82,14 +82,14 @@ export default function AddNoteModal({ onClose, onCreated }: Props) {
             onChange={e => setTitle(e.target.value)}
             placeholder="Title"
             className="w-full bg-transparent border-none focus:outline-none text-[18px] font-medium mb-3 flex-shrink-0"
-            style={{ color: '#F5F5F5' }}
+            style={{ color: '#0F0F1A' }}
           />
           <textarea
             value={body}
             onChange={e => setBody(e.target.value)}
             placeholder="Write something…"
             className="flex-1 w-full bg-transparent border-none focus:outline-none resize-none text-[14px]"
-            style={{ color: '#F5F5F5', lineHeight: '1.75' }}
+            style={{ color: '#0F0F1A', lineHeight: '1.75' }}
           />
         </div>
 
@@ -99,7 +99,7 @@ export default function AddNoteModal({ onClose, onCreated }: Props) {
             onClick={handleSave}
             disabled={saving}
             className="w-full py-2.5 rounded-lg text-[14px] font-medium transition-all active:scale-[0.98] disabled:opacity-40"
-            style={{ backgroundColor: '#378ADD', color: '#fff' }}
+            style={{ backgroundColor: '#4C4DDC', color: '#fff' }}
           >
             {saving ? 'Saving…' : 'Save Note'}
           </button>

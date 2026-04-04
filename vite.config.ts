@@ -13,8 +13,8 @@ export default defineConfig({
         name: 'EshgeenOS',
         short_name: 'EshgeenOS',
         description: 'Personal operating system for Eshgeen',
-        theme_color: '#0A1628',
-        background_color: '#0A1628',
+        theme_color: '#4C4DDC',
+        background_color: '#F8F8FC',
         display: 'standalone',
         start_url: '/',
         icons: [

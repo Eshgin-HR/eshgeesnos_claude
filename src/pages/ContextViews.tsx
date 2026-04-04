@@ -88,7 +88,7 @@ export default function ContextViews() {
   return (
     <div className="flex flex-col gap-5">
       {/* Header */}
-      <h1 className="font-medium" style={{ fontSize: '20px', color: '#F5F5F5' }}>Contexts</h1>
+      <h1 className="font-medium" style={{ fontSize: '20px', color: '#0F0F1A' }}>Contexts</h1>
 
       {/* Context selector */}
       <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
@@ -102,9 +102,9 @@ export default function ContextViews() {
               fontWeight: 500,
               padding: '6px 14px',
               borderRadius: '20px',
-              backgroundColor: activeContext === c ? CONTEXT_COLORS[c] + '25' : '#1A1A1A',
-              color: activeContext === c ? CONTEXT_COLORS[c] : '#888780',
-              border: `0.5px solid ${activeContext === c ? CONTEXT_COLORS[c] + '60' : '#2A2A2A'}`,
+              backgroundColor: activeContext === c ? CONTEXT_COLORS[c] + '25' : '#FFFFFF',
+              color: activeContext === c ? CONTEXT_COLORS[c] : '#6B6B7B',
+              border: `1px solid ${activeContext === c ? CONTEXT_COLORS[c] + '60' : '#E8E8F0'}`,
               transition: 'all 150ms ease',
             }}
           >
@@ -115,24 +115,24 @@ export default function ContextViews() {
 
       {/* Morning ritual checklist */}
       {activeContext === '@morning-ritual' ? (
-        <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
-          <div className="px-4 py-3" style={{ borderBottom: '0.5px solid #2A2A2A', backgroundColor: CONTEXT_COLORS['@morning-ritual'] + '15' }}>
+        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
+          <div className="px-4 py-3" style={{ borderBottom: '1px solid #E8E8F0', backgroundColor: CONTEXT_COLORS['@morning-ritual'] + '15' }}>
             <p style={{ fontSize: '13px', fontWeight: 500, color: CONTEXT_COLORS['@morning-ritual'] }}>Morning Ritual Checklist</p>
-            <p style={{ fontSize: '11px', color: '#888780', marginTop: '2px' }}>05:30 – 09:00 · No phone during gratitude</p>
+            <p style={{ fontSize: '11px', color: '#6B6B7B', marginTop: '2px' }}>05:30 – 09:00 · No phone during gratitude</p>
           </div>
           {MORNING_RITUAL_ITEMS.map((item, i) => (
             <div
               key={item.key}
               className="flex items-start gap-3 px-4 py-3"
-              style={{ borderTop: i === 0 ? 'none' : '0.5px solid #2A2A2A' }}
+              style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
             >
               <button
                 onClick={() => toggleRitualItem(item.key)}
                 className="flex-shrink-0 mt-0.5"
                 style={{
                   width: '18px', height: '18px',
-                  border: `1.5px solid ${ritualState[item.key] ? '#1D9E75' : '#3A3A3A'}`,
-                  backgroundColor: ritualState[item.key] ? '#1D9E75' : '#222222',
+                  border: `1.5px solid ${ritualState[item.key] ? '#50CD89' : '#D1D1E0'}`,
+                  backgroundColor: ritualState[item.key] ? '#50CD89' : '#F5F5FA',
                   borderRadius: '4px',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}
@@ -142,12 +142,12 @@ export default function ContextViews() {
               <div className="flex-1">
                 <p style={{
                   fontSize: '14px',
-                  color: ritualState[item.key] ? '#555550' : '#F5F5F5',
+                  color: ritualState[item.key] ? '#6B6B7B' : '#0F0F1A',
                   textDecoration: ritualState[item.key] ? 'line-through' : 'none',
                 }}>
                   {item.label}
                 </p>
-                <p style={{ fontSize: '11px', color: '#555550', marginTop: '2px' }}>
+                <p style={{ fontSize: '11px', color: '#6B6B7B', marginTop: '2px' }}>
                   {item.time} · {item.note}
                 </p>
               </div>
@@ -156,18 +156,18 @@ export default function ContextViews() {
         </div>
       ) : loading ? (
         <div className="flex justify-center py-16">
-          <div className="w-6 h-6 rounded-full border-2 animate-spin" style={{ borderColor: '#378ADD', borderTopColor: 'transparent' }} />
+          <div className="w-6 h-6 rounded-full border-2 animate-spin" style={{ borderColor: '#4C4DDC', borderTopColor: 'transparent' }} />
         </div>
       ) : tasks.length === 0 ? (
         <div className="flex flex-col items-center gap-3 py-16">
-          <p style={{ fontSize: '15px', color: '#888780', fontWeight: 500 }}>No tasks for {CONTEXT_LABELS[activeContext]}</p>
-          <p style={{ fontSize: '13px', color: '#555550' }}>Add tasks from the Tasks page and tag them with this context</p>
+          <p style={{ fontSize: '15px', color: '#6B6B7B', fontWeight: 500 }}>No tasks for {CONTEXT_LABELS[activeContext]}</p>
+          <p style={{ fontSize: '13px', color: '#6B6B7B' }}>Add tasks from the Tasks page and tag them with this context</p>
         </div>
       ) : (
-        <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}>
-          <div className="px-4 py-3" style={{ borderBottom: '0.5px solid #2A2A2A' }}>
+        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}>
+          <div className="px-4 py-3" style={{ borderBottom: '1px solid #E8E8F0' }}>
             <p style={{ fontSize: '13px', fontWeight: 500, color: color }}>{CONTEXT_LABELS[activeContext]}</p>
-            <p style={{ fontSize: '11px', color: '#888780', marginTop: '2px' }}>
+            <p style={{ fontSize: '11px', color: '#6B6B7B', marginTop: '2px' }}>
               {tasks.filter(t => t.completed).length}/{tasks.length} completed
             </p>
           </div>
@@ -175,15 +175,15 @@ export default function ContextViews() {
             <div
               key={task.id}
               className="flex items-center gap-3 px-4 py-3 group"
-              style={{ borderTop: i === 0 ? 'none' : '0.5px solid #2A2A2A' }}
+              style={{ borderTop: i === 0 ? 'none' : '0.5px solid #E8E8F0' }}
             >
               <button
                 onClick={() => toggleTask(task)}
                 className="flex-shrink-0"
                 style={{
                   width: '20px', height: '20px',
-                  border: `1.5px solid ${task.completed ? '#1D9E75' : '#3A3A3A'}`,
-                  backgroundColor: task.completed ? '#1D9E75' : 'transparent',
+                  border: `1.5px solid ${task.completed ? '#50CD89' : '#D1D1E0'}`,
+                  backgroundColor: task.completed ? '#50CD89' : 'transparent',
                   borderRadius: '4px',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}
@@ -193,19 +193,19 @@ export default function ContextViews() {
               <div className="flex-1">
                 <p style={{
                   fontSize: '14px',
-                  color: task.completed ? '#555550' : '#F5F5F5',
+                  color: task.completed ? '#6B6B7B' : '#0F0F1A',
                   textDecoration: task.completed ? 'line-through' : 'none',
                 }}>
                   {task.title}
                 </p>
                 {task.date !== today && (
-                  <p style={{ fontSize: '11px', color: '#555550', marginTop: '2px' }}>Due {task.date}</p>
+                  <p style={{ fontSize: '11px', color: '#6B6B7B', marginTop: '2px' }}>Due {task.date}</p>
                 )}
               </div>
               <button
                 onClick={() => deleteTask(task.id)}
                 className="opacity-0 group-hover:opacity-100 transition-opacity"
-                style={{ color: '#555550' }}
+                style={{ color: '#6B6B7B' }}
               >
                 <Trash2 size={13} />
               </button>

@@ -73,15 +73,15 @@ export default function WeeklyReflection() {
     <div className="flex flex-col gap-5">
       {/* Header */}
       <div>
-        <h1 className="font-medium" style={{ fontSize: '20px', color: '#F5F5F5' }}>Sunday Reflection</h1>
-        <p style={{ fontSize: '12px', color: '#888780', marginTop: '4px' }}>Week of {weekLabel}</p>
+        <h1 className="font-medium" style={{ fontSize: '20px', color: '#0F0F1A' }}>Sunday Reflection</h1>
+        <p style={{ fontSize: '12px', color: '#6B6B7B', marginTop: '4px' }}>Week of {weekLabel}</p>
       </div>
 
       {/* Form */}
       <div className="flex flex-col gap-4">
         {/* PASHA */}
-        <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '16px' }}>
-          <p style={{ fontSize: '13px', fontWeight: 500, color: '#185FA5', marginBottom: '10px' }}>
+        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', padding: '16px' }}>
+          <p style={{ fontSize: '13px', fontWeight: 500, color: '#3334CC', marginBottom: '10px' }}>
             PASHA — What moved forward this week?
           </p>
           <textarea
@@ -90,12 +90,12 @@ export default function WeeklyReflection() {
             onChange={e => { setForm(p => ({ ...p, pasha_progress: e.target.value })); setSaved(false) }}
             rows={3}
             className="w-full resize-none outline-none rounded-lg px-3 py-2.5"
-            style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '14px' }}
+            style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '14px' }}
           />
         </div>
 
         {/* TapWork */}
-        <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '16px' }}>
+        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', padding: '16px' }}>
           <p style={{ fontSize: '13px', fontWeight: 500, color: '#0F6E56', marginBottom: '10px' }}>
             TapWork — What moved forward this week?
           </p>
@@ -105,13 +105,13 @@ export default function WeeklyReflection() {
             onChange={e => { setForm(p => ({ ...p, tapwork_progress: e.target.value })); setSaved(false) }}
             rows={3}
             className="w-full resize-none outline-none rounded-lg px-3 py-2.5"
-            style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '14px' }}
+            style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '14px' }}
           />
         </div>
 
         {/* Not completed */}
-        <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '16px' }}>
-          <p style={{ fontSize: '13px', fontWeight: 500, color: '#F5F5F5', marginBottom: '10px' }}>
+        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', padding: '16px' }}>
+          <p style={{ fontSize: '13px', fontWeight: 500, color: '#0F0F1A', marginBottom: '10px' }}>
             What didn't I complete that I planned?
           </p>
           <textarea
@@ -120,13 +120,13 @@ export default function WeeklyReflection() {
             onChange={e => { setForm(p => ({ ...p, not_completed: e.target.value })); setSaved(false) }}
             rows={3}
             className="w-full resize-none outline-none rounded-lg px-3 py-2.5"
-            style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '14px' }}
+            style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '14px' }}
           />
         </div>
 
         {/* Energy */}
-        <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '16px' }}>
-          <p style={{ fontSize: '13px', fontWeight: 500, color: '#F5F5F5', marginBottom: '10px' }}>
+        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', padding: '16px' }}>
+          <p style={{ fontSize: '13px', fontWeight: 500, color: '#0F0F1A', marginBottom: '10px' }}>
             Energy and focus this week
           </p>
           <div className="flex gap-2 mb-3">
@@ -138,10 +138,10 @@ export default function WeeklyReflection() {
                   width: '36px', height: '36px',
                   borderRadius: '50%',
                   backgroundColor: form.energy_rating === n
-                    ? n <= 2 ? '#E24B4A' : n === 3 ? '#EF9F27' : '#1D9E75'
-                    : '#222222',
-                  border: `1.5px solid ${form.energy_rating === n ? 'white' : '#2A2A2A'}`,
-                  color: form.energy_rating >= n ? '#fff' : '#555550',
+                    ? n <= 2 ? '#E55353' : n === 3 ? '#FFD33C' : '#50CD89'
+                    : '#F5F5FA',
+                  border: `1.5px solid ${form.energy_rating === n ? 'white' : '#E8E8F0'}`,
+                  color: form.energy_rating >= n ? '#fff' : '#6B6B7B',
                   fontSize: '13px',
                   fontWeight: 600,
                   opacity: form.energy_rating > 0 && form.energy_rating !== n ? 0.4 : 1,
@@ -157,13 +157,13 @@ export default function WeeklyReflection() {
             value={form.energy_note}
             onChange={e => { setForm(p => ({ ...p, energy_note: e.target.value })); setSaved(false) }}
             className="w-full rounded-lg px-3 py-2.5 outline-none"
-            style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '14px' }}
+            style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '14px' }}
           />
         </div>
 
         {/* Protect */}
-        <div style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', padding: '16px' }}>
-          <p style={{ fontSize: '13px', fontWeight: 500, color: '#F5F5F5', marginBottom: '10px' }}>
+        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', padding: '16px' }}>
+          <p style={{ fontSize: '13px', fontWeight: 500, color: '#0F0F1A', marginBottom: '10px' }}>
             What is the single most important thing to protect next week?
           </p>
           <textarea
@@ -172,7 +172,7 @@ export default function WeeklyReflection() {
             onChange={e => { setForm(p => ({ ...p, protect_next_week: e.target.value })); setSaved(false) }}
             rows={2}
             className="w-full resize-none outline-none rounded-lg px-3 py-2.5"
-            style={{ backgroundColor: '#222222', border: '0.5px solid #2A2A2A', color: '#F5F5F5', fontSize: '14px' }}
+            style={{ backgroundColor: '#F5F5FA', border: '1px solid #E8E8F0', color: '#0F0F1A', fontSize: '14px' }}
           />
         </div>
 
@@ -181,9 +181,9 @@ export default function WeeklyReflection() {
           disabled={saving}
           className="w-full py-3 rounded-lg font-medium disabled:opacity-40"
           style={{
-            backgroundColor: saved ? 'transparent' : '#378ADD',
-            color: saved ? '#1D9E75' : '#fff',
-            border: saved ? '0.5px solid #1D9E75' : 'none',
+            backgroundColor: saved ? 'transparent' : '#4C4DDC',
+            color: saved ? '#50CD89' : '#fff',
+            border: saved ? '0.5px solid #50CD89' : 'none',
             fontSize: '15px',
           }}
         >
@@ -194,19 +194,19 @@ export default function WeeklyReflection() {
       {/* Past reflections */}
       {past.length > 0 && (
         <div className="flex flex-col gap-2">
-          <p style={{ fontSize: '11px', color: '#888780', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          <p style={{ fontSize: '11px', color: '#6B6B7B', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
             Past reflections
           </p>
           {past.map(r => (
             <div
               key={r.id}
-              style={{ backgroundColor: '#1A1A1A', border: '0.5px solid #2A2A2A', borderRadius: '12px', overflow: 'hidden' }}
+              style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E8F0', borderRadius: '12px', overflow: 'hidden' }}
             >
               <button
                 className="w-full flex items-center justify-between px-4 py-3"
                 onClick={() => setExpandedId(expandedId === r.id ? null : r.id)}
               >
-                <span style={{ fontSize: '13px', color: '#F5F5F5' }}>
+                <span style={{ fontSize: '13px', color: '#0F0F1A' }}>
                   Week of {new Date(r.week_start + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                 </span>
                 <div className="flex items-center gap-2">
@@ -214,33 +214,33 @@ export default function WeeklyReflection() {
                     <span style={{
                       fontSize: '11px', fontWeight: 600,
                       padding: '2px 6px', borderRadius: '4px',
-                      backgroundColor: r.energy_rating <= 2 ? '#E24B4A20' : r.energy_rating === 3 ? '#EF9F2720' : '#1D9E7520',
-                      color: r.energy_rating <= 2 ? '#E24B4A' : r.energy_rating === 3 ? '#EF9F27' : '#1D9E75',
+                      backgroundColor: r.energy_rating <= 2 ? '#E5535320' : r.energy_rating === 3 ? '#FFD33C20' : '#50CD8920',
+                      color: r.energy_rating <= 2 ? '#E55353' : r.energy_rating === 3 ? '#FFD33C' : '#50CD89',
                     }}>
                       E:{r.energy_rating}
                     </span>
                   )}
-                  {expandedId === r.id ? <ChevronUp size={14} color="#555550" /> : <ChevronDown size={14} color="#555550" />}
+                  {expandedId === r.id ? <ChevronUp size={14} color="#6B6B7B" /> : <ChevronDown size={14} color="#6B6B7B" />}
                 </div>
               </button>
               {expandedId === r.id && (
-                <div className="px-4 pb-4 flex flex-col gap-3" style={{ borderTop: '0.5px solid #2A2A2A' }}>
+                <div className="px-4 pb-4 flex flex-col gap-3" style={{ borderTop: '1px solid #E8E8F0' }}>
                   {r.pasha_progress && (
                     <div className="pt-3">
-                      <p style={{ fontSize: '11px', color: '#185FA5', fontWeight: 500, marginBottom: '4px' }}>PASHA</p>
-                      <p style={{ fontSize: '13px', color: '#F5F5F5' }}>{r.pasha_progress}</p>
+                      <p style={{ fontSize: '11px', color: '#3334CC', fontWeight: 500, marginBottom: '4px' }}>PASHA</p>
+                      <p style={{ fontSize: '13px', color: '#0F0F1A' }}>{r.pasha_progress}</p>
                     </div>
                   )}
                   {r.tapwork_progress && (
                     <div>
                       <p style={{ fontSize: '11px', color: '#0F6E56', fontWeight: 500, marginBottom: '4px' }}>TapWork</p>
-                      <p style={{ fontSize: '13px', color: '#F5F5F5' }}>{r.tapwork_progress}</p>
+                      <p style={{ fontSize: '13px', color: '#0F0F1A' }}>{r.tapwork_progress}</p>
                     </div>
                   )}
                   {r.protect_next_week && (
                     <div>
-                      <p style={{ fontSize: '11px', color: '#888780', fontWeight: 500, marginBottom: '4px' }}>Protected</p>
-                      <p style={{ fontSize: '13px', color: '#F5F5F5' }}>{r.protect_next_week}</p>
+                      <p style={{ fontSize: '11px', color: '#6B6B7B', fontWeight: 500, marginBottom: '4px' }}>Protected</p>
+                      <p style={{ fontSize: '13px', color: '#0F0F1A' }}>{r.protect_next_week}</p>
                     </div>
                   )}
                 </div>
